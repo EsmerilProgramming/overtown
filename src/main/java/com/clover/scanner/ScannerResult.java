@@ -7,8 +7,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
+/**
+ * 
+ * @author efraimgentil (efraim.gentil@gmail.com)
+ */
 public class ScannerResult {
-	
 	
 	private List<Class<? extends HttpHandler>> handlers;
 	private List<Class<? extends HttpServlet>> servlets;
@@ -18,11 +21,14 @@ public class ScannerResult {
 		servlets = new ArrayList<>();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void addClass(Class<?> unkownClass){
-		if(unkownClass.isInstance( HttpHandler.class ) )
+		
+		if( HttpHandler.class.isAssignableFrom(  unkownClass ) )
 			addHandlerClass( ( Class<? extends HttpHandler>) unkownClass );
-		if(unkownClass.isInstance( HttpServlet.class ) )
+		if( HttpServlet.class.isAssignableFrom( unkownClass ) )
 			addServletClass( (Class<? extends HttpServlet>) unkownClass );
+		
 	}
 	
 	public void addHandlerClass(Class<? extends HttpHandler> handlerClass){

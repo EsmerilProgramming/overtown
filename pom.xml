@@ -5,11 +5,11 @@
 	<artifactId>clover</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Clover</name>
-	
+
 	<properties>
-		
+
 	</properties>
-	
+
 	<dependencies>
 
 		<dependency>
@@ -31,11 +31,18 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.4</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
-	
+
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

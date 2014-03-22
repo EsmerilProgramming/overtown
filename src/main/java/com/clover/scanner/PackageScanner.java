@@ -1,39 +1,34 @@
 package com.clover.scanner;
 
-import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.clover.scanner.exception.PackageNotFoundException;
 
+/**
+ * 
+ * @author efraimgentil (efraim.gentil@gmail.com)
+ */
 public class PackageScanner {
-	
-	public List<Class<?>> getPageClasses(String packageToSearch,
-			ClassLoader classLoader) throws PackageNotFoundException {
-		List<Class<?>> pageClasses = new ArrayList<>();
-		String[] list = getFileList(packageToSearch);
-		try {
-			for (String string : list) {
-				System.out.println(string);
-				Class<?> loadedClass = classLoader.loadClass(packageToSearch
-						+ "." + string.replace(".class", ""));
-				pageClasses.add(loadedClass);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return pageClasses;
+
+	public ScannerResult scan(String packageToSearch,
+			ClassLoader classLoader) throws PackageNotFoundException, IOException {
+		ClassFileVisitor visitor = new ClassFileVisitor(classLoader);
+		return scanPackage(packageToSearch, visitor);
 	}
 
-	public String[] getFileList(String packageToSearch)
-			throws PackageNotFoundException {
+	protected ScannerResult scanPackage(String packageToSearch, ClassFileVisitor visitor)
+			throws PackageNotFoundException, IOException {
 		URL systemResource = PackageScanner.class.getResource("/"
-				+ packageToSearch.replaceAll("\\.", "/") );
-		if(systemResource == null)
+				+ packageToSearch.replaceAll("\\.", "/"));
+		if (systemResource == null)
 			throw new PackageNotFoundException();
-		File file = new File(systemResource.getPath());
-		return file.list();
+
+		Files.walkFileTree(Paths.get(systemResource.getPath()), visitor);
+
+		return visitor.getResult();
 	}
-	
+
 }
