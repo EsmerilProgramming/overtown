@@ -14,6 +14,7 @@ import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.PathHandler;
+import io.undertow.server.handlers.resource.FileResourceManager;
 
 public class Clover {
 	
@@ -38,24 +39,14 @@ public class Clover {
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		ScannerResult scan = new PackageScanner().scan("", classLoader);
 		
-		
 		Builder builder = Undertow.builder();
 		builder.addHttpListener(8080, "localhost");
 		
-		PathHandler pathHandler = Handlers.path();
-		for (Class<?> handlerClass : scan.getHandlers() ) {
-			Page pageAnnotation = handlerClass.getAnnotation( Page.class );
-			
-			Constructor constructor = handlerClass.getConstructor();
-			constructor.setAccessible(true);
-			if (pageAnnotation != null ) {
-				for (String path : pageAnnotation.value()) {
-					HttpHandler handler = (HttpHandler) constructor.newInstance(); 
-					pathHandler.addExactPath( path , handler );
-				}
-			}
+		if( !scan.getHandlers().isEmpty() ){
+			PathHandlerMounter mounter = new PathHandlerMounter();
+			builder.setHandler( mounter.mount( scan.getHandlers() ) );
 		}
-		builder.setHandler(pathHandler);
+		
 		server = builder.build();
 		server.start();
 	}
