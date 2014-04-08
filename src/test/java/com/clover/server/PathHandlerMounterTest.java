@@ -1,11 +1,14 @@
 package com.clover.server;
 
+import io.undertow.server.HttpServerExchange;
+import io.undertow.server.ServerConnection;
 import io.undertow.server.handlers.PathHandler;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.ws.spi.http.HttpExchange;
 import javax.xml.ws.spi.http.HttpHandler;
@@ -14,16 +17,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.clover.annotation.Page;
+import com.clover.http.CloverRequest;
 import com.clover.management.ManagementPage;
 import com.thoughtworks.paranamer.AnnotationParanamer;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+
 public class PathHandlerMounterTest {
 	
 	private PathHandlerMounter mounter;
-	
 	
 	@Before
 	public void setUp(){
@@ -31,73 +37,62 @@ public class PathHandlerMounterTest {
 	}
 	
 	@Test
-	public void t(){
-		Class clazz = ManagementPage.class;
+	public void givenAEmptyListOfParameterTypesShouldDoNothing(){
+		HttpServerExchange exchange = new HttpServerExchange( mock(ServerConnection.class) );
+		Class<?>[] parameterTypes = { };
+		Object[] parameters = new Object[ parameterTypes.length ];
 		
+		parameters = mounter.injectHttpServletExchange(parameters, parameterTypes, exchange);
 		
-		 Paranamer paranamer = new CachingParanamer(new BytecodeReadingParanamer());
-	 // throws ParameterNamesNotFoundException if not found
-
-//		parameterNames = paranamer.lookupParameterNames(method, false)
-		
-		Method[] methods = clazz.getMethods();
-		for (Method method : methods) {
-			System.out.println( method.getName() );
-			String[] parameterNames = paranamer.lookupParameterNames(method , false);
-			System.out.println( Arrays.asList( parameterNames ) );
-//			Type[] genericParameterTypes = method.getGenericParameterTypes();
-//			for (Type type : genericParameterTypes) {
-//				System.out.println( type );
-//			}
-		}
-		
+		assertSame(  0 , parameters.length );
 	}
 	
 	@Test
-	public void identifyMethods(){
-		final Class<?> clazz = ManagementPage.class;
+	public void givenAListOfParameterTypesThatContainsHttpServerExchangeShouldAddAHttpServerExchangeInstance(){
+		HttpServerExchange exchange = new HttpServerExchange( mock(ServerConnection.class) );
+		Class<?>[] parameterTypes = { String.class , HttpServerExchange.class };
+		Object[] parameters = new Object[ parameterTypes.length ];
 		
-		Page annotation = clazz.getAnnotation(Page.class);
-		String[] initialPagePath = annotation.value();
+		parameters = mounter.injectHttpServletExchange(parameters, parameterTypes, exchange);
 		
-		System.out.println( initialPagePath[0] );
-		
-		Method[] methods = clazz.getMethods();
-		for (final Method method : methods) {
-			Page methodPagePath = method.getAnnotation(Page.class);
-			if(methodPagePath != null){
-				System.out.println( methodPagePath.value()[0] );
-				
-				HttpHandler h = new HttpHandler() {
-					@Override
-					public void handle(HttpExchange exchange) throws IOException {
-						Object newInstance;
-						try {
-							newInstance = clazz.getConstructor().newInstance();
-							try {
-								method.invoke( newInstance , exchange, null);
-							} catch (IllegalAccessException
-									| IllegalArgumentException
-									| InvocationTargetException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						} catch (InstantiationException
-								| IllegalAccessException
-								| IllegalArgumentException
-								| InvocationTargetException
-								| NoSuchMethodException | SecurityException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-					
-				};
-				System.out.println( methodPagePath.value()[0] +    h );
-			}
-		}
-		
+		assertEquals( null , parameters[0] );
+		assertEquals( HttpServerExchange.class , parameters[1].getClass() );
 	}
 	
+	@Test
+	public void givenAListOfParameterTypesThatDoesNotContainsHttpServerExchangeShouldNotChangeTheParameters(){
+		HttpServerExchange exchange = new HttpServerExchange(null);
+		Class<?>[] parameterTypes = { String.class , String.class };
+		Object[] parameters = new Object[ parameterTypes.length ];
+		
+		parameters = mounter.injectHttpServletExchange(parameters, parameterTypes, exchange);
+		
+		assertEquals( null , parameters[0] );
+		assertEquals( null , parameters[1] );
+	}
+	
+	@Test
+	public void givenAListOfParameterTypesThatContainsCloverRequestShouldAddACloverInstanceToTheParameterArray(){
+		HttpServerExchange exchange = new HttpServerExchange(null);
+		Class<?>[] parameterTypes = { String.class , CloverRequest.class , Object.class };
+		Object[] parameters = new Object[ parameterTypes.length ];
+		
+		parameters = mounter.injectCloverRequest(parameters, parameterTypes, exchange);
+		
+		assertEquals( null , parameters[0] );
+		assertEquals( CloverRequest.class , parameters[1].getClass() );
+	}
+	
+	@Test
+	public void givenAListOfParameterTypesThatDoesNotContainsCloverRequestShouldDoNothing(){
+		HttpServerExchange exchange = new HttpServerExchange(null);
+		Class<?>[] parameterTypes = { String.class , String.class , String.class };
+		Object[] parameters = new Object[ parameterTypes.length ];
+		
+		parameters = mounter.injectCloverRequest(parameters, parameterTypes, exchange);
+		
+		assertEquals( null , parameters[0] );
+		assertEquals( null , parameters[1] );
+	}
 	
 }

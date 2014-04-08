@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
+import com.clover.annotation.Page;
+
 /**
  * 
  * @author efraimgentil (efraim.gentil@gmail.com)
@@ -24,7 +26,8 @@ public class ScannerResult {
 	@SuppressWarnings("unchecked")
 	public void addClass(Class<?> unkownClass){
 		
-		if( HttpHandler.class.isAssignableFrom(  unkownClass ) )
+		Page annotation = unkownClass.getAnnotation(Page.class);
+		if( annotation != null )
 			addHandlerClass( ( Class<? extends HttpHandler>) unkownClass );
 		if( HttpServlet.class.isAssignableFrom( unkownClass ) )
 			addServletClass( (Class<? extends HttpServlet>) unkownClass );

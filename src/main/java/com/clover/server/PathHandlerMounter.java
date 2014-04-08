@@ -15,11 +15,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.ws.spi.http.HttpExchange;
 
 import com.clover.annotation.Page;
+import com.clover.http.CloverRequest;
 
 public class PathHandlerMounter {
 	
@@ -63,7 +65,13 @@ public class PathHandlerMounter {
 						try {
 							newInstance = handlerClass.getConstructor().newInstance();
 							try {
-								method.invoke( newInstance , exchange, null);
+								Class<?>[] parameterTypes = method.getParameterTypes();
+								Object[] parameters = new Object[parameterTypes.length]; 
+								
+								injectHttpServletExchange( parameters , parameterTypes , exchange );
+								injectCloverRequest( parameters , parameterTypes , exchange );
+								
+								method.invoke( newInstance , parameters );
 							} catch (IllegalAccessException
 									| IllegalArgumentException
 									| InvocationTargetException e) {
@@ -93,6 +101,22 @@ public class PathHandlerMounter {
 		
 		
 		return pathHandler;
+	}
+	
+	protected Object[] injectCloverRequest(Object[] parameters , Class<?>[] parameterTypes, HttpServerExchange exchange ){
+		List<Class<?>> asList = Arrays.asList( parameterTypes );
+		if(asList.contains(CloverRequest.class)){
+			parameters[asList.indexOf(CloverRequest.class)] = new CloverRequest(exchange);
+		}
+		return parameters;
+	}
+	
+	protected Object[] injectHttpServletExchange(Object[] parameters , Class<?>[] parameterTypes, HttpServerExchange exchange ){
+		List<Class<?>> asList = Arrays.asList( parameterTypes );
+		if(asList.contains(HttpServerExchange.class)){
+			parameters[asList.indexOf(HttpServerExchange.class)] = exchange;
+		}
+		return parameters;
 	}
 	
 }

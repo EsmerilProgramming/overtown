@@ -5,6 +5,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
 import com.clover.annotation.Page;
+import com.clover.http.CloverRequest;
 import com.clover.management.model.ServerStatus;
 
 @Page("/management")
@@ -23,13 +24,14 @@ public class ManagementPage implements HttpHandler {
 	}
 	
 	@Page("teste")
-	public  void teste(String nomeDaString){
-		
-		
+	public  void teste(String nomeDaString , CloverRequest request ){
+		if(request.getAttribute("aaa") != null){
+			System.out.println("Works: " + request.getAttribute("aaa") );
+		}
 	}
 	
 	@Page("teste2")
-	public  void teste2(HttpServerExchange exchange , ServerStatus serverStatus){
+	public  void teste2(HttpServerExchange exchange , ServerStatus serverStatus ){
 		exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
 		
 		System.out.println( serverStatus  );

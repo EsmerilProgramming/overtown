@@ -7,10 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
-
 import static org.junit.Assert.*;
 
 public class ClassFileVisitorTest {
@@ -26,6 +26,7 @@ public class ClassFileVisitorTest {
 	}
 	
 	@Test
+	@Ignore
 	public void t() throws IOException{
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		ClassFileVisitor visitor = new ClassFileVisitor( classLoader );
