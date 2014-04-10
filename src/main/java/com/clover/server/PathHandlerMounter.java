@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +23,9 @@ import javax.xml.ws.spi.http.HttpExchange;
 
 import com.clover.annotation.Page;
 import com.clover.http.CloverRequest;
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 
 public class PathHandlerMounter {
 	
@@ -32,7 +36,7 @@ public class PathHandlerMounter {
 			for (Class<?> handlerClass : handlers ) {
 				Page pageAnnotation = handlerClass.getAnnotation( Page.class );
 				if (pageAnnotation != null ) {
-					Constructor constructor = handlerClass.getConstructor();
+					Constructor<?> constructor = handlerClass.getConstructor();
 					constructor.setAccessible(true);
 					for (String path : pageAnnotation.value()) {
 						HttpHandler handler = (HttpHandler) constructor.newInstance(); 
@@ -52,11 +56,14 @@ public class PathHandlerMounter {
 	protected PathHandler mountMethods(PathHandler pathHandler , final Class<?> handlerClass){
 		Page pageAnnotation = handlerClass.getAnnotation( Page.class );
 		
-		
 		Method[] methods = handlerClass.getMethods();
+		
 		for (final Method method : methods) {
 			Page methodPagePath = method.getAnnotation(Page.class);
 			if(methodPagePath != null){
+				
+				Paranamer paranamer = new CachingParanamer( new BytecodeReadingParanamer() );
+				final String[] parameterNames = paranamer.lookupParameterNames(method);
 				
 				HttpHandler h = new HttpHandler()  {
 					@Override
@@ -68,8 +75,7 @@ public class PathHandlerMounter {
 								Class<?>[] parameterTypes = method.getParameterTypes();
 								Object[] parameters = new Object[parameterTypes.length]; 
 								
-								injectHttpServletExchange( parameters , parameterTypes , exchange );
-								injectCloverRequest( parameters , parameterTypes , exchange );
+								translateParameters(parameters , parameterNames , parameterTypes , exchange);
 								
 								method.invoke( newInstance , parameters );
 							} catch (IllegalAccessException
@@ -99,24 +105,30 @@ public class PathHandlerMounter {
 			}
 		}
 		
-		
 		return pathHandler;
 	}
 	
-	protected Object[] injectCloverRequest(Object[] parameters , Class<?>[] parameterTypes, HttpServerExchange exchange ){
-		List<Class<?>> asList = Arrays.asList( parameterTypes );
-		if(asList.contains(CloverRequest.class)){
-			parameters[asList.indexOf(CloverRequest.class)] = new CloverRequest(exchange);
+	protected Object[] translateParameters( Object[] parameters , String[] parameterNames, Class<?>[] parameterTypes, HttpServerExchange exchange ){
+		for (int i = 0 ; i < parameterTypes.length ; i++) {
+			Class<?> clazz = parameterTypes[i];
+			
+			if( CloverRequest.class.equals( clazz ) )
+				parameters[i] = new CloverRequest(exchange);
+			else if( HttpServerExchange.class.equals( clazz ) )
+				parameters[i] = exchange;
+			else
+				parameters[i] = setParamater( clazz, parameterNames[i] , new CloverRequest(exchange) );
+			
 		}
+		
 		return parameters;
-	}
+	} 
 	
-	protected Object[] injectHttpServletExchange(Object[] parameters , Class<?>[] parameterTypes, HttpServerExchange exchange ){
-		List<Class<?>> asList = Arrays.asList( parameterTypes );
-		if(asList.contains(HttpServerExchange.class)){
-			parameters[asList.indexOf(HttpServerExchange.class)] = exchange;
-		}
-		return parameters;
+	protected <T> T setParamater( Class<T> clazz, String parameterName , CloverRequest request ){
+		if(String.class.equals(clazz))
+			return (T) request.getAttribute(parameterName);
+		
+		return null;
 	}
 	
 }

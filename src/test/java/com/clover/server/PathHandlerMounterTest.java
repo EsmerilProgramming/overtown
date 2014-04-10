@@ -41,8 +41,9 @@ public class PathHandlerMounterTest {
 		HttpServerExchange exchange = new HttpServerExchange( mock(ServerConnection.class) );
 		Class<?>[] parameterTypes = { };
 		Object[] parameters = new Object[ parameterTypes.length ];
+		String[] parameterNames = new String[ parameterTypes.length ];
 		
-		parameters = mounter.injectHttpServletExchange(parameters, parameterTypes, exchange);
+		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
 		
 		assertSame(  0 , parameters.length );
 	}
@@ -52,8 +53,9 @@ public class PathHandlerMounterTest {
 		HttpServerExchange exchange = new HttpServerExchange( mock(ServerConnection.class) );
 		Class<?>[] parameterTypes = { String.class , HttpServerExchange.class };
 		Object[] parameters = new Object[ parameterTypes.length ];
+		String[] parameterNames = new String[ parameterTypes.length ];
 		
-		parameters = mounter.injectHttpServletExchange(parameters, parameterTypes, exchange);
+		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
 		
 		assertEquals( null , parameters[0] );
 		assertEquals( HttpServerExchange.class , parameters[1].getClass() );
@@ -64,8 +66,9 @@ public class PathHandlerMounterTest {
 		HttpServerExchange exchange = new HttpServerExchange(null);
 		Class<?>[] parameterTypes = { String.class , String.class };
 		Object[] parameters = new Object[ parameterTypes.length ];
+		String[] parameterNames = new String[ parameterTypes.length ];
 		
-		parameters = mounter.injectHttpServletExchange(parameters, parameterTypes, exchange);
+		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
 		
 		assertEquals( null , parameters[0] );
 		assertEquals( null , parameters[1] );
@@ -76,8 +79,9 @@ public class PathHandlerMounterTest {
 		HttpServerExchange exchange = new HttpServerExchange(null);
 		Class<?>[] parameterTypes = { String.class , CloverRequest.class , Object.class };
 		Object[] parameters = new Object[ parameterTypes.length ];
+		String[] parameterNames = new String[ parameterTypes.length ];
 		
-		parameters = mounter.injectCloverRequest(parameters, parameterTypes, exchange);
+		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
 		
 		assertEquals( null , parameters[0] );
 		assertEquals( CloverRequest.class , parameters[1].getClass() );
@@ -88,8 +92,9 @@ public class PathHandlerMounterTest {
 		HttpServerExchange exchange = new HttpServerExchange(null);
 		Class<?>[] parameterTypes = { String.class , String.class , String.class };
 		Object[] parameters = new Object[ parameterTypes.length ];
+		String[] parameterNames = new String[ parameterTypes.length ];
 		
-		parameters = mounter.injectCloverRequest(parameters, parameterTypes, exchange);
+		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
 		
 		assertEquals( null , parameters[0] );
 		assertEquals( null , parameters[1] );

@@ -25,6 +25,7 @@ public class ManagementPage implements HttpHandler {
 	
 	@Page("teste")
 	public  void teste(String nomeDaString , CloverRequest request ){
+		System.out.println( nomeDaString );
 		if(request.getAttribute("aaa") != null){
 			System.out.println("Works: " + request.getAttribute("aaa") );
 		}
