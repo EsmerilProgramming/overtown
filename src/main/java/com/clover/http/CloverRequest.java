@@ -23,5 +23,9 @@ public class CloverRequest {
 		
 		return null;
 	}
+
+	public HttpServerExchange getExchange() {
+		return exchange;
+	}
 	
 }

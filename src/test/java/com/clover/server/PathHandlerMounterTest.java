@@ -38,24 +38,26 @@ public class PathHandlerMounterTest {
 	
 	@Test
 	public void givenAEmptyListOfParameterTypesShouldDoNothing(){
-		HttpServerExchange exchange = new HttpServerExchange( mock(ServerConnection.class) );
+		CloverRequest request = mock(CloverRequest.class);
 		Class<?>[] parameterTypes = { };
 		Object[] parameters = new Object[ parameterTypes.length ];
 		String[] parameterNames = new String[ parameterTypes.length ];
 		
-		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
+		parameters = mounter.translateParameters( parameterNames, parameterTypes, request );
 		
 		assertSame(  0 , parameters.length );
 	}
 	
 	@Test
 	public void givenAListOfParameterTypesThatContainsHttpServerExchangeShouldAddAHttpServerExchangeInstance(){
-		HttpServerExchange exchange = new HttpServerExchange( mock(ServerConnection.class) );
+		CloverRequest request = mock(CloverRequest.class);
+		HttpServerExchange exchange = new HttpServerExchange(null);
 		Class<?>[] parameterTypes = { String.class , HttpServerExchange.class };
 		Object[] parameters = new Object[ parameterTypes.length ];
 		String[] parameterNames = new String[ parameterTypes.length ];
+		when( request.getExchange() ).thenReturn(exchange);
 		
-		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
+		parameters = mounter.translateParameters(  parameterNames, parameterTypes, request );
 		
 		assertEquals( null , parameters[0] );
 		assertEquals( HttpServerExchange.class , parameters[1].getClass() );
@@ -63,12 +65,12 @@ public class PathHandlerMounterTest {
 	
 	@Test
 	public void givenAListOfParameterTypesThatDoesNotContainsHttpServerExchangeShouldNotChangeTheParameters(){
-		HttpServerExchange exchange = new HttpServerExchange(null);
+		CloverRequest request = mock(CloverRequest.class);
 		Class<?>[] parameterTypes = { String.class , String.class };
 		Object[] parameters = new Object[ parameterTypes.length ];
 		String[] parameterNames = new String[ parameterTypes.length ];
 		
-		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
+		parameters = mounter.translateParameters( parameterNames, parameterTypes, request );
 		
 		assertEquals( null , parameters[0] );
 		assertEquals( null , parameters[1] );
@@ -76,12 +78,11 @@ public class PathHandlerMounterTest {
 	
 	@Test
 	public void givenAListOfParameterTypesThatContainsCloverRequestShouldAddACloverInstanceToTheParameterArray(){
-		HttpServerExchange exchange = new HttpServerExchange(null);
+		CloverRequest request = new CloverRequest( new HttpServerExchange( mock(ServerConnection.class) ));
 		Class<?>[] parameterTypes = { String.class , CloverRequest.class , Object.class };
-		Object[] parameters = new Object[ parameterTypes.length ];
 		String[] parameterNames = new String[ parameterTypes.length ];
 		
-		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
+		Object[] parameters = mounter.translateParameters( parameterNames, parameterTypes, request );
 		
 		assertEquals( null , parameters[0] );
 		assertEquals( CloverRequest.class , parameters[1].getClass() );
@@ -89,12 +90,11 @@ public class PathHandlerMounterTest {
 	
 	@Test
 	public void givenAListOfParameterTypesThatDoesNotContainsCloverRequestShouldDoNothing(){
-		HttpServerExchange exchange = new HttpServerExchange(null);
+		CloverRequest request = mock(CloverRequest.class);
 		Class<?>[] parameterTypes = { String.class , String.class , String.class };
-		Object[] parameters = new Object[ parameterTypes.length ];
 		String[] parameterNames = new String[ parameterTypes.length ];
 		
-		parameters = mounter.translateParameters(parameters, parameterNames, parameterTypes, exchange);
+		Object[] parameters = mounter.translateParameters( parameterNames, parameterTypes , request);
 		
 		assertEquals( null , parameters[0] );
 		assertEquals( null , parameters[1] );

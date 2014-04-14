@@ -23,6 +23,7 @@ import javax.xml.ws.spi.http.HttpExchange;
 
 import com.clover.annotation.Page;
 import com.clover.http.CloverRequest;
+import com.clover.http.parameter.ParametersTranslator;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
@@ -73,10 +74,8 @@ public class PathHandlerMounter {
 							newInstance = handlerClass.getConstructor().newInstance();
 							try {
 								Class<?>[] parameterTypes = method.getParameterTypes();
-								Object[] parameters = new Object[parameterTypes.length]; 
-								
-								translateParameters(parameters , parameterNames , parameterTypes , exchange);
-								
+								CloverRequest request = new CloverRequest(exchange);
+								Object[] parameters  = translateParameters( parameterNames , parameterTypes , request );
 								method.invoke( newInstance , parameters );
 							} catch (IllegalAccessException
 									| IllegalArgumentException
@@ -108,17 +107,12 @@ public class PathHandlerMounter {
 		return pathHandler;
 	}
 	
-	protected Object[] translateParameters( Object[] parameters , String[] parameterNames, Class<?>[] parameterTypes, HttpServerExchange exchange ){
+	protected Object[] translateParameters( String[] parameterNames, Class<?>[] parameterTypes, CloverRequest cloverRequest){
+		ParametersTranslator translator = new ParametersTranslator();
+		Object[] parameters = new Object[parameterTypes.length];
 		for (int i = 0 ; i < parameterTypes.length ; i++) {
 			Class<?> clazz = parameterTypes[i];
-			
-			if( CloverRequest.class.equals( clazz ) )
-				parameters[i] = new CloverRequest(exchange);
-			else if( HttpServerExchange.class.equals( clazz ) )
-				parameters[i] = exchange;
-			else
-				parameters[i] = setParamater( clazz, parameterNames[i] , new CloverRequest(exchange) );
-			
+			parameters[i] = translator.translateParameters( clazz, parameterNames[i] , cloverRequest );
 		}
 		
 		return parameters;
@@ -127,7 +121,6 @@ public class PathHandlerMounter {
 	protected <T> T setParamater( Class<T> clazz, String parameterName , CloverRequest request ){
 		if(String.class.equals(clazz))
 			return (T) request.getAttribute(parameterName);
-		
 		return null;
 	}
 	
