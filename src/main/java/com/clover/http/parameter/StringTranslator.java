@@ -1,19 +1,21 @@
 package com.clover.http.parameter;
 
-import io.undertow.server.HttpServerExchange;
-
 import com.clover.http.CloverRequest;
 
 /**
+ * 
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public class HttpServerExchangeTranslator implements ParameterTranslator {
+public class StringTranslator implements ParameterTranslator {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
 			CloverRequest cloverRequest) {
-			return (T) cloverRequest.getExchange();
+		Object attribute = cloverRequest.getAttribute(parameterName);
+		if(attribute == null)
+			return null;
+		
+		return (T) String.valueOf(attribute);
 	}
-
+	
 }

@@ -26,9 +26,24 @@ public class ManagementPage implements HttpHandler {
 	@Page("teste")
 	public  void teste(String nomeDaString , CloverRequest request ){
 		System.out.println( nomeDaString );
-		if(request.getAttribute("aaa") != null){
-			System.out.println("Works: " + request.getAttribute("aaa") );
-		}
+	}
+	
+	@Page("testeInteger")
+	public  void teste(Integer id , CloverRequest request ){
+		System.out.println("Teste integer");
+		System.out.println( id );
+	}
+	
+	@Page("testeDouble")
+	public  void teste( Double val  ){
+		System.out.println("Teste double");
+		System.out.println( val );
+	}
+	
+	@Page("testeLong")
+	public  void teste( Long val  ){
+		System.out.println("Teste Long");
+		System.out.println( val );
 	}
 	
 	@Page("teste2")
@@ -38,8 +53,8 @@ public class ManagementPage implements HttpHandler {
 		System.out.println( serverStatus  );
 		
         exchange.getResponseSender().send("<form method='post' >"
-        		+ "<input name='' />"
-        		+ "<input name='' />"
+        		+ "<input name='serverStatus.host' />"
+        		+ "<input name='serverStatus.port' />"
         		+ "<button type='submit'>Submit</button>"
         		+ "</form>");
 	}
