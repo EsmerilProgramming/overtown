@@ -1,7 +1,12 @@
 package com.clover.http;
 
 import io.undertow.server.HttpServerExchange;
+import io.undertow.server.handlers.form.FormData;
+import io.undertow.server.handlers.form.FormData.FormValue;
+import io.undertow.server.handlers.form.FormDataParser;
+import io.undertow.server.handlers.form.FormEncodedDataDefinition;
 
+import java.io.IOException;
 import java.util.Deque;
 import java.util.Map;
 
@@ -16,10 +21,19 @@ public class CloverRequest {
 	}
 	
 	public Object getAttribute(String name){
-		Deque<String> deque = queryParameters.get(name);
+		if("POST".equalsIgnoreCase( exchange.getRequestMethod().toString() ) ){
+			FormDataParser create = new FormEncodedDataDefinition().create(exchange);
+			try {
+				FormData parseBlocking = create.parseBlocking();
+				Deque<FormValue> deque2 = parseBlocking.get(name);
+				if(deque2 != null)
+					return deque2.getLast().getValue();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
-		if(deque != null)
-			return deque.getFirst();
+		Deque<String> deque = queryParameters.get(name);
 		
 		return null;
 	}

@@ -11,6 +11,12 @@ public class ServerStatus {
 	public ServerStatus() {
 		
 	}
+	
+	@Override
+	public String toString() {
+		return "ServerStatus [host=" + host + ", port=" + port
+				+ ", registeredPaths=" + registeredPaths + "]";
+	}
 
 	public String getHost() {
 		return host;

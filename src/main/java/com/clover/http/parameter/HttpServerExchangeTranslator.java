@@ -1,7 +1,5 @@
 package com.clover.http.parameter;
 
-import io.undertow.server.HttpServerExchange;
-
 import com.clover.http.CloverRequest;
 
 /**

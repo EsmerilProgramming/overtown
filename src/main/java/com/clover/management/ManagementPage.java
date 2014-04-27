@@ -1,5 +1,7 @@
 package com.clover.management;
 
+import java.lang.reflect.Method;
+
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
@@ -16,11 +18,16 @@ public class ManagementPage implements HttpHandler {
 	
 	@Override
 	public void handleRequest(HttpServerExchange exchange) throws Exception {
-		exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-		
+		exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
 		System.out.println( exchange  );
-		
-        exchange.getResponseSender().send("Hello World");
+		exchange.getResponseSender().send("<form method='POST' >"
+        		+ "<input name='serverStatus.host' />"
+        		+ "<input name='serverStatus.port' />"
+        		+ "<button type='submit'>Submit</button>"
+        		+ "</form>"
+        		+ ""
+        		+ "Hello World");
+//        exchange.getResponseSender().send();
 	}
 	
 	@Page("teste")
@@ -57,6 +64,10 @@ public class ManagementPage implements HttpHandler {
         		+ "<input name='serverStatus.port' />"
         		+ "<button type='submit'>Submit</button>"
         		+ "</form>");
+	}
+	
+	public void testePrimitivo(int i , long l , double d){
+		
 	}
 	
 }

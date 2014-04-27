@@ -8,6 +8,7 @@ import com.clover.http.CloverRequest;
  */
 public class DoubleTranslator implements ParameterTranslator {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
 			CloverRequest cloverRequest) {

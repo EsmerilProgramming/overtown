@@ -68,7 +68,7 @@ public class PathHandlerMounter {
 				
 				HttpHandler h = new HttpHandler()  {
 					@Override
-					public void handleRequest(HttpServerExchange exchange) throws IOException {
+					public void handleRequest(final HttpServerExchange exchange) throws IOException {
 						Object newInstance;
 						try {
 							newInstance = handlerClass.getConstructor().newInstance();
