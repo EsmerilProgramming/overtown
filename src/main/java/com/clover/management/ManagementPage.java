@@ -1,35 +1,40 @@
 package com.clover.management;
 
-import java.lang.reflect.Method;
-
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
+import com.clover.annotation.BeforeTranslate;
 import com.clover.annotation.Controller;
 import com.clover.annotation.Page;
 import com.clover.http.CloverRequest;
+import com.clover.http.parameter.ParameterTranslator;
 import com.clover.management.model.ServerStatus;
 
-@Page("/management")
-public class ManagementPage implements HttpHandler {
+@Controller(path = "/management")
+public class ManagementPage  {
 	
 	public ManagementPage() {
 	}
 	
-	@Override
-	public void handleRequest(HttpServerExchange exchange) throws Exception {
-		exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
-		System.out.println( exchange  );
-		exchange.getResponseSender().send("<form method='POST' >"
-        		+ "<input name='serverStatus.host' />"
-        		+ "<input name='serverStatus.port' />"
-        		+ "<button type='submit'>Submit</button>"
-        		+ "</form>"
-        		+ ""
-        		+ "Hello World");
-//        exchange.getResponseSender().send();
+	@BeforeTranslate
+	public void doSomething(CloverRequest request){
+		System.out.println("SOMETHING BEFORE TRANSLATE");
 	}
+	
+//	@Override
+//	public void handleRequest(HttpServerExchange exchange) throws Exception {
+//		exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
+//		System.out.println( exchange  );
+//		exchange.getResponseSender().send("<form method='POST' >"
+//        		+ "<input name='serverStatus.host' />"
+//        		+ "<input name='serverStatus.port' />"
+//        		+ "<button type='submit'>Submit</button>"
+//        		+ "</form>"
+//        		+ ""
+//        		+ "Hello World");
+////        exchange.getResponseSender().send();
+//	}
 	
 	@Page("teste")
 	public  void teste(String nomeDaString , CloverRequest request ){
@@ -67,8 +72,10 @@ public class ManagementPage implements HttpHandler {
         		+ "</form>");
 	}
 	
-	public void testePrimitivo(int i , long l , double d){
-		
+	@Page("testePrimitivo")
+	public void testePrimitivo(int i , long l){
+		System.out.println( i );
+		System.out.println( l );	
 	}
 	
 }

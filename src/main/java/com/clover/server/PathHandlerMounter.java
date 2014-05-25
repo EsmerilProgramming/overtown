@@ -11,16 +11,21 @@ import io.undertow.server.handlers.resource.ResourceManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.ws.spi.http.HttpExchange;
 
+import com.clover.annotation.BeforeTranslate;
+import com.clover.annotation.Controller;
 import com.clover.annotation.Page;
 import com.clover.http.CloverRequest;
 import com.clover.http.parameter.ParametersTranslator;
@@ -35,15 +40,10 @@ public class PathHandlerMounter {
 		PathHandler pathHandler = Handlers.path();
 		try{
 			for (Class<?> handlerClass : handlers ) {
-				Page pageAnnotation = handlerClass.getAnnotation( Page.class );
-				if (pageAnnotation != null ) {
+				Controller controllerAnnotation = handlerClass.getAnnotation( Controller.class );
+				if (controllerAnnotation != null ) {
 					Constructor<?> constructor = handlerClass.getConstructor();
 					constructor.setAccessible(true);
-					for (String path : pageAnnotation.value()) {
-						HttpHandler handler = (HttpHandler) constructor.newInstance(); 
-						pathHandler.addExactPath( path , handler );
-					}
-					
 					mountMethods( pathHandler , handlerClass );
 				}
 			}
@@ -55,10 +55,11 @@ public class PathHandlerMounter {
 	}
 	
 	protected PathHandler mountMethods(PathHandler pathHandler , final Class<?> handlerClass){
-		Page pageAnnotation = handlerClass.getAnnotation( Page.class );
+		Controller controllerAnnotation = handlerClass.getAnnotation( Controller.class );
 		
 		Method[] methods = handlerClass.getMethods();
 		
+		final List<Method> beforeTranslationMethods =  identifyBeforeTranslationMethod( methods );
 		for (final Method method : methods) {
 			Page methodPagePath = method.getAnnotation(Page.class);
 			if(methodPagePath != null){
@@ -75,6 +76,9 @@ public class PathHandlerMounter {
 							try {
 								Class<?>[] parameterTypes = method.getParameterTypes();
 								CloverRequest request = new CloverRequest(exchange);
+								for (Method method : beforeTranslationMethods) {
+									method.invoke( newInstance );
+								}
 								Object[] parameters  = translateParameters( parameterNames , parameterTypes , request );
 								method.invoke( newInstance , parameters );
 							} catch (IllegalAccessException
@@ -95,7 +99,7 @@ public class PathHandlerMounter {
 
 				};
 				
-				for ( String pageRoot : pageAnnotation.value() ) {
+				for ( String pageRoot : controllerAnnotation.path() ) {
 					for ( String methodRoot : methodPagePath.value()) {
 						pathHandler.addExactPath( pageRoot + "/" + methodRoot , h );
 					}
@@ -105,6 +109,19 @@ public class PathHandlerMounter {
 		}
 		
 		return pathHandler;
+	}
+	
+	protected List<Method> identifyBeforeTranslationMethod(Method[] methods){
+		List<Method> beforeTranslationMethods = new ArrayList<>();
+		for (Method method : methods) {
+			List<Annotation> asList = Arrays.asList( method.getAnnotations() );
+			for (Annotation annotation : asList) {
+				if( annotation instanceof BeforeTranslate ){
+					beforeTranslationMethods.add(method);
+				}
+			}
+		}
+		return beforeTranslationMethods;
 	}
 	
 	protected Object[] translateParameters( String[] parameterNames, Class<?>[] parameterTypes, CloverRequest cloverRequest){
@@ -118,9 +135,11 @@ public class PathHandlerMounter {
 		return parameters;
 	} 
 	
+	@SuppressWarnings("unchecked")
 	protected <T> T setParamater( Class<T> clazz, String parameterName , CloverRequest request ){
-		if(String.class.equals(clazz))
+		if(String.class.equals(clazz)){
 			return (T) request.getAttribute(parameterName);
+		}
 		return null;
 	}
 	

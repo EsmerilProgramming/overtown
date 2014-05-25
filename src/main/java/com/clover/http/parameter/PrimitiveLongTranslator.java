@@ -2,28 +2,30 @@ package com.clover.http.parameter;
 
 import com.clover.http.CloverRequest;
 
-/**
- * 
- * @author efraimgentil (efraim.gentil@gmail.com)
- */
-public class IntegerTranslator implements ParameterTranslator {
-
+public class PrimitiveLongTranslator implements ParameterTranslator {
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
 			CloverRequest cloverRequest) {
+		Long defaultValue = 0l;
+		
 		Object attribute = cloverRequest.getAttribute(parameterName);
 		if(attribute != null){
-			String strVal = String.valueOf(attribute);
-			
 			try{
-				Integer i = Integer.parseInt(strVal);
-				return (T) i; 
+				String strVal = String.valueOf(attribute);
+				Long val = Long.parseLong( strVal );
+				return (T) val; 
 			}catch(NumberFormatException nfe){
 				nfe.printStackTrace();
 			}
 		}
-		return null;
+		
+		return (T) defaultValue;
 	}
-
+	
+	public static boolean isPrimitiveLong(Class<?> clazz){
+		return long.class.equals(clazz);
+	}
+	
 }

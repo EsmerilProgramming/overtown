@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
+import com.clover.annotation.Controller;
 import com.clover.annotation.Page;
 
 /**
@@ -26,7 +27,7 @@ public class ScannerResult {
 	@SuppressWarnings("unchecked")
 	public void addClass(Class<?> unkownClass){
 		
-		Page annotation = unkownClass.getAnnotation(Page.class);
+		Controller annotation = unkownClass.getAnnotation(Controller.class);
 		if( annotation != null )
 			addHandlerClass( ( Class<? extends HttpHandler>) unkownClass );
 		if( HttpServlet.class.isAssignableFrom( unkownClass ) )

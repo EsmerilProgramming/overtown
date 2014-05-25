@@ -45,19 +45,19 @@ public class CommonsParamTranslator implements ParameterTranslator {
 	}
 	
 	private static boolean isInteger( Class<?> clazz ){
-		return Integer.class.equals(clazz) || int.class.equals(clazz);
+		return Integer.class.equals(clazz);
 	}
 	
 	private static boolean isLong( Class<?> clazz ){
-		return Long.class.equals(clazz) || long.class.equals(clazz);
+		return Long.class.equals(clazz);
 	}
 	
 	private static boolean isDouble( Class<?> clazz ){
-		return Double.class.equals(clazz) || double.class.equals(clazz);
+		return Double.class.equals(clazz);
 	}
 	
 	private static boolean isBoolean( Class<?> clazz){
-		return Boolean.class.equals(clazz) || boolean.class.equals(clazz);
+		return Boolean.class.equals(clazz);
 	}
 
 }

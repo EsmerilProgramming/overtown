@@ -2,28 +2,29 @@ package com.clover.http.parameter;
 
 import com.clover.http.CloverRequest;
 
-/**
- * 
- * @author efraimgentil (efraim.gentil@gmail.com)
- */
-public class IntegerTranslator implements ParameterTranslator {
-
+public class PrimitiveDoubleTranslator implements ParameterTranslator {
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
 			CloverRequest cloverRequest) {
+		
 		Object attribute = cloverRequest.getAttribute(parameterName);
 		if(attribute != null){
-			String strVal = String.valueOf(attribute);
-			
 			try{
-				Integer i = Integer.parseInt(strVal);
-				return (T) i; 
+				String strVal = String.valueOf(attribute);
+				Double value = Double.parseDouble(strVal);
+				return (T) value; 
 			}catch(NumberFormatException nfe){
 				nfe.printStackTrace();
 			}
 		}
-		return null;
+		Double defaultValue = 0.0;
+		return (T) defaultValue;
 	}
-
+	
+	public static boolean isPrimitiveDouble(Class<?> clazz){
+		return double.class.equals(clazz);
+	}
+	
 }

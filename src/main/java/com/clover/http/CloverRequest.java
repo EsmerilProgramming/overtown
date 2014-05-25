@@ -8,7 +8,10 @@ import io.undertow.server.handlers.form.FormEncodedDataDefinition;
 
 import java.io.IOException;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.Map;
+
+import com.clover.http.parameter.ParameterTranslator;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
@@ -17,10 +20,12 @@ public class CloverRequest {
 	
 	private HttpServerExchange exchange;
 	private Map<String, Deque<String>> queryParameters;
+	private Map<String, ParameterTranslator > parameterTranslators;
 	
 	public CloverRequest( HttpServerExchange exchange ) {
 		this.exchange = exchange;
 		this.queryParameters = exchange.getQueryParameters();
+		this.parameterTranslators = new HashMap<>();
 	}
 	
 	public Object getAttribute(String name){
@@ -50,6 +55,18 @@ public class CloverRequest {
 
 	public HttpServerExchange getExchange() {
 		return exchange;
+	}
+	
+	public void setParameterTranslator( String parameterName , ParameterTranslator parameterTranslator ){
+		parameterTranslators.put(parameterName, parameterTranslator);
+	} 
+	
+	public boolean shouldTranslateParameter(String parameterName){
+		return parameterTranslators.containsKey(parameterName);
+	}
+
+	public ParameterTranslator getTranslator(String parameterName) {
+		return parameterTranslators.get(parameterName);
 	}
 	
 	
