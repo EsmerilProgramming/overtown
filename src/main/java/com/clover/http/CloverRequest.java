@@ -29,15 +29,14 @@ public class CloverRequest {
 	}
 	
 	public Object getAttribute(String name){
-		if("POST".equalsIgnoreCase( exchange.getRequestMethod().toString() ) ){
+		if( isPostRequest() ) {
 			return getFromFormData(name);
 		}
-		
-		Deque<String> deque = queryParameters.get(name);
-		if(deque != null)
-			return deque.getLast();
-		
-		return null;
+		return getFromParameters( name );
+	}
+	
+	protected boolean isPostRequest(){
+		return "POST".equalsIgnoreCase( exchange.getRequestMethod().toString() );
 	}
 	
 	protected Object getFromFormData(String name){
@@ -49,6 +48,14 @@ public class CloverRequest {
 				return dequeVal.getLast().getValue();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	protected Object getFromParameters(String parameterName){
+		Deque<String> deque = queryParameters.get( parameterName );
+		if(deque != null){
+			return deque.getLast();
 		}
 		return null;
 	}

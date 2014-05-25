@@ -24,8 +24,8 @@ public class ModelTranslator implements ParameterTranslator{
 				Object paramValue = cloverRequest.getAttribute( parameterName + "." + field.getName() );
 				if(paramValue != null){
 					field.setAccessible(true);
-					ParametersTranslator parametersTranslator = new ParametersTranslator();
-					field.set( retorno, parametersTranslator.translateParameters( field.getType(), fullParameterName, cloverRequest ) );
+					ParametersTranslator translator = new ParametersTranslator();
+					field.set( retorno, translator.translateParameter( field.getType(), fullParameterName, cloverRequest ) );
 					field.setAccessible(false);
 				}
 			}

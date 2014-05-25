@@ -18,7 +18,7 @@ public class ManagementPage  {
 	}
 	
 	@BeforeTranslate
-	public void doSomething(CloverRequest request){
+	public void doSomething(){
 		System.out.println("SOMETHING BEFORE TRANSLATE");
 	}
 	

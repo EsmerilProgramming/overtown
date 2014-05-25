@@ -79,7 +79,8 @@ public class PathHandlerMounter {
 								for (Method method : beforeTranslationMethods) {
 									method.invoke( newInstance );
 								}
-								Object[] parameters  = translateParameters( parameterNames , parameterTypes , request );
+								ParametersTranslator translator = new ParametersTranslator();
+								Object[] parameters  = translator.translateAllParameters(parameterNames, parameterTypes, request );
 								method.invoke( newInstance , parameters );
 							} catch (IllegalAccessException
 									| IllegalArgumentException
@@ -123,17 +124,6 @@ public class PathHandlerMounter {
 		}
 		return beforeTranslationMethods;
 	}
-	
-	protected Object[] translateParameters( String[] parameterNames, Class<?>[] parameterTypes, CloverRequest cloverRequest){
-		ParametersTranslator translator = new ParametersTranslator();
-		Object[] parameters = new Object[parameterTypes.length];
-		for (int i = 0 ; i < parameterTypes.length ; i++) {
-			Class<?> clazz = parameterTypes[i];
-			parameters[i] = translator.translateParameters( clazz, parameterNames[i] , cloverRequest );
-		}
-		
-		return parameters;
-	} 
 	
 	@SuppressWarnings("unchecked")
 	protected <T> T setParamater( Class<T> clazz, String parameterName , CloverRequest request ){
