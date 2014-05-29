@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>br.com.clover</groupId>
+	<artifactId>clover</artifactId>
+	<version>0.0.1</version>
+	<name>Clover</name>
+	<packaging>pom</packaging>
+
+	<description>Clover</description>
+	<url>https://github.com/efraimgentil/clover</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<developers>
+		<developer>
+			<id>efraimgentil</id>
+			<name>Efraim Gnetil</name>
+			<email>efraim.gentil@gmail.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+		
+	</developers>
+	./subsystem=datasources/jdbc-driver=com.mysql:add(driver-name="com.mysql", driver-module-name="com.mysql", driver-xa-datasource-class-name="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource", driver-class-name="com.mysql.jdbc.Driver" )
+	<licenses>
+		<license>
+			<distribution>repo</distribution>
+			<name>The MIT License (MIT)</name>
+			<url>https://github.com/efraimgentil/clover/blob/master/clover/LICENSE</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/efraimgentil/clover</url>
+		<connection>scm:git:git://github.com/efraimgentil/clover</connection>
+		<developerConnection>scm:git:git@github.com:efraimgentil/clover.git</developerConnection>
+	    <tag>HEAD</tag>
+    </scm>
+
+	<modules>
+		<module>clover</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4.2</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>
