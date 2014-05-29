@@ -22,20 +22,6 @@ public class ManagementPage  {
 		System.out.println("SOMETHING BEFORE TRANSLATE");
 	}
 	
-//	@Override
-//	public void handleRequest(HttpServerExchange exchange) throws Exception {
-//		exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
-//		System.out.println( exchange  );
-//		exchange.getResponseSender().send("<form method='POST' >"
-//        		+ "<input name='serverStatus.host' />"
-//        		+ "<input name='serverStatus.port' />"
-//        		+ "<button type='submit'>Submit</button>"
-//        		+ "</form>"
-//        		+ ""
-//        		+ "Hello World");
-////        exchange.getResponseSender().send();
-//	}
-	
 	@Page("teste")
 	public  void teste(String nomeDaString , CloverRequest request ){
 		System.out.println( nomeDaString );
