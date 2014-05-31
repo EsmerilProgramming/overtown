@@ -15,33 +15,37 @@ public class ModelTranslator implements ParameterTranslator{
 	public <T> T translate(Class<T> clazz, String parameterName,
 			CloverRequest cloverRequest) {
 		
-		try {
-			Constructor<T> construtor = clazz.getConstructor();
-			T retorno = construtor.newInstance();
-			Field[] campos = clazz.getDeclaredFields();
-			for (Field field : campos) {
-				String fullParameterName = parameterName + "." + field.getName();
-				Object paramValue = cloverRequest.getAttribute( parameterName + "." + field.getName() );
-				if(paramValue != null){
-					field.setAccessible(true);
-					ParametersTranslator translator = new ParametersTranslator();
-					field.set( retorno, translator.translateParameter( field.getType(), fullParameterName, cloverRequest ) );
-					field.setAccessible(false);
+		boolean shouldTranslate = cloverRequest.containsAttributeStartingWith(parameterName);
+		
+		if(shouldTranslate){
+			try {
+				Constructor<T> construtor = clazz.getConstructor();
+				T retorno = construtor.newInstance();
+				Field[] campos = clazz.getDeclaredFields();
+				for (Field field : campos) {
+					String fullParameterName = parameterName + "." + field.getName();
+					Object paramValue = cloverRequest.getAttribute( parameterName + "." + field.getName() );
+					if(paramValue != null){
+						field.setAccessible(true);
+						ParametersTranslator translator = new ParametersTranslator();
+						field.set( retorno, translator.translateParameter( field.getType(), fullParameterName, cloverRequest ) );
+						field.setAccessible(false);
+					}
 				}
+				return retorno;
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
-			return retorno;
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 		}
 		
 		return null;

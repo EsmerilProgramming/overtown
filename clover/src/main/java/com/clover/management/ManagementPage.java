@@ -57,6 +57,18 @@ public class ManagementPage  {
         		+ "<button type='submit'>Submit</button>"
         		+ "</form>");
 	}
+	@Page("teste3")
+	public  void teste3(HttpServerExchange exchange , ServerStatus server ){
+		exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
+		
+		System.out.println( server  );
+		
+        exchange.getResponseSender().send("<form method='post' >"
+        		+ "<input name='serverStatus.host' />"
+        		+ "<input name='serverStatus.port' />"
+        		+ "<button type='submit'>Submit</button>"
+        		+ "</form>");
+	}
 	
 	@Page("testePrimitivo")
 	public void testePrimitivo(int i , long l){
