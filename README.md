@@ -57,7 +57,7 @@ public void read( CloverRequest request ){
 
 ### Running your app
 
-Declaer a clover instance and start() in your main method
+Declare a clover instance and start() in your main method
 
 ```java
 public static void main(String[] args) {
@@ -68,7 +68,4 @@ public static void main(String[] args) {
 	}
 }
 ```
-
-
-
 
