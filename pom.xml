@@ -26,7 +26,6 @@
 		</developer>
 		
 	</developers>
-	./subsystem=datasources/jdbc-driver=com.mysql:add(driver-name="com.mysql", driver-module-name="com.mysql", driver-xa-datasource-class-name="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource", driver-class-name="com.mysql.jdbc.Driver" )
 	<licenses>
 		<license>
 			<distribution>repo</distribution>
