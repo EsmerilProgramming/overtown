@@ -1,5 +1,8 @@
 package br.esmerilprogramming.main;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -12,7 +15,7 @@ public class AppMain {
     try {
       new Clover().start();
     } catch (Exception e){
-      e.printStackTrace();
+      Logger.getLogger(AppMain.class.getName()).log(Level.SEVERE, e.getMessage());
     }
   }
   

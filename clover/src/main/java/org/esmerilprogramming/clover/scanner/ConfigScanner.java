@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.esmerilprogramming.clover.scanner.exception.PackageNotFoundException;
 
@@ -21,7 +23,7 @@ public class ConfigScanner {
 				pageClasses.add(loadedClass);
 			}
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			Logger.getLogger(ConfigScanner.class.getName()).log(Level.SEVERE, e.getMessage());
 		}
 		return pageClasses;
 	}
