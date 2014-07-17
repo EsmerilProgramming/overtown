@@ -1,6 +1,8 @@
 package org.esmerilprogramming.clover.http.parameter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -21,8 +23,8 @@ public class DoubleTranslator implements ParameterTranslator {
 		try{
 			Double val = Double.parseDouble( strVal );
 			return (T) val; 
-		}catch(NumberFormatException nfe){
-			nfe.printStackTrace();
+		} catch(NumberFormatException nfe){
+			Logger.getLogger(DoubleTranslator.class.getName()).log(Level.SEVERE, nfe.getMessage());
 		}
 		
 		return null;

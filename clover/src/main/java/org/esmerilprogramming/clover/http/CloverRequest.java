@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.esmerilprogramming.clover.http.parameter.ParameterTranslator;
 
@@ -37,8 +39,8 @@ public class CloverRequest {
 					.create(exchange);
 			try {
 				formData = create.parseBlocking();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ioe) {
+				Logger.getLogger(CloverRequest.class.getName()).log(Level.SEVERE, ioe.getMessage());
 			}
 		}
 	}

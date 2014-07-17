@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.regex.Pattern;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClassFileVisitor extends SimpleFileVisitor<Path> {
 
@@ -28,7 +30,7 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
 				Class<?> loadedClass = classLoader.loadClass( asPackageClass(file) );
 				getResult().addClass( loadedClass );
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				Logger.getLogger(ClassFileVisitor.class.getName()).log(Level.SEVERE, e.getMessage());
 			}
 		} 
 		return super.visitFile(file, attrs);

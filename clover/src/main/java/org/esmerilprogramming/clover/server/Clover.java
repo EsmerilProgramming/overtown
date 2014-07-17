@@ -3,6 +3,9 @@ package org.esmerilprogramming.clover.server;
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -23,7 +26,7 @@ public class Clover {
 				| InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException
 				| PackageNotFoundException | IOException e) {
-			e.printStackTrace();
+			Logger.getLogger(Clover.class.getName()).log(Level.SEVERE, e.getMessage());
 		}
 		
 	}

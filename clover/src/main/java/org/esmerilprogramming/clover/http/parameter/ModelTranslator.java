@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
@@ -33,18 +35,9 @@ public class ModelTranslator implements ParameterTranslator{
 					}
 				}
 				return retorno;
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+			} catch (NoSuchMethodException | SecurityException | InstantiationException | 
+				IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				Logger.getLogger(ModelTranslator.class.getName()).log(Level.SEVERE, e.getMessage());
 			}
 		}
 		

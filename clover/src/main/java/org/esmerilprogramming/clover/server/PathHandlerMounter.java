@@ -13,6 +13,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.esmerilprogramming.clover.annotation.BeforeTranslate;
 import org.esmerilprogramming.clover.annotation.Controller;
@@ -38,8 +40,8 @@ public class PathHandlerMounter {
 					mountMethods( pathHandler , handlerClass );
 				}
 			}
-		}catch(Exception e){
-			e.printStackTrace();
+		} catch(Exception e){
+			Logger.getLogger(PathHandlerMounter.class.getName()).log(Level.SEVERE, e.getMessage());
 		}
 		
 		return pathHandler;
@@ -77,7 +79,8 @@ public class PathHandlerMounter {
 									| IllegalArgumentException
 									| InvocationTargetException e) {
 								// TODO Auto-generated catch block
-								e.printStackTrace();
+								Logger.getLogger(PathHandlerMounter.class.getName()).log(Level.SEVERE, e.getMessage());
+	
 							}
 						} catch (InstantiationException
 								| IllegalAccessException
@@ -85,7 +88,9 @@ public class PathHandlerMounter {
 								| InvocationTargetException
 								| NoSuchMethodException | SecurityException e1) {
 							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							Logger.getLogger(PathHandlerMounter.class.getName()).log(Level.SEVERE, e1.getMessage());
+
+	
 						}
 					}
 

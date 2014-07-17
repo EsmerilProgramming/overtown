@@ -1,6 +1,8 @@
 package org.esmerilprogramming.clover.http.parameter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -22,10 +24,11 @@ public class LongTranslator implements ParameterTranslator{
 			Long val = Long.parseLong( strVal );
 			return (T) val; 
 		}catch(NumberFormatException nfe){
-			nfe.printStackTrace();
+			Logger.getLogger(LongTranslator.class.getName()).log(Level.SEVERE, nfe.getMessage());
 		}
 		
 		return null;
 	}
 
 }
+
