@@ -1,7 +1,7 @@
 package org.esmerilprogramming.clover.http.parameter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.parameter.LongTranslator;
+import org.esmerilprogramming.clover.http.converter.LongConverter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,11 +10,11 @@ import static org.junit.Assert.*;
 
 public class LongTranslatorTest {
 	
-	private LongTranslator translator;
+	private LongConverter translator;
 	
 	@Before
 	public void setUp(){
-		translator = new LongTranslator();
+		translator = new LongConverter();
 	}
 	
 	@Test

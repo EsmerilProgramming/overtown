@@ -1,4 +1,4 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.clover.http.converter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
 import java.util.logging.Level;
@@ -8,7 +8,7 @@ import java.util.logging.Logger;
  * 
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public class LongTranslator implements ParameterTranslator{
+public class LongConverter implements ParameterConverter{
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -24,7 +24,7 @@ public class LongTranslator implements ParameterTranslator{
 			Long val = Long.parseLong( strVal );
 			return (T) val; 
 		}catch(NumberFormatException nfe){
-			Logger.getLogger(LongTranslator.class.getName()).log(Level.SEVERE, nfe.getMessage());
+			Logger.getLogger(LongConverter.class.getName()).log(Level.SEVERE, nfe.getMessage());
 		}
 		
 		return null;

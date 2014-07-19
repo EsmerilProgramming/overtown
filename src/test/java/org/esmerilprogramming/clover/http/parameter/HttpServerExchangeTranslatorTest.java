@@ -10,7 +10,7 @@ import static org.mockito.Mockito.verify;
 import io.undertow.server.HttpServerExchange;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.parameter.HttpServerExchangeTranslator;
+import org.esmerilprogramming.clover.http.converter.HttpServerExchangeConverter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,11 +18,11 @@ import static org.mockito.Mockito.*;
 
 public class HttpServerExchangeTranslatorTest {
 	
-	private HttpServerExchangeTranslator translator;
+	private HttpServerExchangeConverter translator;
 	
 	@Before
 	public void setUp(){
-		translator = new HttpServerExchangeTranslator();
+		translator = new HttpServerExchangeConverter();
 	}
 	
 	@Test

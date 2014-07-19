@@ -4,17 +4,17 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.parameter.IntegerTranslator;
+import org.esmerilprogramming.clover.http.converter.IntegerConverter;
 import org.junit.Before;
 import org.junit.Test;
 
 public class IntegerTranslatorTest {
 	
-	private IntegerTranslator translator;
+	private IntegerConverter translator;
 	
 	@Before
 	public void setUp(){
-		translator = new IntegerTranslator();
+		translator = new IntegerConverter();
 	}
 	
 	@Test

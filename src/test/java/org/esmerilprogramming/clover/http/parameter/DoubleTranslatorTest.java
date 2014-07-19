@@ -3,7 +3,7 @@ package org.esmerilprogramming.clover.http.parameter;
 import static org.mockito.Mockito.mock;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.parameter.DoubleTranslator;
+import org.esmerilprogramming.clover.http.converter.DoubleConverter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,11 +12,11 @@ import static org.mockito.Mockito.*;
 
 public class DoubleTranslatorTest {
 	
-	private DoubleTranslator translator;
+	private DoubleConverter translator;
 	
 	@Before
 	public void setUp(){
-		translator = new DoubleTranslator();
+		translator = new DoubleConverter();
 	}
 	
 	@Test

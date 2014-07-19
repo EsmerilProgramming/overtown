@@ -1,4 +1,4 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.clover.http.converter;
 
 
 import java.util.logging.Level;
@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
 
-public class PrimitiveDoubleTranslator implements ParameterTranslator {
+public class PrimitiveDoubleConverter implements ParameterConverter {
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -20,7 +20,7 @@ public class PrimitiveDoubleTranslator implements ParameterTranslator {
 				Double value = Double.parseDouble(strVal);
 				return (T) value; 
 			}catch(NumberFormatException nfe){
-				Logger.getLogger(PrimitiveDoubleTranslator.class.getName()).log(Level.SEVERE, nfe.getMessage());
+				Logger.getLogger(PrimitiveDoubleConverter.class.getName()).log(Level.SEVERE, nfe.getMessage());
 			}
 		}
 		Double defaultValue = 0.0;

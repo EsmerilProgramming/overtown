@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.esmerilprogramming.clover.http.parameter.ParameterTranslator;
+import org.esmerilprogramming.clover.http.converter.ParameterConverter;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
@@ -24,7 +24,7 @@ public class CloverRequest {
 
 	private HttpServerExchange exchange;
 	private Map<String, Deque<String>> queryParameters;
-	private Map<String, ParameterTranslator> parameterTranslators;
+	private Map<String, ParameterConverter> parameterTranslators;
 	private FormData formData;
 
 	public CloverRequest() {
@@ -107,7 +107,7 @@ public class CloverRequest {
 	}
 
 	public void setParameterTranslator(String parameterName,
-			ParameterTranslator parameterTranslator) {
+			ParameterConverter parameterTranslator) {
 		parameterTranslators.put(parameterName, parameterTranslator);
 	}
 
@@ -115,7 +115,7 @@ public class CloverRequest {
 		return parameterTranslators.containsKey(parameterName);
 	}
 
-	public ParameterTranslator getTranslator(String parameterName) {
+	public ParameterConverter getTranslator(String parameterName) {
 		return parameterTranslators.get(parameterName);
 	}
 

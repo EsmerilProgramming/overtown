@@ -1,17 +1,16 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.clover.http.converter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public class CloverRequestTranslator implements ParameterTranslator {
-
-	@SuppressWarnings("unchecked")
+public class EmptyParamConverter implements ParameterConverter {
+	
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
 			CloverRequest cloverRequest) {
-		return (T) cloverRequest;
+		return null;
 	}
 
 }

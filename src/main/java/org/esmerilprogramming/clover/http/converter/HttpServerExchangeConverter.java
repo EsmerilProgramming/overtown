@@ -1,11 +1,11 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.clover.http.converter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public class HttpServerExchangeTranslator implements ParameterTranslator {
+public class HttpServerExchangeConverter implements ParameterConverter {
 
 	@SuppressWarnings("unchecked")
 	@Override
