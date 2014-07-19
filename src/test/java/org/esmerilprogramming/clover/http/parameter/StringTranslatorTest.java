@@ -4,18 +4,18 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.parameter.StringTranslator;
+import org.esmerilprogramming.clover.http.converter.StringConverter;
 import org.junit.Before;
 import org.junit.Test;
 
 public class StringTranslatorTest {
 	
 	
-	private StringTranslator translator;
+	private StringConverter translator;
 	
 	@Before
 	public void setUp(){
-		translator = new StringTranslator();
+		translator = new StringConverter();
 	}
 	
 	@Test

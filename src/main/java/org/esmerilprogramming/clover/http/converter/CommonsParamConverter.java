@@ -1,11 +1,11 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.clover.http.converter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public class CommonsParamTranslator implements ParameterTranslator {
+public class CommonsParamConverter implements ParameterConverter {
 
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
@@ -15,23 +15,23 @@ public class CommonsParamTranslator implements ParameterTranslator {
 		if(attribute == null)
 			return null;
 		
-		ParameterTranslator translator = getTranslator(clazz);
+		ParameterConverter translator = getTranslator(clazz);
 		return translator.translate(clazz, parameterName, cloverRequest);
 	}
 	
-	public ParameterTranslator getTranslator( Class<?> clazz ){
-		ParameterTranslator translator = new EmptyParamTranslator();
+	public ParameterConverter getTranslator( Class<?> clazz ){
+		ParameterConverter translator = new EmptyParamConverter();
 		
 		if(isString(clazz))
-			translator = new StringTranslator();
+			translator = new StringConverter();
 		if(isInteger(clazz))
-			translator = new IntegerTranslator();
+			translator = new IntegerConverter();
 		if(isDouble(clazz))
-			translator = new DoubleTranslator();
+			translator = new DoubleConverter();
 		if(isLong(clazz))
-			translator = new LongTranslator();
+			translator = new LongConverter();
 		if(isBoolean(clazz))
-			translator = new BooleanTranslator();
+			translator = new BooleanConverter();
 		
 		return translator;
 	}

@@ -20,7 +20,7 @@ import org.esmerilprogramming.clover.annotation.BeforeTranslate;
 import org.esmerilprogramming.clover.annotation.Controller;
 import org.esmerilprogramming.clover.annotation.Page;
 import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.parameter.ParametersTranslator;
+import org.esmerilprogramming.clover.http.converter.ParametersConverter;
 
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
@@ -72,7 +72,7 @@ public class PathHandlerMounter {
 								for (Method method : beforeTranslationMethods) {
 									method.invoke( newInstance );
 								}
-								ParametersTranslator translator = new ParametersTranslator();
+								ParametersConverter translator = new ParametersConverter();
 								Object[] parameters  = translator.translateAllParameters(parameterNames, parameterTypes, request );
 								method.invoke( newInstance , parameters );
 							} catch (IllegalAccessException

@@ -1,7 +1,7 @@
 package org.esmerilprogramming.clover.http.parameter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.parameter.CloverRequestTranslator;
+import org.esmerilprogramming.clover.http.converter.CloverRequestConverter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,11 +10,11 @@ import static org.mockito.Mockito.*;
 
 public class CloverRequestTranslatorTest {
 	
-	private CloverRequestTranslator translator;
+	private CloverRequestConverter translator;
 	
 	@Before
 	public void setUp(){
-		translator = new CloverRequestTranslator();
+		translator = new CloverRequestConverter();
 	}
 	
 	@Test

@@ -1,7 +1,7 @@
 package org.esmerilprogramming.clover.http.parameter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.parameter.ModelTranslator;
+import org.esmerilprogramming.clover.http.converter.ModelConverter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,12 +10,12 @@ import static org.junit.Assert.*;
 
 public class ModelTranslatorTest {
 	
-	private ModelTranslator translator;
+	private ModelConverter translator;
 	private CloverRequest cloverRequest;
 	
 	@Before
 	public void setUp(){
-		translator = new ModelTranslator();
+		translator = new ModelConverter();
 		cloverRequest = mock(CloverRequest.class);
 	}
 	

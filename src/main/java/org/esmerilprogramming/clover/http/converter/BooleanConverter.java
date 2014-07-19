@@ -1,11 +1,11 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.clover.http.converter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public class BooleanTranslator implements ParameterTranslator {
+public class BooleanConverter implements ParameterConverter {
 
 	@SuppressWarnings("unchecked")
 	@Override

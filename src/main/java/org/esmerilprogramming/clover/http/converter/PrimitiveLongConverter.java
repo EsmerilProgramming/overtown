@@ -1,33 +1,33 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.clover.http.converter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PrimitiveIntegerTranslator implements ParameterTranslator {
-
+public class PrimitiveLongConverter implements ParameterConverter {
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
 			CloverRequest cloverRequest) {
-		Integer val = 0;
+		Long defaultValue = 0l;
 		
 		Object attribute = cloverRequest.getAttribute(parameterName);
 		if(attribute != null){
 			try{
 				String strVal = String.valueOf(attribute);
-				Integer i = Integer.parseInt(strVal);
-				return (T) i; 
+				Long val = Long.parseLong( strVal );
+				return (T) val; 
 			}catch(NumberFormatException nfe){
-				Logger.getLogger(PrimitiveIntegerTranslator.class.getName()).log(Level.SEVERE, nfe.getMessage());
+				Logger.getLogger(PrimitiveLongConverter.class.getName()).log(Level.SEVERE, nfe.getMessage());
 			}
 		}
 		
-		return (T) val;
+		return (T) defaultValue;
 	}
 	
-	public static boolean isPrimitiveInteger(Class<?> clazz){
-		return int.class.equals(clazz);
+	public static boolean isPrimitiveLong(Class<?> clazz){
+		return long.class.equals(clazz);
 	}
-
+	
 }

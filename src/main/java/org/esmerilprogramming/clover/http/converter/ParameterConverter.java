@@ -1,11 +1,11 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.clover.http.converter;
 
 import org.esmerilprogramming.clover.http.CloverRequest;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public interface ParameterTranslator {
+public interface ParameterConverter {
 	
 	public abstract <T> T translate( Class<T> clazz , String parameterName , CloverRequest cloverRequest);
 

@@ -1,4 +1,4 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.clover.http.converter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public class ModelTranslator implements ParameterTranslator{
+public class ModelConverter implements ParameterConverter{
 
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
@@ -29,7 +29,7 @@ public class ModelTranslator implements ParameterTranslator{
 					Object paramValue = cloverRequest.getAttribute( parameterName + "." + field.getName() );
 					if(paramValue != null){
 						field.setAccessible(true);
-						ParametersTranslator translator = new ParametersTranslator();
+						ParametersConverter translator = new ParametersConverter();
 						field.set( retorno, translator.translateParameter( field.getType(), fullParameterName, cloverRequest ) );
 						field.setAccessible(false);
 					}
@@ -37,7 +37,7 @@ public class ModelTranslator implements ParameterTranslator{
 				return retorno;
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | 
 				IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				Logger.getLogger(ModelTranslator.class.getName()).log(Level.SEVERE, e.getMessage());
+				Logger.getLogger(ModelConverter.class.getName()).log(Level.SEVERE, e.getMessage());
 			}
 		}
 		
