@@ -9,8 +9,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import io.undertow.server.HttpServerExchange;
 
-import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.converter.HttpServerExchangeConverter;
+import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.converter.HttpServerExchangeConverter;
 import org.junit.Before;
 import org.junit.Test;
 

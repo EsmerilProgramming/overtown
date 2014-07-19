@@ -2,7 +2,7 @@ package org.esmerilprogramming.clover.http;
 
 import io.undertow.server.HttpServerExchange;
 
-import org.esmerilprogramming.clover.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverRequest;
 import org.junit.Before;
 import org.junit.Test;
 

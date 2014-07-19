@@ -6,8 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.esmerilprogramming.clover.scanner.ClassFileVisitor;
-import org.esmerilprogramming.clover.scanner.ScannerResult;
+import org.esmerilprogramming.cloverx.scanner.ClassFileVisitor;
+import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
