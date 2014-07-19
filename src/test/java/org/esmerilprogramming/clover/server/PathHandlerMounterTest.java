@@ -13,10 +13,10 @@ import java.util.List;
 import javax.xml.ws.spi.http.HttpExchange;
 import javax.xml.ws.spi.http.HttpHandler;
 
-import org.esmerilprogramming.clover.annotation.Page;
-import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.management.ManagementPage;
-import org.esmerilprogramming.clover.server.PathHandlerMounter;
+import org.esmerilprogramming.cloverx.annotation.Page;
+import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.management.ManagementPage;
+import org.esmerilprogramming.cloverx.server.PathHandlerMounter;
 import org.junit.Before;
 import org.junit.Test;
 

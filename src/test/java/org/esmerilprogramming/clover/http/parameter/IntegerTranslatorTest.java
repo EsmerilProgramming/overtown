@@ -3,8 +3,8 @@ package org.esmerilprogramming.clover.http.parameter;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
-import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.converter.IntegerConverter;
+import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.converter.IntegerConverter;
 import org.junit.Before;
 import org.junit.Test;
 

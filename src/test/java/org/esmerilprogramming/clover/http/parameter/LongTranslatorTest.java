@@ -1,7 +1,7 @@
 package org.esmerilprogramming.clover.http.parameter;
 
-import org.esmerilprogramming.clover.http.CloverRequest;
-import org.esmerilprogramming.clover.http.converter.LongConverter;
+import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.converter.LongConverter;
 import org.junit.Before;
 import org.junit.Test;
 
