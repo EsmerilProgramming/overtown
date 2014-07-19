@@ -6,12 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation signals the method that will be called before
- * translate any method parameter 
+ * This annotation signals the method that will be called before translate any method parameter.
  * 
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-@Target( ElementType.METHOD )
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BeforeTranslate {
 
