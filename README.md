@@ -57,7 +57,7 @@ public void read( CloverXRequest request ){
 
 ### Running your app
 
-Declare a CloverX instance and start() in your main method
+Declare a CloverX instance in your main method
 
 ```java
 public static void main(String... args) {
