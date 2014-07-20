@@ -4,7 +4,7 @@
   <groupId>org.esmerilprogramming</groupId>
   <artifactId>cloverx</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Clover</name>
+  <name>cloverx</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
