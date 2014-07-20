@@ -1,11 +1,11 @@
 package org.esmerilprogramming.cloverx.http.converter;
 
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.jboss.logging.Logger;
 
 public class PrimitiveLongConverter implements ParameterConverter {
+
+  private static final Logger LOGGER = Logger.getLogger(PrimitiveLongConverter.class);
 
   @SuppressWarnings("unchecked")
   @Override
@@ -19,8 +19,7 @@ public class PrimitiveLongConverter implements ParameterConverter {
         Long val = Long.parseLong(strVal);
         return (T) val;
       } catch (NumberFormatException nfe) {
-        Logger.getLogger(PrimitiveLongConverter.class.getName())
-            .log(Level.SEVERE, nfe.getMessage());
+        LOGGER.error(nfe.getMessage());
       }
     }
 

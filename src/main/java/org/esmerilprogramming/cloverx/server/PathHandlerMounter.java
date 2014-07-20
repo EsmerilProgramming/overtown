@@ -14,8 +14,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
@@ -23,12 +21,15 @@ import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.converter.ParametersConverter;
 import org.esmerilprogramming.cloverx.view.ViewParser;
+import org.jboss.logging.Logger;
 
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
 public class PathHandlerMounter {
+
+  private static final Logger LOGGER = Logger.getLogger(PathHandlerMounter.class);
 
   public PathHandler mount(List<Class<? extends HttpHandler>> handlers) {
 
@@ -43,7 +44,7 @@ public class PathHandlerMounter {
         }
       }
     } catch (Exception e) {
-      Logger.getLogger(PathHandlerMounter.class.getName()).log(Level.SEVERE, e.getMessage());
+      LOGGER.error(e.getMessage());
     }
 
     return pathHandler;
@@ -73,9 +74,9 @@ public class PathHandlerMounter {
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 CloverXRequest request = new CloverXRequest(exchange);
                 for (Method method : beforeTranslationMethods) {
-                  method.invoke( newInstance , request );
+                  method.invoke(newInstance, request);
                 }
-                
+
                 ParametersConverter translator = new ParametersConverter();
                 Object[] parameters =
                     translator.translateAllParameters(parameterNames, parameterTypes, request);
@@ -84,27 +85,20 @@ public class PathHandlerMounter {
                 if (!Page.NO_TEMPLATE.equals(responseTemplate)) {
                   try {
                     String parsedTemplate =
-                        new ViewParser().parse( request.getViewAttributes() , responseTemplate);
+                        new ViewParser().parse(request.getViewAttributes(), responseTemplate);
                     exchange.getResponseSender().send(parsedTemplate);
                   } catch (TemplateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
                   }
                 }
               } catch (IllegalAccessException | IllegalArgumentException
                   | InvocationTargetException e) {
-                // TODO Auto-generated catch block
-                Logger.getLogger(PathHandlerMounter.class.getName()).log(Level.SEVERE,
-                    e.getMessage());
+                LOGGER.error(e.getMessage());
 
               }
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-              // TODO Auto-generated catch block
-              Logger.getLogger(PathHandlerMounter.class.getName()).log(Level.SEVERE,
-                  e1.getMessage());
-
-
+              LOGGER.error(e1.getMessage());
             }
           }
 
