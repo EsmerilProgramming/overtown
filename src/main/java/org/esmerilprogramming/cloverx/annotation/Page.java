@@ -9,7 +9,11 @@ import java.lang.annotation.Target;
 @Target( { ElementType.TYPE , ElementType.METHOD  })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Page {
-	
+  
+    public static final String NO_TEMPLATE = "NO_TEMPLATE"; 
+    
 	String[] value() default "";
+	
+	String responseTemplate() default NO_TEMPLATE;
 	
 }

@@ -1,4 +1,4 @@
-package org.esmerilprogramming.clover.scanner;
+package org.esmerilprogramming.cloverx.scanner;
 
 import static org.junit.Assert.*;
 import io.undertow.server.HttpHandler;
@@ -8,13 +8,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
-import org.esmerilprogramming.clover.scanner.testpackage.First;
-import org.esmerilprogramming.clover.scanner.testpackage.Third;
-import org.esmerilprogramming.clover.scanner.testpackage.subpack.Fifth;
-import org.esmerilprogramming.clover.scanner.testpackage.subpack.Fourth;
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
+import org.esmerilprogramming.cloverx.scanner.testpackage.First;
+import org.esmerilprogramming.cloverx.scanner.testpackage.Third;
+import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fifth;
+import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fourth;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package org.esmerilprogramming.clover.scanner.testpackage;
+package org.esmerilprogramming.cloverx.scanner.testpackage;
 
 import javax.servlet.http.HttpServlet;
 

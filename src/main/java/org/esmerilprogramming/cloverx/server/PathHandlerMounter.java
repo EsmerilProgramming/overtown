@@ -1,5 +1,6 @@
 package org.esmerilprogramming.cloverx.server;
 
+import freemarker.template.TemplateException;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
@@ -12,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,7 @@ import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverRequest;
 import org.esmerilprogramming.cloverx.http.converter.ParametersConverter;
+import org.esmerilprogramming.cloverx.view.ViewParser;
 
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
@@ -59,6 +62,7 @@ public class PathHandlerMounter {
 				
 				Paranamer paranamer = new CachingParanamer( new BytecodeReadingParanamer() );
 				final String[] parameterNames = paranamer.lookupParameterNames(method);
+				final String responseTemplate = methodPagePath.responseTemplate();
 				
 				HttpHandler h = new HttpHandler()  {
 					@Override
@@ -75,6 +79,16 @@ public class PathHandlerMounter {
 								ParametersConverter translator = new ParametersConverter();
 								Object[] parameters  = translator.translateAllParameters(parameterNames, parameterTypes, request );
 								method.invoke( newInstance , parameters );
+								
+								if(!Page.NO_TEMPLATE.equals(responseTemplate)){
+								    try {
+                                       String parsedTemplate =  new ViewParser().parse( new HashMap<String, Object>() , responseTemplate );
+                                       exchange.getResponseSender().send( parsedTemplate );
+                                    } catch (TemplateException e) {
+                                      // TODO Auto-generated catch block
+                                      e.printStackTrace();
+                                    }
+								}
 							} catch (IllegalAccessException
 									| IllegalArgumentException
 									| InvocationTargetException e) {
