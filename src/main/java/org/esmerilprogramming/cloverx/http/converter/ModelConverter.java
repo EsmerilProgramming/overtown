@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +16,7 @@ public class ModelConverter implements ParameterConverter{
 
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
-			CloverRequest cloverRequest) {
+			CloverXRequest cloverRequest) {
 		
 		boolean shouldTranslate = cloverRequest.containsAttributeStartingWith(parameterName);
 		

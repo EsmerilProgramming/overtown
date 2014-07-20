@@ -3,7 +3,7 @@ package org.esmerilprogramming.cloverx.http.parameter;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.converter.IntegerConverter;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class IntegerTranslatorTest {
   @Test
   public void givenAIntegerParameterIdShouldTranslateTheValueToLongObject() {
     String paramName = "id";
-    CloverRequest cloverRequest = mock(CloverRequest.class);
+    CloverXRequest cloverRequest = mock(CloverXRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn("10");
 
     Integer value = translator.translate(Integer.class, paramName, cloverRequest);
@@ -31,7 +31,7 @@ public class IntegerTranslatorTest {
   @Test
   public void givenAIntegerParameterButWithANullValueInRequestShouldReturnNull() {
     String paramName = "id";
-    CloverRequest cloverRequest = mock(CloverRequest.class);
+    CloverXRequest cloverRequest = mock(CloverXRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn(null);
 
     Integer value = translator.translate(Integer.class, paramName, cloverRequest);
@@ -42,7 +42,7 @@ public class IntegerTranslatorTest {
   @Test
   public void givenAIntegerParameterAndARequestWithWrongParameterTypeShouldReturnNull() {
     String paramName = "id";
-    CloverRequest cloverRequest = mock(CloverRequest.class);
+    CloverXRequest cloverRequest = mock(CloverXRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn("NOT A NUMBER");
 
     Integer value = translator.translate(Integer.class, paramName, cloverRequest);

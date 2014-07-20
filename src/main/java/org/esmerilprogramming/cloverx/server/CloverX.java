@@ -25,11 +25,11 @@ public class CloverX {
   public CloverX(boolean debugMode) {
     this.debugMode = debugMode;
   }
-  
+
   public CloverX(int port) {
     this.port = port;
   }
-  
+
   public CloverX(String host) {
     this.host = host;
   }
@@ -63,7 +63,8 @@ public class CloverX {
 
     server = builder.build();
     server.start();
-    Logger.getLogger(CloverX.class.getName()).log(Level.INFO, "Enjoy it! http://" + host + ":" + port);
+    Logger.getLogger(CloverX.class.getName()).log(Level.INFO,
+        "Enjoy it! http://" + host + ":" + port);
   }
 
   public Undertow getServer() {
@@ -74,17 +75,8 @@ public class CloverX {
     this.server = server;
   }
 
-  public static void main(String[] args) {
-
-    CloverX clover = new CloverX(9999);
-    try {
-      clover.start();
-    } catch (NoSuchMethodException | SecurityException | InstantiationException
-        | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-        | PackageNotFoundException | IOException e) {
-      Logger.getLogger(CloverX.class.getName()).log(Level.SEVERE, e.getMessage());
-    }
-
+  public static void main(String[] args) throws Exception {
+    new CloverX().start();
   }
 
 }

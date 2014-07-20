@@ -1,6 +1,6 @@
 package org.esmerilprogramming.cloverx.http.parameter;
 
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.converter.LongConverter;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class LongTranslatorTest {
   @Test
   public void givenALongParameterIdShouldTranslateTheValueToLongObject() {
     String paramName = "id";
-    CloverRequest cloverRequest = mock(CloverRequest.class);
+    CloverXRequest cloverRequest = mock(CloverXRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn("10");
 
     Long value = translator.translate(Long.class, paramName, cloverRequest);
@@ -31,7 +31,7 @@ public class LongTranslatorTest {
   @Test
   public void givenALongParameterButWithANullValueInRequestShouldReturnNull() {
     String paramName = "id";
-    CloverRequest cloverRequest = mock(CloverRequest.class);
+    CloverXRequest cloverRequest = mock(CloverXRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn(null);
 
     Long value = translator.translate(Long.class, paramName, cloverRequest);
@@ -42,7 +42,7 @@ public class LongTranslatorTest {
   @Test
   public void givenALongParameterAndARequestWithWrongParameterTypeShouldReturnNull() {
     String paramName = "id";
-    CloverRequest cloverRequest = mock(CloverRequest.class);
+    CloverXRequest cloverRequest = mock(CloverXRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn("NOT A NUMBER");
 
     Long value = translator.translate(Long.class, paramName, cloverRequest);

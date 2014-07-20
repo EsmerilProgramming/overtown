@@ -14,7 +14,7 @@ import javax.xml.ws.spi.http.HttpExchange;
 import javax.xml.ws.spi.http.HttpHandler;
 
 import org.esmerilprogramming.cloverx.annotation.Page;
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.management.ManagementPage;
 import org.esmerilprogramming.cloverx.server.PathHandlerMounter;
 import org.junit.Before;

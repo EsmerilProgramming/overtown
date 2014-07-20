@@ -3,7 +3,7 @@ package org.esmerilprogramming.cloverx.management;
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Page;
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
 import org.esmerilprogramming.cloverx.management.model.ServerStatus;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
@@ -17,18 +17,18 @@ public class ManagementPage {
   public ManagementPage() {}
 
   @BeforeTranslate
-  public void doSomething( CloverRequest request ) {
+  public void doSomething( CloverXRequest request ) {
     System.out.println("SOMETHING BEFORE TRANSLATE");
     request.addAttribute("name", "Efraim Gentil");
   }
 
   @Page("teste")
-  public void teste(String nomeDaString, CloverRequest request) {
+  public void teste(String nomeDaString, CloverXRequest request) {
     System.out.println(nomeDaString);
   }
 
   @Page("testeInteger")
-  public void teste(Integer id, CloverRequest request) {
+  public void teste(Integer id, CloverXRequest request) {
     System.out.println("Teste integer");
     System.out.println(id);
   }
@@ -70,7 +70,7 @@ public class ManagementPage {
   }
 
   @Page(value = "testeTemplate", responseTemplate = "teste.ftl")
-  public void testeTemplate(CloverRequest request) {
+  public void testeTemplate(CloverXRequest request) {
 //    request.addAttribute("name", "Efraim Gentil");
   }
   

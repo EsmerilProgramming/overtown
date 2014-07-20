@@ -6,7 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import io.undertow.server.HttpServerExchange;
 
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.converter.HttpServerExchangeConverter;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class HttpServerExchangeTranslatorTest {
     Class<HttpServerExchange> clazz = HttpServerExchange.class;
     HttpServerExchange exchange = new HttpServerExchange(null);
     String parameterName = "exchange";
-    CloverRequest cloverRequest = mock(CloverRequest.class);
+    CloverXRequest cloverRequest = mock(CloverXRequest.class);
     when(cloverRequest.getExchange()).thenReturn(exchange);
 
     HttpServerExchange translated = translator.translate(clazz, parameterName, cloverRequest);

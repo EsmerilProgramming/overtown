@@ -4,13 +4,13 @@ package org.esmerilprogramming.cloverx.http.converter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 
 public class PrimitiveDoubleConverter implements ParameterConverter {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T translate(Class<T> clazz, String parameterName, CloverRequest cloverRequest) {
+  public <T> T translate(Class<T> clazz, String parameterName, CloverXRequest cloverRequest) {
 
     Object attribute = cloverRequest.getParameter(parameterName);
     if (attribute != null) {

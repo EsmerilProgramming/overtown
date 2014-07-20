@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Page;
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.converter.ParametersConverter;
 import org.esmerilprogramming.cloverx.view.ViewParser;
 
@@ -71,7 +71,7 @@ public class PathHandlerMounter {
               newInstance = handlerClass.getConstructor().newInstance();
               try {
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                CloverRequest request = new CloverRequest(exchange);
+                CloverXRequest request = new CloverXRequest(exchange);
                 for (Method method : beforeTranslationMethods) {
                   method.invoke( newInstance , request );
                 }
@@ -136,7 +136,7 @@ public class PathHandlerMounter {
   }
 
   @SuppressWarnings("unchecked")
-  protected <T> T setParamater(Class<T> clazz, String parameterName, CloverRequest request) {
+  protected <T> T setParamater(Class<T> clazz, String parameterName, CloverXRequest request) {
     if (String.class.equals(clazz)) {
       return (T) request.getParameter(parameterName);
     }

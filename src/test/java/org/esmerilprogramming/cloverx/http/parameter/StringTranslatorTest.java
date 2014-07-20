@@ -3,7 +3,7 @@ package org.esmerilprogramming.cloverx.http.parameter;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.converter.StringConverter;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class StringTranslatorTest {
   public void givenAParameterShouldTranslateToStringValue() {
     String parameterName = "name";
     String expectedVal = "SOME IMPORTANT VALUE";
-    CloverRequest cloverRequest = mock(CloverRequest.class);
+    CloverXRequest cloverRequest = mock(CloverXRequest.class);
     when(cloverRequest.getParameter(parameterName)).thenReturn(expectedVal);
 
     String val = translator.translate(String.class, parameterName, cloverRequest);
@@ -34,7 +34,7 @@ public class StringTranslatorTest {
   public void givenAParameterButWIthoutValueInRequestShouldReturnNull() {
     String parameterName = "name";
     String expectedVal = null;
-    CloverRequest cloverRequest = mock(CloverRequest.class);
+    CloverXRequest cloverRequest = mock(CloverXRequest.class);
     when(cloverRequest.getParameter(parameterName)).thenReturn(expectedVal);
 
     String val = translator.translate(String.class, parameterName, cloverRequest);
