@@ -1,10 +1,15 @@
 package org.esmerilprogramming.cloverx.management;
 
+import java.util.Date;
+
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
+import org.esmerilprogramming.cloverx.annotation.Converter;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
+import org.esmerilprogramming.cloverx.management.converters.DateConverter;
+import org.esmerilprogramming.cloverx.management.converters.ServerStatusConverter;
 import org.esmerilprogramming.cloverx.management.model.ServerStatus;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 
@@ -83,6 +88,16 @@ public class ManagementPage {
   public void testePrimitivo(int i, long l) {
     System.out.println(i);
     System.out.println(l);
+  }
+  
+  @Page("dateConvert")
+  public void dateConvert(@Converter(DateConverter.class) Date dataPagina){
+    System.out.println( dataPagina );
+  }
+  
+  @Page("objectConvert")
+  public void objectConvert(@Converter(ServerStatusConverter.class) ServerStatus serverStatus ){
+    System.out.println( serverStatus );
   }
 
 }

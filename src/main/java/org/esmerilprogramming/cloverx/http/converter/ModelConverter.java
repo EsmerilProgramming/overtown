@@ -45,28 +45,4 @@ public class ModelConverter implements ParameterConverter{
 		return null;
 	}
 	
-//	protected Date getDateValue(String dataAsString){
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		try {
-//			return sdf.parse(dataAsString);
-//		} catch (ParseException e) {
-//			try {
-//				sdf = new SimpleDateFormat("yyyy-MM-dd");
-//				return sdf.parse(dataAsString);
-//			} catch (ParseException e1) {
-//				try {
-//					sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-//					return sdf.parse(dataAsString);
-//				} catch (ParseException e2) {
-//					sdf = new SimpleDateFormat("dd/MM/yyyy");
-//					try {
-//						return sdf.parse(dataAsString);
-//					} catch (ParseException e3) {
-//					}
-//				}
-//			}
-//		}
-//		return null;
-//	}
-	
 }

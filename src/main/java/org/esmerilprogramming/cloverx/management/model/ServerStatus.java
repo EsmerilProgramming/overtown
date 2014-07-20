@@ -8,9 +8,7 @@ public class ServerStatus {
 	private String port;
 	private List<String> registeredPaths;
 	
-	public ServerStatus() {
-		
-	}
+	public ServerStatus() {}
 	
 	@Override
 	public String toString() {
