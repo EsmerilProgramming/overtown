@@ -23,7 +23,7 @@ public class StringTranslatorTest {
     String parameterName = "name";
     String expectedVal = "SOME IMPORTANT VALUE";
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(parameterName)).thenReturn(expectedVal);
+    when(cloverRequest.getParameter(parameterName)).thenReturn(expectedVal);
 
     String val = translator.translate(String.class, parameterName, cloverRequest);
 
@@ -35,7 +35,7 @@ public class StringTranslatorTest {
     String parameterName = "name";
     String expectedVal = null;
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(parameterName)).thenReturn(expectedVal);
+    when(cloverRequest.getParameter(parameterName)).thenReturn(expectedVal);
 
     String val = translator.translate(String.class, parameterName, cloverRequest);
 

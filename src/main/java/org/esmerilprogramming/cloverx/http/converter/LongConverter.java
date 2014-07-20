@@ -15,7 +15,7 @@ public class LongConverter implements ParameterConverter{
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
 			CloverRequest cloverRequest) {
-		Object attribute = cloverRequest.getAttribute(parameterName);
+		Object attribute = cloverRequest.getParameter(parameterName);
 		if(attribute == null)
 			return null;
 		

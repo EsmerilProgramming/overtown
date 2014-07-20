@@ -17,19 +17,20 @@ public class ViewParserTest {
   @Test
   public void doesParseTheTemplateUsingFreemarker() throws TemplateException, IOException {
     String helloMessage = "Hi i'm clover";
-    Map<String, Object> map = new HashMap<>();
-    map.put("hello", "Hi i'm clover");
+    
+    ViewAttributes att = new ViewAttributes();
+    att.add("hello", "Hi i'm clover");
 
-    String parseTemplate = new ViewParser().parse(map, "teste.ftl");
+    String parseTemplate = new ViewParser().parse(att, "teste.ftl");
 
     assertNotNull(parseTemplate);
     assertTrue("Should contains helloMessage", parseTemplate.contains(helloMessage));
   }
   
-  @Test
+  @Test(expected = IOException.class)
   public void doesThrowParseExceptionIfDoesNotFindTheTemplate() throws TemplateException, IOException{
     
-    String parseTemplate = new ViewParser().parse( new HashMap<>(), "NOT_A_TEMPLATE.ftl");
+    String parseTemplate = new ViewParser().parse( new ViewAttributes(), "NOT_A_TEMPLATE.ftl");
     
   }
 

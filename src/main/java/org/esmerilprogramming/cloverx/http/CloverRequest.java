@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
+import org.esmerilprogramming.cloverx.view.ViewAttributes;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
@@ -24,15 +25,17 @@ public class CloverRequest {
 
   private HttpServerExchange exchange;
   private Map<String, Deque<String>> queryParameters;
-  private Map<String, ParameterConverter> parameterTranslators;
+  private Map<String, ParameterConverter> parameterConverters;
   private FormData formData;
+  private ViewAttributes viewAttributes;
 
   public CloverRequest() {}
 
   public CloverRequest(HttpServerExchange exchange) {
     this.exchange = exchange;
     this.queryParameters = exchange.getQueryParameters();
-    this.parameterTranslators = new HashMap<>();
+    this.parameterConverters = new HashMap<>();
+    this.viewAttributes = new ViewAttributes();
     if (isPostRequest()) {
       FormDataParser create = new FormEncodedDataDefinition().create(exchange);
       try {
@@ -42,8 +45,16 @@ public class CloverRequest {
       }
     }
   }
-
-  public Object getAttribute(String name) {
+  
+  public <T> void addAttribute(String name , T value ){
+    viewAttributes.add(name, value);
+  }
+  
+  public ViewAttributes getViewAttributes(){
+    return viewAttributes;
+  }
+  
+  public Object getParameter(String name) {
     Object value = null;
     if (isPostRequest()) {
       value = getFromFormData(name);
@@ -58,12 +69,10 @@ public class CloverRequest {
     boolean contains = false;
     Set<String> keySet = queryParameters.keySet();
     String parameterPrefix = parameterName + ".";
-    // for (String string : keySet) {
+    
     if (keySet.contains(parameterPrefix)) {
       contains = true;
-      // break;
     }
-    // }
     if (isPostRequest() && contains == false) {
       Iterator<String> iterator = formData.iterator();
       while (iterator.hasNext()) {
@@ -104,16 +113,16 @@ public class CloverRequest {
     return exchange;
   }
 
-  public void setParameterTranslator(String parameterName, ParameterConverter parameterTranslator) {
-    parameterTranslators.put(parameterName, parameterTranslator);
+  public void addConverter(String parameterName , ParameterConverter converter){
+    parameterConverters.put(parameterName, converter);
   }
 
-  public boolean shouldTranslateParameter(String parameterName) {
-    return parameterTranslators.containsKey(parameterName);
+  public boolean shouldConvertParameter(String parameterName) {
+    return parameterConverters.containsKey(parameterName);
   }
 
   public ParameterConverter getTranslator(String parameterName) {
-    return parameterTranslators.get(parameterName);
+    return parameterConverters.get(parameterName);
   }
 
   protected void setQueryParameters(Map<String, Deque<String>> queryParameters) {
