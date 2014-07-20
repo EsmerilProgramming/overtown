@@ -17,14 +17,9 @@ public class CloverX {
   
   private String host = "localhost";
   private int port = 8080;
-  private boolean debugMode = false;
 
   public CloverX() {
 
-  }
-
-  public CloverX(boolean debugMode) {
-    this.debugMode = debugMode;
   }
 
   public CloverX(int port) {
@@ -38,12 +33,6 @@ public class CloverX {
   public CloverX(int port, String host) {
     this.port = port;
     this.host = host;
-  }
-
-  public CloverX(int port, String host, boolean debugMode) {
-    this.port = port;
-    this.host = host;
-    this.debugMode = debugMode;
   }
 
   private Undertow server;
