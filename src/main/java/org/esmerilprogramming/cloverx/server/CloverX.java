@@ -14,20 +14,38 @@ import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException
 
 public class CloverX {
 
-  private Undertow server;
+  private String host = "localhost";
+  private int port = 8080;
+  private boolean debugMode = false;
 
-  public static void main(String[] args) {
-
-    CloverX clover = new CloverX();
-    try {
-      clover.start();
-    } catch (NoSuchMethodException | SecurityException | InstantiationException
-        | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-        | PackageNotFoundException | IOException e) {
-      Logger.getLogger(CloverX.class.getName()).log(Level.SEVERE, e.getMessage());
-    }
+  public CloverX() {
 
   }
+
+  public CloverX(boolean debugMode) {
+    this.debugMode = debugMode;
+  }
+  
+  public CloverX(int port) {
+    this.port = port;
+  }
+  
+  public CloverX(String host) {
+    this.host = host;
+  }
+
+  public CloverX(int port, String host) {
+    this.port = port;
+    this.host = host;
+  }
+
+  public CloverX(int port, String host, boolean debugMode) {
+    this.port = port;
+    this.host = host;
+    this.debugMode = debugMode;
+  }
+
+  private Undertow server;
 
   public void start() throws PackageNotFoundException, IOException, NoSuchMethodException,
       SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException,
@@ -36,7 +54,7 @@ public class CloverX {
     ScannerResult scan = new PackageScanner().scan("", classLoader);
 
     Builder builder = Undertow.builder();
-    builder.addHttpListener(8080, "localhost");
+    builder.addHttpListener(port, host);
 
     if (!scan.getHandlers().isEmpty()) {
       PathHandlerMounter mounter = new PathHandlerMounter();
@@ -45,7 +63,7 @@ public class CloverX {
 
     server = builder.build();
     server.start();
-    Logger.getLogger(CloverX.class.getName()).log(Level.INFO, "Enjoy http://localhost:8080");
+    Logger.getLogger(CloverX.class.getName()).log(Level.INFO, "Enjoy it! http://" + host + ":" + port);
   }
 
   public Undertow getServer() {
@@ -54,6 +72,19 @@ public class CloverX {
 
   public void setServer(Undertow server) {
     this.server = server;
+  }
+
+  public static void main(String[] args) {
+
+    CloverX clover = new CloverX(9999);
+    try {
+      clover.start();
+    } catch (NoSuchMethodException | SecurityException | InstantiationException
+        | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+        | PackageNotFoundException | IOException e) {
+      Logger.getLogger(CloverX.class.getName()).log(Level.SEVERE, e.getMessage());
+    }
+
   }
 
 }

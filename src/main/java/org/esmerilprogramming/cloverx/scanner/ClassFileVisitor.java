@@ -23,7 +23,7 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
 
   @Override
   public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-    System.out.println(file);
+    Logger.getLogger(ClassFileVisitor.class.getSimpleName()).log(Level.INFO, file.toString());
     if (isClass(file)) {
       try {
         Class<?> loadedClass = classLoader.loadClass(asPackageClass(file));
