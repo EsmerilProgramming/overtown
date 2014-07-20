@@ -1,6 +1,6 @@
 package org.esmerilprogramming.cloverx.http.converter;
 
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,7 +9,7 @@ public class PrimitiveIntegerConverter implements ParameterConverter {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T translate(Class<T> clazz, String parameterName, CloverRequest cloverRequest) {
+  public <T> T translate(Class<T> clazz, String parameterName, CloverXRequest cloverRequest) {
     Integer val = 0;
 
     Object attribute = cloverRequest.getParameter(parameterName);

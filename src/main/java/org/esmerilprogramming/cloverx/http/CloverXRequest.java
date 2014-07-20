@@ -21,7 +21,7 @@ import org.esmerilprogramming.cloverx.view.ViewAttributes;
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public class CloverRequest {
+public class CloverXRequest {
 
   private HttpServerExchange exchange;
   private Map<String, Deque<String>> queryParameters;
@@ -29,9 +29,9 @@ public class CloverRequest {
   private FormData formData;
   private ViewAttributes viewAttributes;
 
-  public CloverRequest() {}
+  public CloverXRequest() {}
 
-  public CloverRequest(HttpServerExchange exchange) {
+  public CloverXRequest(HttpServerExchange exchange) {
     this.exchange = exchange;
     this.queryParameters = exchange.getQueryParameters();
     this.parameterConverters = new HashMap<>();
@@ -41,7 +41,7 @@ public class CloverRequest {
       try {
         formData = create.parseBlocking();
       } catch (IOException ioe) {
-        Logger.getLogger(CloverRequest.class.getName()).log(Level.SEVERE, ioe.getMessage());
+        Logger.getLogger(CloverXRequest.class.getName()).log(Level.SEVERE, ioe.getMessage());
       }
     }
   }

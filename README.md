@@ -9,13 +9,13 @@ CloverX
 To create a controller is pretty simple, use the annotation @Controller and inform the path that this controller will listen, each controller can have many pages, each page is a method annotated with @Page in the controller, don't worry in which package, your controllers are, the CloverX will hunt it and prepare everything for you
 
 ```java
-import org.esmerilprogramming.CloverX.annotoation.Controller;
-import org.esmerilprogramming.CloverX.annotation.Page;
+import org.esmerilprogramming.cloverx.annotoation.Controller;
+import org.esmerilprogramming.cloverx.annotation.Page;
 
 @Controller(path = "/myController")
 public class MyController  {
   
-  @Page("oi")
+  @Page("ola")
   public void hello(){
      //Say your hello here
   }
@@ -41,17 +41,17 @@ You can put as many attributes as you want, or your Model types they will also b
 public void read(Car car){
   //The request need to send the attributes from the model parameter as
   // car.name, car.model, etc...
-  System.out.println( car );
+  System.out.println(car);
 }
 ```
 
-You can also access the request throght the CloverXRequest class, you add it as a parameter in the method and it will be inject for you
+You can also access the request from the CloverXRequest class, you add it as a parameter in the method and it will be inject for you
 and will contains all the request information you need.
 
 ```java
 @Page("accessing-request")
 public void read( CloverXRequest request ){
-  String teste = request.getAttribute("teste");
+  String test = request.getAttribute("test");
 }
 ```
 
@@ -60,12 +60,7 @@ public void read( CloverXRequest request ){
 Declare a CloverX instance and start() in your main method
 
 ```java
-public static void main(String[] args) {
-	try {
-		new CloverX().start();
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
+public static void main(String... args) throws Exception {
+  new CloverX().start();
 }
 ```
-

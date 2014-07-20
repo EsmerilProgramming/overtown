@@ -1,6 +1,6 @@
 package org.esmerilprogramming.cloverx.http.converter;
 
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 
 import io.undertow.server.HttpServerExchange;
@@ -8,7 +8,7 @@ import io.undertow.server.HttpServerExchange;
 public class ParametersConverter {
 	
 	
-	public Object[] translateAllParameters( String[] parameterNames, Class<?>[] parameterTypes, CloverRequest cloverRequest){
+	public Object[] translateAllParameters( String[] parameterNames, Class<?>[] parameterTypes, CloverXRequest cloverRequest){
 		Object[] parameters = new Object[parameterTypes.length];
 		for (int i = 0 ; i < parameterTypes.length ; i++) {
 			Class<?> clazz = parameterTypes[i];
@@ -17,7 +17,7 @@ public class ParametersConverter {
 		return parameters;
 	}
 	
-	public <T> T translateParameter( Class<T> clazz , String parameterName , CloverRequest cloverRequest){
+	public <T> T translateParameter( Class<T> clazz , String parameterName , CloverXRequest cloverRequest){
 		boolean shouldTranslateParameter = cloverRequest.shouldConvertParameter(parameterName);
 		ParameterConverter translator;
 		if(shouldTranslateParameter){
@@ -30,8 +30,8 @@ public class ParametersConverter {
 	}
 	
 	public ParameterConverter getTranslator( Class<?> clazz ){
-		if(CloverRequest.class.equals(clazz))
-			return new CloverRequestConverter();
+		if(CloverXRequest.class.equals(clazz))
+			return new CloverXRequestConverter();
 		if(ViewAttributes.class.equals(clazz))
           return new ViewAttributesRequestConverter();
 		if(HttpServerExchange.class.equals(clazz))

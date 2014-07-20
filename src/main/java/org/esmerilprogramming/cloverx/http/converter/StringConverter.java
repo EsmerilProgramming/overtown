@@ -1,6 +1,6 @@
 package org.esmerilprogramming.cloverx.http.converter;
 
-import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 
 /**
  * 
@@ -11,7 +11,7 @@ public class StringConverter implements ParameterConverter {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T translate(Class<T> clazz, String parameterName,
-			CloverRequest cloverRequest) {
+			CloverXRequest cloverRequest) {
 		Object attribute = cloverRequest.getParameter(parameterName);
 		if(attribute == null)
 			return null;
