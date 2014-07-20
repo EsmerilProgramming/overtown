@@ -24,8 +24,8 @@ public class ModelConverter implements ParameterConverter{
 			try {
 				Constructor<T> construtor = clazz.getConstructor();
 				T retorno = construtor.newInstance();
-				Field[] campos = clazz.getDeclaredFields();
-				for (Field field : campos) {
+				Field[] fields = clazz.getDeclaredFields();
+				for (Field field : fields) {
 					String fullParameterName = parameterName + "." + field.getName();
 					Object paramValue = cloverRequest.getAttribute( parameterName + "." + field.getName() );
 					if(paramValue != null){

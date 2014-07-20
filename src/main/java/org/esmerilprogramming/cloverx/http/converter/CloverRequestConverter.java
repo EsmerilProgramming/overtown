@@ -7,11 +7,10 @@ import org.esmerilprogramming.cloverx.http.CloverRequest;
  */
 public class CloverRequestConverter implements ParameterConverter {
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T translate(Class<T> clazz, String parameterName,
-			CloverRequest cloverRequest) {
-		return (T) cloverRequest;
-	}
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T translate(Class<T> clazz, String parameterName, CloverRequest cloverRequest) {
+    return (T) cloverRequest;
+  }
 
 }
