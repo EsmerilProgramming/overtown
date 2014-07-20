@@ -3,7 +3,6 @@ package org.esmerilprogramming.cloverx.view;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Map;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -15,17 +14,17 @@ public class ViewParser {
   private Configuration cfg = new Configuration();
   private static final String TEMPLATES_FOLDER = "/templates";
 
-  public ViewParser() {}
-
-  public final String parse(Map map, String templateName) throws TemplateException, IOException {
+  public ViewParser() throws IOException {
     File file = new File(this.getClass().getResource(TEMPLATES_FOLDER).getPath());
     cfg.setDirectoryForTemplateLoading(file);
     cfg.setObjectWrapper(new DefaultObjectWrapper());
+  }
 
-    // recupera o template
+  public final String parse( ViewAttributes viewAttributes , String templateName) throws TemplateException, IOException {
     Template t = cfg.getTemplate(templateName);
+    
     StringWriter writer = new StringWriter();
-    t.process(map, writer);
+    t.process( viewAttributes.getAsMap() , writer);
     writer.flush();
     writer.close();
     return writer.toString();

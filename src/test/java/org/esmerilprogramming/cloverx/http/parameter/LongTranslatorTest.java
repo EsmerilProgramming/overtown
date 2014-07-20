@@ -21,7 +21,7 @@ public class LongTranslatorTest {
   public void givenALongParameterIdShouldTranslateTheValueToLongObject() {
     String paramName = "id";
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(paramName)).thenReturn("10");
+    when(cloverRequest.getParameter(paramName)).thenReturn("10");
 
     Long value = translator.translate(Long.class, paramName, cloverRequest);
 
@@ -32,7 +32,7 @@ public class LongTranslatorTest {
   public void givenALongParameterButWithANullValueInRequestShouldReturnNull() {
     String paramName = "id";
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(paramName)).thenReturn(null);
+    when(cloverRequest.getParameter(paramName)).thenReturn(null);
 
     Long value = translator.translate(Long.class, paramName, cloverRequest);
 
@@ -43,7 +43,7 @@ public class LongTranslatorTest {
   public void givenALongParameterAndARequestWithWrongParameterTypeShouldReturnNull() {
     String paramName = "id";
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(paramName)).thenReturn("NOT A NUMBER");
+    when(cloverRequest.getParameter(paramName)).thenReturn("NOT A NUMBER");
 
     Long value = translator.translate(Long.class, paramName, cloverRequest);
 

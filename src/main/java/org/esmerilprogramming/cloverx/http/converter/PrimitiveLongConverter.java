@@ -12,7 +12,7 @@ public class PrimitiveLongConverter implements ParameterConverter {
   public <T> T translate(Class<T> clazz, String parameterName, CloverRequest cloverRequest) {
     Long defaultValue = 0l;
 
-    Object attribute = cloverRequest.getAttribute(parameterName);
+    Object attribute = cloverRequest.getParameter(parameterName);
     if (attribute != null) {
       try {
         String strVal = String.valueOf(attribute);

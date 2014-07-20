@@ -13,7 +13,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,8 +73,9 @@ public class PathHandlerMounter {
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 CloverRequest request = new CloverRequest(exchange);
                 for (Method method : beforeTranslationMethods) {
-                  method.invoke(newInstance);
+                  method.invoke( newInstance , request );
                 }
+                
                 ParametersConverter translator = new ParametersConverter();
                 Object[] parameters =
                     translator.translateAllParameters(parameterNames, parameterTypes, request);
@@ -84,7 +84,7 @@ public class PathHandlerMounter {
                 if (!Page.NO_TEMPLATE.equals(responseTemplate)) {
                   try {
                     String parsedTemplate =
-                        new ViewParser().parse(new HashMap<String, Object>(), responseTemplate);
+                        new ViewParser().parse( request.getViewAttributes() , responseTemplate);
                     exchange.getResponseSender().send(parsedTemplate);
                   } catch (TemplateException e) {
                     // TODO Auto-generated catch block
@@ -138,7 +138,7 @@ public class PathHandlerMounter {
   @SuppressWarnings("unchecked")
   protected <T> T setParamater(Class<T> clazz, String parameterName, CloverRequest request) {
     if (String.class.equals(clazz)) {
-      return (T) request.getAttribute(parameterName);
+      return (T) request.getParameter(parameterName);
     }
     return null;
   }

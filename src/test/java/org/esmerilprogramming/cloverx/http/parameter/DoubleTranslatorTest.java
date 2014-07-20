@@ -25,7 +25,7 @@ public class DoubleTranslatorTest {
     String stringValue = "10.00";
     Double expectedValue = 10.0;
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(parameterName)).thenReturn(stringValue);
+    when(cloverRequest.getParameter(parameterName)).thenReturn(stringValue);
 
     Double val = translator.translate(Double.class, parameterName, cloverRequest);
 
@@ -38,7 +38,7 @@ public class DoubleTranslatorTest {
     String stringValue = "10,00";
     Double expectedValue = null;
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(parameterName)).thenReturn(stringValue);
+    when(cloverRequest.getParameter(parameterName)).thenReturn(stringValue);
 
     Double val = translator.translate(Double.class, parameterName, cloverRequest);
 
@@ -52,7 +52,7 @@ public class DoubleTranslatorTest {
     String stringValue = null;
     Double expectedValue = null;
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(parameterName)).thenReturn(stringValue);
+    when(cloverRequest.getParameter(parameterName)).thenReturn(stringValue);
 
     Double val = translator.translate(Double.class, parameterName, cloverRequest);
 

@@ -21,7 +21,7 @@ public class IntegerTranslatorTest {
   public void givenAIntegerParameterIdShouldTranslateTheValueToLongObject() {
     String paramName = "id";
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(paramName)).thenReturn("10");
+    when(cloverRequest.getParameter(paramName)).thenReturn("10");
 
     Integer value = translator.translate(Integer.class, paramName, cloverRequest);
 
@@ -32,7 +32,7 @@ public class IntegerTranslatorTest {
   public void givenAIntegerParameterButWithANullValueInRequestShouldReturnNull() {
     String paramName = "id";
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(paramName)).thenReturn(null);
+    when(cloverRequest.getParameter(paramName)).thenReturn(null);
 
     Integer value = translator.translate(Integer.class, paramName, cloverRequest);
 
@@ -43,7 +43,7 @@ public class IntegerTranslatorTest {
   public void givenAIntegerParameterAndARequestWithWrongParameterTypeShouldReturnNull() {
     String paramName = "id";
     CloverRequest cloverRequest = mock(CloverRequest.class);
-    when(cloverRequest.getAttribute(paramName)).thenReturn("NOT A NUMBER");
+    when(cloverRequest.getParameter(paramName)).thenReturn("NOT A NUMBER");
 
     Integer value = translator.translate(Integer.class, paramName, cloverRequest);
 

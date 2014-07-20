@@ -1,6 +1,7 @@
 package org.esmerilprogramming.cloverx.http.converter;
 
 import org.esmerilprogramming.cloverx.http.CloverRequest;
+import org.esmerilprogramming.cloverx.view.ViewAttributes;
 
 import io.undertow.server.HttpServerExchange;
 
@@ -17,7 +18,7 @@ public class ParametersConverter {
 	}
 	
 	public <T> T translateParameter( Class<T> clazz , String parameterName , CloverRequest cloverRequest){
-		boolean shouldTranslateParameter = cloverRequest.shouldTranslateParameter(parameterName);
+		boolean shouldTranslateParameter = cloverRequest.shouldConvertParameter(parameterName);
 		ParameterConverter translator;
 		if(shouldTranslateParameter){
 			translator = cloverRequest.getTranslator(parameterName);
@@ -31,6 +32,8 @@ public class ParametersConverter {
 	public ParameterConverter getTranslator( Class<?> clazz ){
 		if(CloverRequest.class.equals(clazz))
 			return new CloverRequestConverter();
+		if(ViewAttributes.class.equals(clazz))
+          return new ViewAttributesRequestConverter();
 		if(HttpServerExchange.class.equals(clazz))
 			return new HttpServerExchangeConverter();
 		if(PrimitiveParamConverter.isPrimitive(clazz))

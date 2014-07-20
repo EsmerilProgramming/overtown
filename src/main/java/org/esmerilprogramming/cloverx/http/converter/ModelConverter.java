@@ -27,7 +27,7 @@ public class ModelConverter implements ParameterConverter{
 				Field[] fields = clazz.getDeclaredFields();
 				for (Field field : fields) {
 					String fullParameterName = parameterName + "." + field.getName();
-					Object paramValue = cloverRequest.getAttribute( parameterName + "." + field.getName() );
+					Object paramValue = cloverRequest.getParameter( parameterName + "." + field.getName() );
 					if(paramValue != null){
 						field.setAccessible(true);
 						ParametersConverter translator = new ParametersConverter();
