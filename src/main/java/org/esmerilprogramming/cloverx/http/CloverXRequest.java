@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 import org.jboss.logging.Logger;
@@ -26,7 +27,7 @@ public class CloverXRequest {
 
   private HttpServerExchange exchange;
   private Map<String, Deque<String>> queryParameters;
-  private Map<String, ParameterConverter> parameterConverters;
+  private Map<String, GenericConverter<?>> parameterConverters;
   private FormData formData;
   private ViewAttributes viewAttributes;
 
@@ -114,7 +115,7 @@ public class CloverXRequest {
     return exchange;
   }
 
-  public void addConverter(String parameterName , ParameterConverter converter){
+  public void addConverter(String parameterName , GenericConverter<?> converter){
     parameterConverters.put(parameterName, converter);
   }
 

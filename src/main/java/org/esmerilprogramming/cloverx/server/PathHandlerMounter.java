@@ -17,8 +17,10 @@ import java.util.List;
 
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
+import org.esmerilprogramming.cloverx.annotation.Converter;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParametersConverter;
 import org.esmerilprogramming.cloverx.view.ViewParser;
 import org.jboss.logging.Logger;
@@ -73,10 +75,13 @@ public class PathHandlerMounter {
               try {
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 CloverXRequest request = new CloverXRequest(exchange);
+                //Call before methods
                 for (Method method : beforeTranslationMethods) {
                   method.invoke(newInstance, request);
                 }
-
+                //Verify @Converter annotations in the methods
+                identifyParameterConverters(method, parameterNames, request);
+                
                 ParametersConverter translator = new ParametersConverter();
                 Object[] parameters =
                     translator.translateAllParameters(parameterNames, parameterTypes, request);
@@ -115,7 +120,21 @@ public class PathHandlerMounter {
 
     return pathHandler;
   }
-
+  
+  protected void identifyParameterConverters(Method method, String[] parameterNames , CloverXRequest request) throws InstantiationException, IllegalAccessException{
+    Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+    for( int i = 0 ; i < parameterNames.length ; i++){
+      String parameterName = parameterNames[i];
+      Annotation[] ann = parameterAnnotations[i];
+      for (Annotation annotation : ann) {
+        if(annotation instanceof Converter){
+          Class<? extends GenericConverter<?>> value = ((Converter) annotation).value();
+          request.addConverter( parameterName ,  value.newInstance() );
+        }
+      }
+    }
+  }
+  
   protected List<Method> identifyBeforeTranslationMethod(Method[] methods) {
     List<Method> beforeTranslationMethods = new ArrayList<>();
     for (Method method : methods) {
