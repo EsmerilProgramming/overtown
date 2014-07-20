@@ -1,4 +1,4 @@
-package org.esmerilprogramming.clover.scanner.testpackage;
+package org.esmerilprogramming.cloverx.scanner.testpackage;
 
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;

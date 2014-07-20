@@ -1,4 +1,4 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.cloverx.http.parameter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

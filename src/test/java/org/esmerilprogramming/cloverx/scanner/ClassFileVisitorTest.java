@@ -1,4 +1,4 @@
-package org.esmerilprogramming.clover.scanner;
+package org.esmerilprogramming.cloverx.scanner;
 
 import java.io.IOException;
 import java.net.URL;

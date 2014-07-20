@@ -1,4 +1,4 @@
-package org.esmerilprogramming.clover.http.parameter;
+package org.esmerilprogramming.cloverx.http.parameter;
 
 import org.esmerilprogramming.cloverx.http.CloverRequest;
 import org.esmerilprogramming.cloverx.http.converter.ModelConverter;

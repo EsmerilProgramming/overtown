@@ -66,6 +66,11 @@ public class ManagementPage {
             + "</form>");
   }
 
+  @Page(value = "testeTemplate", responseTemplate = "teste.ftl")
+  public void testeTemplate() {
+
+  }
+
   @Page("testePrimitivo")
   public void testePrimitivo(int i, long l) {
     System.out.println(i);
