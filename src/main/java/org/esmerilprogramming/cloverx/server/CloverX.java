@@ -39,12 +39,11 @@ public final class CloverX {
     start();
   }
 
-  public void start() {
+  private void start() {
     
     LOGGER.info("ignition...");
     
     server = createBuilder();
-    
     server.start();
     
     LOGGER.info("Enjoy it! http://" + host + ":" + port);
