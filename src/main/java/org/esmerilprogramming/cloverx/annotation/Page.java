@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 
-@Target( { ElementType.TYPE , ElementType.METHOD  })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Page {
-	
-	String[] value() default "";
-	
+
+  String[] value() default "";
+
 }
