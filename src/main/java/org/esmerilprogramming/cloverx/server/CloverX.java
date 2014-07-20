@@ -45,6 +45,7 @@ public class CloverX {
 
     server = builder.build();
     server.start();
+    Logger.getLogger(CloverX.class.getName()).log(Level.INFO, "Enjoy http://localhost:8080");
   }
 
   public Undertow getServer() {
