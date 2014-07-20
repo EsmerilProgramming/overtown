@@ -9,24 +9,24 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class CloverRequestTranslatorTest {
-	
-	private CloverRequestConverter translator;
-	
-	@Before
-	public void setUp(){
-		translator = new CloverRequestConverter();
-	}
-	
-	@Test
-	public void givenACloverRequestParameterShouldTranslateWithTheCurrentCloverRequest(){
-		Class<CloverRequest> clazz = CloverRequest.class;
-		String parameterName = "clover";
-		CloverRequest cloverRequest = mock(CloverRequest.class);
-		
-		CloverRequest translated = translator.translate(clazz, parameterName, cloverRequest);
-		
-		assertNotNull(translated);
-		assertEquals( cloverRequest , translated );
-	}
-	
+
+  private CloverRequestConverter translator;
+
+  @Before
+  public void setUp() {
+    translator = new CloverRequestConverter();
+  }
+
+  @Test
+  public void givenACloverRequestParameterShouldTranslateWithTheCurrentCloverRequest() {
+    Class<CloverRequest> clazz = CloverRequest.class;
+    String parameterName = "clover";
+    CloverRequest cloverRequest = mock(CloverRequest.class);
+
+    CloverRequest translated = translator.translate(clazz, parameterName, cloverRequest);
+
+    assertNotNull(translated);
+    assertEquals(cloverRequest, translated);
+  }
+
 }

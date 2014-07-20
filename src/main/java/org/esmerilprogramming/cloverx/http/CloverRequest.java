@@ -22,105 +22,102 @@ import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
  */
 public class CloverRequest {
 
-	private HttpServerExchange exchange;
-	private Map<String, Deque<String>> queryParameters;
-	private Map<String, ParameterConverter> parameterTranslators;
-	private FormData formData;
+  private HttpServerExchange exchange;
+  private Map<String, Deque<String>> queryParameters;
+  private Map<String, ParameterConverter> parameterTranslators;
+  private FormData formData;
 
-	public CloverRequest() {
-	}
+  public CloverRequest() {}
 
-	public CloverRequest(HttpServerExchange exchange) {
-		this.exchange = exchange;
-		this.queryParameters = exchange.getQueryParameters();
-		this.parameterTranslators = new HashMap<>();
-		if (isPostRequest()) {
-			FormDataParser create = new FormEncodedDataDefinition()
-					.create(exchange);
-			try {
-				formData = create.parseBlocking();
-			} catch (IOException ioe) {
-				Logger.getLogger(CloverRequest.class.getName()).log(Level.SEVERE, ioe.getMessage());
-			}
-		}
-	}
+  public CloverRequest(HttpServerExchange exchange) {
+    this.exchange = exchange;
+    this.queryParameters = exchange.getQueryParameters();
+    this.parameterTranslators = new HashMap<>();
+    if (isPostRequest()) {
+      FormDataParser create = new FormEncodedDataDefinition().create(exchange);
+      try {
+        formData = create.parseBlocking();
+      } catch (IOException ioe) {
+        Logger.getLogger(CloverRequest.class.getName()).log(Level.SEVERE, ioe.getMessage());
+      }
+    }
+  }
 
-	public Object getAttribute(String name) {
-		Object value = null;
-		if (isPostRequest()) {
-			value = getFromFormData(name);
-		}
-		if (value == null) {
-			value = getFromParameters(name);
-		}
-		return value;
-	}
+  public Object getAttribute(String name) {
+    Object value = null;
+    if (isPostRequest()) {
+      value = getFromFormData(name);
+    }
+    if (value == null) {
+      value = getFromParameters(name);
+    }
+    return value;
+  }
 
-	public boolean containsAttributeStartingWith(String parameterName) {
-		boolean contains = false;
-		Set<String> keySet = queryParameters.keySet();
-		String parameterPrefix = parameterName + ".";
-//		for (String string : keySet) {
-			if (keySet.contains( parameterPrefix )) {
-				contains = true;
-//				break;
-			}
-//		}
-		if(isPostRequest() && contains == false ){
-			Iterator<String> iterator = formData.iterator();
-			while(iterator.hasNext()){
-				String next = iterator.next();
-				if(next.contains( parameterPrefix )){
-					contains = true;
-					break;
-				}
-			}
-		}
-		return contains;
-		
-	}
+  public boolean containsAttributeStartingWith(String parameterName) {
+    boolean contains = false;
+    Set<String> keySet = queryParameters.keySet();
+    String parameterPrefix = parameterName + ".";
+    // for (String string : keySet) {
+    if (keySet.contains(parameterPrefix)) {
+      contains = true;
+      // break;
+    }
+    // }
+    if (isPostRequest() && contains == false) {
+      Iterator<String> iterator = formData.iterator();
+      while (iterator.hasNext()) {
+        String next = iterator.next();
+        if (next.contains(parameterPrefix)) {
+          contains = true;
+          break;
+        }
+      }
+    }
+    return contains;
 
-	protected boolean isPostRequest() {
-		return "POST".equalsIgnoreCase(exchange.getRequestMethod().toString());
-	}
+  }
 
-	protected Object getFromFormData(String name) {
-		if(formData != null){
-			Deque<FormValue> dequeVal = formData.get(name);
-			if (dequeVal != null) {
-				return dequeVal.getLast().getValue();
-			}
-		}
-		return null;
-	}
+  protected boolean isPostRequest() {
+    return "POST".equalsIgnoreCase(exchange.getRequestMethod().toString());
+  }
 
-	protected Object getFromParameters(String parameterName) {
-		Deque<String> deque = queryParameters.get(parameterName);
-		if (deque != null) {
-			return deque.getLast();
-		}
-		return null;
-	}
+  protected Object getFromFormData(String name) {
+    if (formData != null) {
+      Deque<FormValue> dequeVal = formData.get(name);
+      if (dequeVal != null) {
+        return dequeVal.getLast().getValue();
+      }
+    }
+    return null;
+  }
 
-	public HttpServerExchange getExchange() {
-		return exchange;
-	}
+  protected Object getFromParameters(String parameterName) {
+    Deque<String> deque = queryParameters.get(parameterName);
+    if (deque != null) {
+      return deque.getLast();
+    }
+    return null;
+  }
 
-	public void setParameterTranslator(String parameterName,
-			ParameterConverter parameterTranslator) {
-		parameterTranslators.put(parameterName, parameterTranslator);
-	}
+  public HttpServerExchange getExchange() {
+    return exchange;
+  }
 
-	public boolean shouldTranslateParameter(String parameterName) {
-		return parameterTranslators.containsKey(parameterName);
-	}
+  public void setParameterTranslator(String parameterName, ParameterConverter parameterTranslator) {
+    parameterTranslators.put(parameterName, parameterTranslator);
+  }
 
-	public ParameterConverter getTranslator(String parameterName) {
-		return parameterTranslators.get(parameterName);
-	}
+  public boolean shouldTranslateParameter(String parameterName) {
+    return parameterTranslators.containsKey(parameterName);
+  }
 
-	protected void setQueryParameters(Map<String, Deque<String>> queryParameters) {
-		this.queryParameters = queryParameters;
-	}
+  public ParameterConverter getTranslator(String parameterName) {
+    return parameterTranslators.get(parameterName);
+  }
+
+  protected void setQueryParameters(Map<String, Deque<String>> queryParameters) {
+    this.queryParameters = queryParameters;
+  }
 
 }
