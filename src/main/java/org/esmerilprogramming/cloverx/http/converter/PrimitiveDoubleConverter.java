@@ -1,12 +1,11 @@
 package org.esmerilprogramming.cloverx.http.converter;
 
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.jboss.logging.Logger;
 
 public class PrimitiveDoubleConverter implements ParameterConverter {
+
+  private static final Logger LOGGER = Logger.getLogger(PrimitiveDoubleConverter.class);
 
   @SuppressWarnings("unchecked")
   @Override
@@ -19,8 +18,7 @@ public class PrimitiveDoubleConverter implements ParameterConverter {
         Double value = Double.parseDouble(strVal);
         return (T) value;
       } catch (NumberFormatException nfe) {
-        Logger.getLogger(PrimitiveDoubleConverter.class.getName()).log(Level.SEVERE,
-            nfe.getMessage());
+        LOGGER.error(nfe.getMessage());
       }
     }
     Double defaultValue = 0.0;

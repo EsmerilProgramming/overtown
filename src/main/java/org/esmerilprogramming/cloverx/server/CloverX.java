@@ -3,17 +3,18 @@ package org.esmerilprogramming.cloverx.server;
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
+import org.jboss.logging.Logger;
 
 public class CloverX {
 
+  private static final Logger LOGGER = Logger.getLogger(CloverX.class);
+  
   private String host = "localhost";
   private int port = 8080;
   private boolean debugMode = false;
@@ -63,8 +64,8 @@ public class CloverX {
 
     server = builder.build();
     server.start();
-    Logger.getLogger(CloverX.class.getName()).log(Level.INFO,
-        "Enjoy it! http://" + host + ":" + port);
+    
+    LOGGER.info("Enjoy it! http://" + host + ":" + port);
   }
 
   public Undertow getServer() {

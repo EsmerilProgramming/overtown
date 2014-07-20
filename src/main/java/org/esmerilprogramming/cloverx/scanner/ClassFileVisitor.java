@@ -7,10 +7,12 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.regex.Pattern;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.jboss.logging.Logger;
 
 public class ClassFileVisitor extends SimpleFileVisitor<Path> {
+
+  private static final Logger LOGGER = Logger.getLogger(ClassFileVisitor.class);
 
   private ScannerResult result;
 
@@ -23,13 +25,15 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
 
   @Override
   public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-    Logger.getLogger(ClassFileVisitor.class.getSimpleName()).log(Level.INFO, file.toString());
+
+    LOGGER.info(file.toString());
+
     if (isClass(file)) {
       try {
         Class<?> loadedClass = classLoader.loadClass(asPackageClass(file));
         getResult().addClass(loadedClass);
       } catch (ClassNotFoundException e) {
-        Logger.getLogger(ClassFileVisitor.class.getName()).log(Level.SEVERE, e.getMessage());
+        LOGGER.error(e.getMessage());
       }
     }
     return super.visitFile(file, attrs);

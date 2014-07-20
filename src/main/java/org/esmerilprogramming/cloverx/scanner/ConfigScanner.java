@@ -4,26 +4,29 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
+import org.jboss.logging.Logger;
 
 public class ConfigScanner {
+
+  private static final Logger LOGGER = Logger.getLogger(ConfigScanner.class);
 
   public List<Class<?>> getPageClasses(String packageToSearch, ClassLoader classLoader)
       throws PackageNotFoundException {
     List<Class<?>> pageClasses = new ArrayList<>();
     String[] list = getFileList(packageToSearch);
     try {
-      for (String string : list) {
-        System.out.println(string);
+      for (String s : list) {
+
+        LOGGER.info(s);
+
         Class<?> loadedClass =
-            classLoader.loadClass(packageToSearch + "." + string.replace(".properties", ""));
+            classLoader.loadClass(packageToSearch + "." + s.replace(".properties", ""));
         pageClasses.add(loadedClass);
       }
     } catch (ClassNotFoundException e) {
-      Logger.getLogger(ConfigScanner.class.getName()).log(Level.SEVERE, e.getMessage());
+      LOGGER.error(e.getMessage());
     }
     return pageClasses;
   }

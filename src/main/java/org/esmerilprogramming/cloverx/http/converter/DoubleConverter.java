@@ -1,15 +1,15 @@
 package org.esmerilprogramming.cloverx.http.converter;
 
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.jboss.logging.Logger;
 
 /**
  * 
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
 public class DoubleConverter implements ParameterConverter {
+
+  private static final Logger LOGGER = Logger.getLogger(DoubleConverter.class);
 
   @SuppressWarnings("unchecked")
   @Override
@@ -24,7 +24,7 @@ public class DoubleConverter implements ParameterConverter {
       Double val = Double.parseDouble(strVal);
       return (T) val;
     } catch (NumberFormatException nfe) {
-      Logger.getLogger(DoubleConverter.class.getName()).log(Level.SEVERE, nfe.getMessage());
+      LOGGER.error(nfe.getMessage());
     }
 
     return null;

@@ -12,17 +12,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
+import org.jboss.logging.Logger;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
 public class CloverXRequest {
+  
+  private static final Logger LOGGER = Logger.getLogger(CloverXRequest.class);
 
   private HttpServerExchange exchange;
   private Map<String, Deque<String>> queryParameters;
@@ -42,7 +43,7 @@ public class CloverXRequest {
       try {
         formData = create.parseBlocking();
       } catch (IOException ioe) {
-        Logger.getLogger(CloverXRequest.class.getName()).log(Level.SEVERE, ioe.getMessage());
+        LOGGER.error(ioe.getMessage());
       }
     }
   }
