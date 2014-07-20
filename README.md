@@ -60,7 +60,7 @@ public void read( CloverXRequest request ){
 Declare a CloverX instance and start() in your main method
 
 ```java
-public static void main(String... args) throws Exception {
-  new CloverX().start();
+public static void main(String... args) {
+  new CloverX();
 }
 ```
