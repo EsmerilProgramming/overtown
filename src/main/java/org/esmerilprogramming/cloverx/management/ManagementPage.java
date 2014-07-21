@@ -99,5 +99,11 @@ public class ManagementPage {
   public void objectConvert(@Converter(ServerStatusConverter.class) ServerStatus serverStatus ){
     System.out.println( serverStatus );
   }
+  
+  @Converter(value = ServerStatusConverter.class)
+  @Page("objectConvert2")
+  public void objectConvert2(ServerStatus serverStatus ){
+    System.out.println( serverStatus );
+  }
 
 }

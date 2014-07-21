@@ -25,10 +25,9 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
 
   @Override
   public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-
-    LOGGER.info(file.toString());
-
     if (isClass(file)) {
+      LOGGER.info(file.toString());
+      
       try {
         Class<?> loadedClass = classLoader.loadClass(asPackageClass(file));
         getResult().addClass(loadedClass);
