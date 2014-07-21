@@ -1,4 +1,4 @@
-package org.esmerilprogramming.cloverx.http.parameter;
+package org.esmerilprogramming.cloverx.http.converter;
 
 public class TestModel {
 

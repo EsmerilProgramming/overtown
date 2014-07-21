@@ -1,4 +1,4 @@
-package org.esmerilprogramming.cloverx.http.parameter;
+package org.esmerilprogramming.cloverx.http.converter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -11,7 +11,7 @@ import org.esmerilprogramming.cloverx.http.converter.HttpServerExchangeConverter
 import org.junit.Before;
 import org.junit.Test;
 
-public class HttpServerExchangeTranslatorTest {
+public class HttpServerExchangeConveterTest {
 
   private HttpServerExchangeConverter translator;
 

@@ -1,4 +1,4 @@
-package org.esmerilprogramming.cloverx.http.parameter;
+package org.esmerilprogramming.cloverx.http.converter;
 
 import static org.mockito.Mockito.mock;
 
@@ -10,7 +10,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class DoubleTranslatorTest {
+public class DoubleConverterTest {
 
   private DoubleConverter translator;
 

@@ -1,4 +1,4 @@
-package org.esmerilprogramming.cloverx.http.parameter;
+package org.esmerilprogramming.cloverx.http.converter;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -8,7 +8,7 @@ import org.esmerilprogramming.cloverx.http.converter.StringConverter;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StringTranslatorTest {
+public class StringConverterTest {
 
 
   private StringConverter translator;
