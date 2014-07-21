@@ -1,7 +1,8 @@
 package org.esmerilprogramming.cloverx.server;
 
+
+import static io.undertow.Handlers.path;
 import io.undertow.Undertow;
-import io.undertow.Undertow.Builder;
 import io.undertow.server.handlers.PathHandler;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public final class CloverX {
 
   private Undertow server;
   private String host = "localhost";
+  private String context = "app";
   private int port = 8080;
 
   public CloverX() {
@@ -27,15 +29,22 @@ public final class CloverX {
     this.port = port;
     start();
   }
-
-  public CloverX(String host) {
-    this.host = host;
+  
+  public CloverX(String context) {
+    this.context = context;
     start();
   }
 
   public CloverX(int port, String host) {
     this.port = port;
     this.host = host;
+    start();
+  }
+  
+  public CloverX(int port, String host, String context) {
+    this.port = port;
+    this.host = host;
+    this.context = context;
     start();
   }
 
@@ -46,14 +55,18 @@ public final class CloverX {
     server = createBuilder();
     server.start();
     
-    LOGGER.info("Enjoy it! http://" + host + ":" + port);
+    LOGGER.info("Enjoy it! http://" + host + ":" + port + "/" + context);
   }
   
   private Undertow createBuilder() {
-    Builder builder = Undertow.builder();
-    builder.addHttpListener(port, host);
-    builder.setHandler(createHandler());
-    return builder.build();
+    return Undertow.builder()
+        .addHttpListener(port, host)
+        .setHandler(
+            path()
+            .addPrefixPath("/" + context, createHandler())
+            .addPrefixPath("/", new ResourceHandlerMounter()
+            .mount()))
+        .build();
   }
   
   private PathHandler createHandler() {
