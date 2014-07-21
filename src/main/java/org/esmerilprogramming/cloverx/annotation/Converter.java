@@ -14,4 +14,6 @@ public @interface Converter {
 
   Class< ? extends GenericConverter<?>> value();
   
+  String paramName() default "";
+  
 }

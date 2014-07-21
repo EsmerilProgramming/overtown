@@ -121,7 +121,28 @@ public class PathHandlerMounter {
     return pathHandler;
   }
   
+  /**
+   * Verify the method annotations and the parameter methods annotations to find any @Conveter
+   * if found will add the custom converter to the CloverXRequest to be used in the parameter conversion 
+   */
   protected void identifyParameterConverters(Method method, String[] parameterNames , CloverXRequest request) throws InstantiationException, IllegalAccessException{
+    
+    Annotation[] annotations = method.getAnnotations();
+    for (Annotation annotation : annotations) {
+      if(annotation instanceof Converter){
+        Converter c = (Converter) annotation;
+        String paramName = c.paramName();
+        if( "".equals(paramName) ){
+          LOGGER.warn("No paramName specified, the @Converter annotation will be ignored,"
+              + " when using @Converter to annotating a method you should specify"
+              + " the parameter name that will be converted");
+        }else{
+          Class<? extends GenericConverter<?>> converterClass = c.value();
+          request.addConverter(paramName, converterClass.newInstance() );
+        }
+      }
+    }
+    
     Annotation[][] parameterAnnotations = method.getParameterAnnotations();
     for( int i = 0 ; i < parameterNames.length ; i++){
       String parameterName = parameterNames[i];
