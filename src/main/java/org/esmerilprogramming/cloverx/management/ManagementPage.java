@@ -73,6 +73,13 @@ public class ManagementPage {
             + "<input name='serverStatus.port' />" + "<button type='submit'>Submit</button>"
             + "</form>");
   }
+  
+  @Page("teste4")
+  public void teste3(Integer x , HttpServerExchange exchange) {
+    System.out.println( "Teste: " + x);
+    
+    exchange.getResponseSender().send("This is your x: " + x );
+  }
 
   @Page(value = "testeTemplate", responseTemplate = "teste.ftl")
   public void testeTemplate(CloverXRequest request) {

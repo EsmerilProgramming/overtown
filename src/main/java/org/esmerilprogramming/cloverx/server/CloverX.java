@@ -64,7 +64,7 @@ public final class CloverX {
         .setHandler(
             path()
             .addPrefixPath("/" + context, createHandler())
-            .addPrefixPath("/", new ResourceHandlerMounter()
+            .addPrefixPath("/static", new ResourceHandlerMounter()
             .mount()))
         .build();
   }
