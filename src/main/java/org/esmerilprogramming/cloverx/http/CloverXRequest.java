@@ -41,7 +41,7 @@ public class CloverXRequest {
     if (isPostRequest()) {
       FormDataParser create = new FormEncodedDataDefinition().create(exchange);
       try {
-        formData = create.parseBlocking();
+        formData =  create != null ? create.parseBlocking() : null;
       } catch (IOException ioe) {
         LOGGER.error(ioe.getMessage());
       }
@@ -75,7 +75,7 @@ public class CloverXRequest {
     if (keySet.contains(parameterPrefix)) {
       contains = true;
     }
-    if (isPostRequest() && contains == false) {
+    if (isPostRequest() && contains == false && formData != null) {
       Iterator<String> iterator = formData.iterator();
       while (iterator.hasNext()) {
         String next = iterator.next();
