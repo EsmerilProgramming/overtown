@@ -20,57 +20,60 @@ public final class CloverX {
   private String host = "localhost";
   private String context = "app";
   private int port = 8080;
-
+  
+  public CloverX( CloverXConfiguration configuration ){
+    start(configuration);
+  }
+  
   public CloverX() {
-    start();
+    this( new ConfigurationBuilder().defaultConfiguration() );
   }
-
+  
+  @Deprecated
   public CloverX(int port) {
-    this.port = port;
-    start();
+    this( new ConfigurationBuilder().withPost(port).build() );
   }
   
+  @Deprecated
   public CloverX(String context) {
-    this.context = context;
-    start();
+    this( new ConfigurationBuilder().withAppContext(context).build() );
   }
 
+  @Deprecated
   public CloverX(int port, String host) {
-    this.port = port;
-    this.host = host;
-    start();
+    this( new ConfigurationBuilder().withHost(host).withPost(port).build() );
   }
   
+  @Deprecated
   public CloverX(int port, String host, String context) {
-    this.port = port;
-    this.host = host;
-    this.context = context;
-    start();
+    this( new ConfigurationBuilder()
+        .withHost(host)
+        .withPost(port)
+        .withAppContext(context).build() );
   }
 
-  private void start() {
-    
+  private void start( CloverXConfiguration configuration ) {
     LOGGER.info("ignition...");
-    
-    server = createBuilder();
+    server = buildServer( configuration );
     server.start();
-    
-    LOGGER.info("Enjoy it! http://" + host + ":" + port + "/" + context);
+    LOGGER.info("Enjoy it! http://" + configuration.getHost() 
+        + ":" + configuration.getPort()
+        + "/" + configuration.getAppContext() );
   }
   
-  private Undertow createBuilder() {
+  private Undertow buildServer( CloverXConfiguration configuration ) {
     return Undertow.builder()
-        .addHttpListener(port, host)
+        .addHttpListener( configuration.getPort() ,  configuration.getHost() )
         .setHandler(
             path()
-            .addPrefixPath("/" + context, createHandler())
-            .addPrefixPath("/", new ResourceHandlerMounter()
+            .addPrefixPath("/" + configuration.getAppContext() , createHandler())
+            .addPrefixPath("/" + configuration.getStaticRootPath() , new ResourceHandlerMounter()
             .mount()))
         .build();
   }
   
   private PathHandler createHandler() {
-    ScannerResult scan = createScanner();
+    ScannerResult scan = scanPackagesForHandlers();
     if (!scan.getHandlers().isEmpty()) {
       PathHandlerMounter mounter = new PathHandlerMounter();
       return mounter.mount(scan.getHandlers());
@@ -78,7 +81,7 @@ public final class CloverX {
     return null;
   }
   
-  private ScannerResult createScanner() {
+  private ScannerResult scanPackagesForHandlers() {
     ClassLoader classLoader = this.getClass().getClassLoader();
     ScannerResult scan = null;
     try {
@@ -93,12 +96,8 @@ public final class CloverX {
     return server;
   }
 
-  public void setServer(Undertow server) {
-    this.server = server;
-  }
-
   public static void main(String[] args) {
-    new CloverX();
+    new CloverX(8080 , "127.0.0.1");
   }
 
 }
