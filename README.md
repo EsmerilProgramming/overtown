@@ -61,6 +61,8 @@ Declare a CloverX instance in your main method
 
 ```java
 public static void main(String... args) {
-  new CloverX();
+  new CloverX(new ConfigurationBuilder()
+  .withAppContext("127.0.0.1")
+  .build());
 }
 ```
