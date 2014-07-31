@@ -1,5 +1,6 @@
 package org.esmerilprogramming.cloverx.management;
 
+import java.nio.ByteBuffer;
 import java.util.Date;
 
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
@@ -7,6 +8,8 @@ import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Converter;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.http.Response;
+import org.esmerilprogramming.cloverx.http.StatusError;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
 import org.esmerilprogramming.cloverx.management.converters.DateConverter;
 import org.esmerilprogramming.cloverx.management.converters.ServerStatusConverter;
@@ -77,7 +80,6 @@ public class ManagementPage {
   @Page("teste4")
   public void teste3(Integer x , HttpServerExchange exchange) {
     System.out.println( "Teste: " + x);
-    
     exchange.getResponseSender().send("This is your x: " + x );
   }
 
@@ -111,6 +113,29 @@ public class ManagementPage {
   @Page("objectConvert2")
   public void objectConvert2(ServerStatus serverStatus ){
     System.out.println( serverStatus );
+  }
+  
+  @Page("testeResponse")
+  public void dateConvert(HttpServerExchange exchange){
+    Response r = new Response(exchange) {
+      @Override
+      protected void sendAsResponse(ByteBuffer buffer) {
+        // TODO Auto-generated method stub
+      }
+    };
+    System.out.println(" LOL ");
+    r.sendRedirect("http://127.0.0.1:8080/management/testeTemplate");
+  }
+  
+  @Page("notFound")
+  public void asdasda(HttpServerExchange exchange){
+    Response r = new Response(exchange) {
+      @Override
+      protected void sendAsResponse(ByteBuffer buffer) {
+        // TODO Auto-generated method stub
+      }
+    };
+    r.sendError(StatusError.NOT_FOUND);
   }
 
 }

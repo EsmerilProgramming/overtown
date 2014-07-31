@@ -91,7 +91,6 @@ public class HandlerCreator {
           } catch (IllegalAccessException | IllegalArgumentException
               | InvocationTargetException e) {
             LOGGER.error(e.getMessage());
-
           }
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
             | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
