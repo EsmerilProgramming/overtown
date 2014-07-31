@@ -1,5 +1,8 @@
 package org.esmerilprogramming.cloverx.management;
 
+import io.undertow.server.HttpServerExchange;
+import io.undertow.util.Headers;
+
 import java.nio.ByteBuffer;
 import java.util.Date;
 
@@ -10,14 +13,10 @@ import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.Response;
 import org.esmerilprogramming.cloverx.http.StatusError;
-import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
 import org.esmerilprogramming.cloverx.management.converters.DateConverter;
 import org.esmerilprogramming.cloverx.management.converters.ServerStatusConverter;
 import org.esmerilprogramming.cloverx.management.model.ServerStatus;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
-
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
 
 @Controller(path = "/management")
 public class ManagementPage {
@@ -117,25 +116,25 @@ public class ManagementPage {
   
   @Page("testeResponse")
   public void dateConvert(HttpServerExchange exchange){
-    Response r = new Response(exchange) {
-      @Override
-      protected void sendAsResponse(ByteBuffer buffer) {
-        // TODO Auto-generated method stub
-      }
-    };
-    System.out.println(" LOL ");
-    r.sendRedirect("http://127.0.0.1:8080/management/testeTemplate");
+//    Response r = new Response(exchange) {
+//      @Override
+//      protected void sendAsResponse(ByteBuffer buffer) {
+//        // TODO Auto-generated method stub
+//      }
+//    };
+//    System.out.println(" LOL ");
+//    r.sendRedirect("http://127.0.0.1:8080/management/testeTemplate");
   }
   
   @Page("notFound")
   public void asdasda(HttpServerExchange exchange){
-    Response r = new Response(exchange) {
-      @Override
-      protected void sendAsResponse(ByteBuffer buffer) {
-        // TODO Auto-generated method stub
-      }
-    };
-    r.sendError(StatusError.NOT_FOUND);
+//    Response r = new Response(exchange) {
+//      @Override
+//      protected void sendAsResponse(ByteBuffer buffer) {
+//        // TODO Auto-generated method stub
+//      }
+//    };
+//    r.sendError(StatusError.NOT_FOUND);
   }
 
 }
