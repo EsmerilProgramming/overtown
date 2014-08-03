@@ -49,19 +49,10 @@ public class CloverXRequest {
     }
   }
   
-  /**
-   * Consider using the response to do this
-   * @return
-   */
   public <T> void addAttribute(String name , T value ){
     viewAttributes.add(name, value);
   }
   
-  /**
-   * Consider using the response to do this
-   * @return
-   */
-  @Deprecated
   public ViewAttributes getViewAttributes(){
     return viewAttributes;
   }

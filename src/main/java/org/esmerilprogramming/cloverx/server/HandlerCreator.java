@@ -9,6 +9,8 @@ import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.HttpResponse;
 import org.esmerilprogramming.cloverx.http.Response;
 import org.esmerilprogramming.cloverx.http.converter.ParametersConverter;
+import org.esmerilprogramming.cloverx.server.injection.CoreClassInjector;
+import org.esmerilprogramming.cloverx.server.injection.CoreClassInjectorImpl;
 import org.esmerilprogramming.cloverx.server.mounters.ConverterMounter;
 import org.esmerilprogramming.cloverx.server.mounters.ConverterMounterImpl;
 import org.esmerilprogramming.cloverx.view.ViewParser;
@@ -79,6 +81,9 @@ public class HandlerCreator {
             
             ParametersConverter translator = new ParametersConverter();
             Object[] parameters =  translator.translateAllParameters(parameterNames, parameterTypes, request);
+            CoreClassInjector injector = new CoreClassInjectorImpl();
+            parameters =  injector.injectCoreInstances(parameterNames , parameters , parameterTypes, request);
+            
             method.invoke(newInstance, parameters);
 
             Response response = request.getResponse();

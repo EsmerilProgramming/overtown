@@ -14,6 +14,7 @@ public class HttpResponse extends Response {
   
   public HttpResponse(HttpServerExchange exchange, ViewAttributes viewAttributes) {
     super(exchange, viewAttributes);
+    super.setContentType( "text/html; charset=UTF-8;" );
   }
 
   @Override

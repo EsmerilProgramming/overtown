@@ -9,7 +9,7 @@ public class JsonResponse extends Response {
   
   public JsonResponse(HttpServerExchange exchange, ViewAttributes viewAttributes) {
     super(exchange, viewAttributes);
-    super.setContentType( "application/json" );
+    super.setContentType( "application/json; charset=UTF-8;" );
   }
   
   @Override

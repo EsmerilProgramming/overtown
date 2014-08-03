@@ -3,18 +3,14 @@ package org.esmerilprogramming.cloverx.server.injection;
 import io.undertow.server.HttpServerExchange;
 
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
-import org.esmerilprogramming.cloverx.http.converter.CloverXRequestConverter;
-import org.esmerilprogramming.cloverx.http.converter.HttpServerExchangeConverter;
-import org.esmerilprogramming.cloverx.http.converter.ViewAttributesConverter;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 
 public class CoreClassInjectorImpl implements CoreClassInjector {
 
   
   @Override
-  public Object[] injectCoreInstances(String[] parameterNames, Class<?>[] parameterTypes,
+  public Object[] injectCoreInstances(String[] parameterNames , Object[] parameters, Class<?>[] parameterTypes,
       CloverXRequest cloverRequest) {
-    Object[] parameters = new Object[parameterTypes.length];
     for (int i = 0 ; i < parameterTypes.length ; i++) {
         Class<?> clazz = parameterTypes[i];
         CoreInjector injector = getInjector( clazz );

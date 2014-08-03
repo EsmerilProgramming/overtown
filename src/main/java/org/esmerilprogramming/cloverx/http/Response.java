@@ -45,12 +45,17 @@ public abstract class Response {
     HeaderValues headerValue = exchange.getResponseHeaders().get( Headers.CONTENT_TYPE );
     if(headerValue != null){
       String contentType = headerValue.getFirst();
-      contentType += "; charset=" + charset;
-      headerValue.set( 0 , contentType );
+      if(contentType.contains("charset=")){
+        contentType = contentType.replaceFirst("charset=.+[;|\\s]", "charset=" + charset + ";" );
+      }else{
+        contentType += "; charset=" + charset + ";";
+      }
+      exchange.getResponseHeaders().put( Headers.CONTENT_TYPE , contentType );
     }else{
       exchange.getResponseHeaders().add(Headers.CONTENT_TYPE, "charset=" + charset); 
     }
   }
+  
 
   public void addAttribute(String name, Object value) {
     viewAttributes.add(name, value);

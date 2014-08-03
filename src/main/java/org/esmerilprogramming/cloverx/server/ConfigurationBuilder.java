@@ -2,7 +2,7 @@ package org.esmerilprogramming.cloverx.server;
 
 public class ConfigurationBuilder {
 
-  private String host = "";
+  private String host = "127.0.0.1";
   private Integer port = 8080;
   private String appContext = "";
   private String staticRootPath = "static";
@@ -13,7 +13,7 @@ public class ConfigurationBuilder {
     return this; 
   }
   
-  public ConfigurationBuilder withPost(Integer port){
+  public ConfigurationBuilder withPort(Integer port){
     this.port = port;
     return this; 
   }
@@ -52,7 +52,7 @@ public class ConfigurationBuilder {
   
   protected CloverXConfiguration defaultConfiguration(){
     CloverXConfiguration config = new CloverXConfiguration();
-    config.setHost("");
+    config.setHost("127.0.0.1");
     config.setPort(8080);
     config.setAppContext("");
     config.setStaticRootPath("static");

@@ -29,12 +29,6 @@ public class ParametersConverter {
 	}
 	
 	public ParameterConverter getTranslator( Class<?> clazz ){
-		if(CloverXRequest.class.equals(clazz))
-			return new CloverXRequestConverter();
-		if(ViewAttributes.class.equals(clazz))
-          return new ViewAttributesConverter();
-		if(HttpServerExchange.class.equals(clazz))
-			return new HttpServerExchangeConverter();
 		if(PrimitiveParamConverter.isPrimitive(clazz))
 			return new PrimitiveParamConverter();
 		if(CommonsParamConverter.isCommonParam(clazz))
