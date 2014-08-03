@@ -54,7 +54,16 @@ public void read( CloverXRequest request ){
   String test = request.getAttribute("test");
 }
 ```
+### Working with json
+To send back a json response you can use the JsonResponse class, just add as a parameter of your page method and use the sendAsResponse method to send back your json, by default the response charset it UTF-8.
 
+```java
+@Page("hello-json")
+public void respondJson(JsonResponse response){
+  String jsonAsString = YourJsonBuilder().buildJson();
+  response.sendAsResponse( jsonAsString );
+}
+```
 ### Running your app
 
 Declare a CloverX instance in your main method
