@@ -1,6 +1,7 @@
 package org.esmerilprogramming.cloverx.http;
 
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.HeaderValues;
 import io.undertow.util.Headers;
 import io.undertow.util.HttpString;
 
@@ -11,13 +12,13 @@ import org.esmerilprogramming.cloverx.view.ViewAttributes;
 
 public abstract class Response {
 
-  protected boolean responseSend = false;
+  private boolean responseSend = false;
   protected HttpServerExchange exchange;
   protected ViewAttributes viewAttributes;
 
-  public Response(HttpServerExchange exchange) {
+  public Response(HttpServerExchange exchange , ViewAttributes viewAttributes) {
     this.exchange = exchange;
-    this.viewAttributes = new ViewAttributes();
+    this.viewAttributes = viewAttributes;
   }
 
   public void setStatus(StatusError status) {
@@ -41,18 +42,31 @@ public abstract class Response {
   }
 
   public void setCharset(String charset) {
-    exchange.getResponseHeaders().add(Headers.CONTENT_TYPE, "charset= " + charset);
+    HeaderValues headerValue = exchange.getResponseHeaders().get( Headers.CONTENT_TYPE );
+    if(headerValue != null){
+      String contentType = headerValue.getFirst();
+      contentType += "; charset=" + charset;
+      headerValue.set( 0 , contentType );
+    }else{
+      exchange.getResponseHeaders().add(Headers.CONTENT_TYPE, "charset=" + charset); 
+    }
   }
 
-  protected void addAttribute(String name, Object value) {
+  public void addAttribute(String name, Object value) {
     viewAttributes.add(name, value);
   }
 
-  protected abstract void sendToView(String viewName);
+  protected void fowardTo(String viewName){
+    throw new IllegalStateException("This method is not suported");
+  }
   
-  protected abstract void sendAsResponse(String content);
+  protected void sendAsResponse(String content){
+    throw new IllegalStateException("This method is not suported");
+  }
 
-  protected abstract void sendAsResponse(ByteBuffer buffer);
+  protected void sendAsResponse(ByteBuffer buffer){
+    throw new IllegalStateException("This method is not suported");
+  }
 
   public void sendRedirect(String toPath) {
     exchange.setResponseCode(StatusSuccess.TEMPORARY_REDIRECT.getCode());
@@ -65,13 +79,17 @@ public abstract class Response {
     close();
   }
 
-  protected final void close() {
+  public final void close() {
     if (!responseSend) {
       exchange.getResponseSender().close();
       responseSend = true;
     } else {
       throw new ResponseAlreadySendException();
     }
+  }
+
+  public boolean isResponseSend() {
+    return responseSend;
   }
 
 }

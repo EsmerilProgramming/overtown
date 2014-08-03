@@ -6,20 +6,18 @@ import io.undertow.server.HttpServerExchange;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import org.esmerilprogramming.cloverx.view.ViewAttributes;
 import org.esmerilprogramming.cloverx.view.ViewParser;
 
 public class HttpResponse extends Response {
   
-  public HttpResponse(HttpServerExchange exchange) {
-    super(exchange);
+  
+  public HttpResponse(HttpServerExchange exchange, ViewAttributes viewAttributes) {
+    super(exchange, viewAttributes);
   }
 
-  public void addAttribute(String name, Object value) {
-    super.addAttribute(name, value);
-  }
-  
   @Override
-  protected void sendToView(String viewName) {
+  public void fowardTo(String viewName) {
     try {
       sendAsResponse( new ViewParser().parse(viewAttributes, viewName ) );
     } catch (TemplateException  | IOException e ) {
@@ -29,12 +27,12 @@ public class HttpResponse extends Response {
   }
   
   @Override
-  protected void sendAsResponse(String content) {
+  public void sendAsResponse(String content) {
     exchange.getResponseSender().send(content);
   }
 
   @Override
-  protected void sendAsResponse(ByteBuffer buffer) {
+  public void sendAsResponse(ByteBuffer buffer) {
     exchange.getResponseSender().send( buffer );
   }
 

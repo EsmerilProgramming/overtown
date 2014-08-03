@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.http.HttpResponse;
 import org.esmerilprogramming.cloverx.http.Response;
 import org.esmerilprogramming.cloverx.http.converter.ParametersConverter;
 import org.esmerilprogramming.cloverx.server.mounters.ConverterMounter;
@@ -80,21 +81,24 @@ public class HandlerCreator {
             Object[] parameters =  translator.translateAllParameters(parameterNames, parameterTypes, request);
             method.invoke(newInstance, parameters);
 
-            if (!Page.NO_TEMPLATE.equals(responseTemplate)) {
-              try {
-                String parsedTemplate =
-                    new ViewParser().parse(request.getViewAttributes(), responseTemplate);
-                exchange.getResponseSender().send(parsedTemplate);
-              } catch (TemplateException e) {
-                LOGGER.error(e.getMessage());
+            Response response = request.getResponse();
+            if (!Page.NO_TEMPLATE.equals(responseTemplate) && !response.isResponseSend()) {
+               request.respondAsHttp();
+               ((HttpResponse)request.getResponse() ).fowardTo( responseTemplate );  
+            }else{
+              //TODO should check json or xml response 
+              if(!response.isResponseSend()){
+                response.close();
               }
             }
           } catch (IllegalAccessException | IllegalArgumentException
               | InvocationTargetException e) {
+            e.printStackTrace();
             LOGGER.error(e.getMessage());
           }
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
             | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+          e1.printStackTrace();
           LOGGER.error(e1.getMessage());
         }
       }

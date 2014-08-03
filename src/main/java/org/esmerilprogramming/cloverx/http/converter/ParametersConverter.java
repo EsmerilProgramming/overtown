@@ -7,7 +7,6 @@ import io.undertow.server.HttpServerExchange;
 
 public class ParametersConverter {
 	
-	
 	public Object[] translateAllParameters( String[] parameterNames, Class<?>[] parameterTypes, CloverXRequest cloverRequest){
 		Object[] parameters = new Object[parameterTypes.length];
 		for (int i = 0 ; i < parameterTypes.length ; i++) {
@@ -33,7 +32,7 @@ public class ParametersConverter {
 		if(CloverXRequest.class.equals(clazz))
 			return new CloverXRequestConverter();
 		if(ViewAttributes.class.equals(clazz))
-          return new ViewAttributesRequestConverter();
+          return new ViewAttributesConverter();
 		if(HttpServerExchange.class.equals(clazz))
 			return new HttpServerExchangeConverter();
 		if(PrimitiveParamConverter.isPrimitive(clazz))

@@ -11,6 +11,7 @@ import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Converter;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.http.JsonResponse;
 import org.esmerilprogramming.cloverx.http.Response;
 import org.esmerilprogramming.cloverx.http.StatusError;
 import org.esmerilprogramming.cloverx.management.converters.DateConverter;
@@ -135,6 +136,13 @@ public class ManagementPage {
 //      }
 //    };
 //    r.sendError(StatusError.NOT_FOUND);
+  }
+  
+  @Page("json")
+  public void respondJson(CloverXRequest request){
+    JsonResponse jsonResponse = request.getJsonResponse();
+    jsonResponse.setCharset("UTF-8");
+    jsonResponse.sendAsResponse("{ \"name\" : \"Efraim Gentil\" , \"blah\" : \"çãoéàè\" }");
   }
 
 }

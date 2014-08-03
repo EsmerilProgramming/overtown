@@ -2,7 +2,7 @@ package org.esmerilprogramming.cloverx.http.converter;
 
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
 
-public class ViewAttributesRequestConverter implements ParameterConverter {
+public class ViewAttributesConverter implements ParameterConverter {
 
   @SuppressWarnings("unchecked")
   @Override
