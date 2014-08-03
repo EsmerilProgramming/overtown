@@ -17,50 +17,24 @@ public final class CloverX {
   private static final Logger LOGGER = Logger.getLogger(CloverX.class);
 
   private Undertow server;
-  private String host = "localhost";
-  private String context = "app";
-  private int port = 8080;
-  
+
   public CloverX( CloverXConfiguration configuration ){
     start(configuration);
   }
-  
+
   public CloverX() {
     this( new ConfigurationBuilder().defaultConfiguration() );
-  }
-  
-  @Deprecated
-  public CloverX(int port) {
-    this( new ConfigurationBuilder().withPost(port).build() );
-  }
-  
-  @Deprecated
-  public CloverX(String context) {
-    this( new ConfigurationBuilder().withAppContext(context).build() );
-  }
-
-  @Deprecated
-  public CloverX(int port, String host) {
-    this( new ConfigurationBuilder().withHost(host).withPost(port).build() );
-  }
-  
-  @Deprecated
-  public CloverX(int port, String host, String context) {
-    this( new ConfigurationBuilder()
-        .withHost(host)
-        .withPost(port)
-        .withAppContext(context).build() );
   }
 
   private void start( CloverXConfiguration configuration ) {
     LOGGER.info("ignition...");
     server = buildServer( configuration );
     server.start();
-    LOGGER.info("Enjoy it! http://" + configuration.getHost() 
+    LOGGER.info("Enjoy it! http://" + configuration.getHost()
         + ":" + configuration.getPort()
         + "/" + configuration.getAppContext() );
   }
-  
+
   private Undertow buildServer( CloverXConfiguration configuration ) {
     return Undertow.builder()
         .addHttpListener( configuration.getPort() ,  configuration.getHost() )
@@ -71,7 +45,7 @@ public final class CloverX {
             .mount()))
         .build();
   }
-  
+
   private PathHandler createHandler() {
     ScannerResult scan = scanPackagesForHandlers();
     if (!scan.getHandlers().isEmpty()) {
@@ -80,7 +54,7 @@ public final class CloverX {
     }
     return null;
   }
-  
+
   private ScannerResult scanPackagesForHandlers() {
     ClassLoader classLoader = this.getClass().getClassLoader();
     ScannerResult scan = null;
@@ -97,7 +71,9 @@ public final class CloverX {
   }
 
   public static void main(String[] args) {
-    new CloverX(8080 , "127.0.0.1");
+    new CloverX(new ConfigurationBuilder()
+    .withAppContext("127.0.0.1")
+    .build());
   }
 
 }
