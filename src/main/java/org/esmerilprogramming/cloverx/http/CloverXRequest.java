@@ -30,6 +30,7 @@ public class CloverXRequest {
   private Map<String, GenericConverter<?>> parameterConverters;
   private FormData formData;
   private ViewAttributes viewAttributes;
+  private Response response;
 
   public CloverXRequest() {}
 
@@ -129,6 +130,32 @@ public class CloverXRequest {
 
   protected void setQueryParameters(Map<String, Deque<String>> queryParameters) {
     this.queryParameters = queryParameters;
+  }
+
+  public void respondAsHttp() {
+    if(response == null || !(response instanceof HttpResponse ) ){
+      response = new HttpResponse( exchange , viewAttributes );
+    }
+  }
+  
+  public void respondAsJson() {
+    if(response == null || !(response instanceof JsonResponse )){
+      response = new JsonResponse( exchange , viewAttributes );
+    }
+  }
+
+  public Response getResponse() {
+    if(response == null){
+      respondAsHttp();
+    }
+    return response;
+  }
+  
+  public JsonResponse getJsonResponse(){
+    if(response == null || !(response instanceof JsonResponse )){
+      respondAsJson();
+    }
+    return (JsonResponse) response;
   }
 
 }

@@ -58,7 +58,7 @@ public class PackageScannerTest {
     ClassLoader classLoader = PackageScanner.class.getClassLoader();
 
     ScannerResult pageClasses =
-        scanner.scan("org.esmerilprogramming.clover.scanner.testpackage", classLoader);
+        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage", classLoader);
 
     List<Class<? extends HttpServlet>> servlets = pageClasses.getServlets();
     assertSame(2, servlets.size());

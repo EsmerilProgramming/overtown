@@ -72,7 +72,8 @@ public final class CloverX {
 
   public static void main(String[] args) {
     new CloverX(new ConfigurationBuilder()
-    .withAppContext("127.0.0.1")
+    .withHost("127.0.0.1")
+    .withPort(8080)
     .build());
   }
 
