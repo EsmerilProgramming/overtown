@@ -3,6 +3,8 @@ package org.esmerilprogramming.cloverx.server.injection;
 import io.undertow.server.HttpServerExchange;
 
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.http.HttpResponse;
+import org.esmerilprogramming.cloverx.http.JsonResponse;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 
 public class CoreClassInjectorImpl implements CoreClassInjector {
@@ -30,6 +32,10 @@ public class CoreClassInjectorImpl implements CoreClassInjector {
       return new CloverXRequestInjector();
     if(ViewAttributes.class.equals(clazz))
       return new ViewAttributesInjector();
+    if(HttpResponse.class.equals(clazz))
+      return new HttpResponseInjector();
+    if(JsonResponse.class.equals(clazz))
+      return new JsonResponseInjector();
     if(HttpServerExchange.class.equals(clazz))
       return new HttpServerExchangeInjector();
     return null;

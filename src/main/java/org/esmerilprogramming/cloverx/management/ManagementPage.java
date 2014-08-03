@@ -144,5 +144,10 @@ public class ManagementPage {
     jsonResponse.setCharset("UTF-8");
     jsonResponse.sendAsResponse("{ \"name\" : \"Efraim Gentil\" , \"blah\" : \"çãoéàè\" }");
   }
+  
+  @Page("jso2")
+  public void respondJson(JsonResponse response){
+    response.sendAsResponse("{ \"name\" : \"Efraim Gentil\" , \"blah\" : \"çãoéàè\" }");
+  }
 
 }
