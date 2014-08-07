@@ -5,6 +5,9 @@ import io.undertow.server.handlers.form.FormData;
 import io.undertow.server.handlers.form.FormData.FormValue;
 import io.undertow.server.handlers.form.FormDataParser;
 import io.undertow.server.handlers.form.FormEncodedDataDefinition;
+import io.undertow.server.session.Session;
+import io.undertow.server.session.SessionConfig;
+import io.undertow.server.session.SessionManager;
 
 import java.io.IOException;
 import java.util.Deque;
@@ -47,6 +50,16 @@ public class CloverXRequest {
         LOGGER.error(ioe.getMessage());
       }
     }
+  }
+  
+  public Session getSession(){
+    SessionManager sessionManager = exchange.getAttachment( SessionManager.ATTACHMENT_KEY );
+    SessionConfig sessionConfig = exchange.getAttachment( SessionConfig.ATTACHMENT_KEY );
+    Session session = sessionManager.getSession(exchange, sessionConfig );
+    if(session == null){
+      return sessionManager.createSession( exchange , sessionConfig );
+    }
+    return session;
   }
   
   public <T> void addAttribute(String name , T value ){

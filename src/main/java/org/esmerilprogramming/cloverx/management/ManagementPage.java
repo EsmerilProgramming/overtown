@@ -1,6 +1,7 @@
 package org.esmerilprogramming.cloverx.management;
 
 import io.undertow.server.HttpServerExchange;
+import io.undertow.server.session.Session;
 import io.undertow.util.Headers;
 
 import java.nio.ByteBuffer;
@@ -86,6 +87,18 @@ public class ManagementPage {
   @Page(value = "testeTemplate", responseTemplate = "teste.ftl")
   public void testeTemplate(CloverXRequest request) {
 //    request.addAttribute("name", "Efraim Gentil");
+    Session session = request.getSession();
+    System.out.println( session.getAttribute("nome") );
+  }
+  
+  @Page(value = "nameInSession")
+  public void testeTemplate(CloverXRequest request , String nome) {
+    Session session = request.getSession();
+    if(session.getAttribute("nome") == null ){  
+      session.setAttribute("nome", nome );
+    }else{
+      System.out.println( session.getAttribute("nome") );
+    }
   }
   
   @Page(value = "testeTemplate2", responseTemplate = "teste.ftl")

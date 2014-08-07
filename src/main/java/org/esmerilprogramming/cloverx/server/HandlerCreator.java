@@ -23,6 +23,11 @@ import com.thoughtworks.paranamer.Paranamer;
 import freemarker.template.TemplateException;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
+import io.undertow.server.session.InMemorySessionManager;
+import io.undertow.server.session.SessionAttachmentHandler;
+import io.undertow.server.session.SessionConfig;
+import io.undertow.server.session.SessionCookieConfig;
+import io.undertow.servlet.core.InMemorySessionManagerFactory;
 
 public class HandlerCreator {
   
@@ -55,14 +60,12 @@ public class HandlerCreator {
   }
   
   private HttpHandler createHandlerForPage(final Class<?> pageClass , final Method method , final List<Method> beforeExecutemethods){
-    
     final ConverterMounter converterMounter = new ConverterMounterImpl();
     final String[] parameterNames = paranamer.lookupParameterNames(method);
     Page methodPagePath = method.getAnnotation(Page.class);
     final String responseTemplate = methodPagePath.responseTemplate();
     
-    return new HttpHandler() {
-      
+    HttpHandler handler = new HttpHandler() {
       private final Logger LOGGER = Logger.getLogger(pageClass);
       
       public void handleRequest(HttpServerExchange exchange) throws Exception {
@@ -108,6 +111,10 @@ public class HandlerCreator {
         }
       }
     };
+    
+    InMemorySessionManager sessionManager = CloverX.getSessionmanager();
+    SessionConfig sessionConfig = CloverX.getSessionconfig();
+    return new SessionAttachmentHandler( handler , sessionManager, sessionConfig);
   }
   
 }
