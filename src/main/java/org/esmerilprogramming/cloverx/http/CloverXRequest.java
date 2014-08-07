@@ -52,12 +52,24 @@ public class CloverXRequest {
     }
   }
   
-  public Session getSession(){
+  private SessionManager getSessionManager(){
     SessionManager sessionManager = exchange.getAttachment( SessionManager.ATTACHMENT_KEY );
+    return sessionManager;
+  }
+  
+  private SessionConfig getSessionConfig(){
     SessionConfig sessionConfig = exchange.getAttachment( SessionConfig.ATTACHMENT_KEY );
-    Session session = sessionManager.getSession(exchange, sessionConfig );
+    return sessionConfig;
+  }
+  
+  public Session getSession(){
+    return getSessionManager().getSession(exchange, getSessionConfig() );
+  }
+  
+  public Session getOrCreateSession(){
+    Session session = getSession();
     if(session == null){
-      return sessionManager.createSession( exchange , sessionConfig );
+      session = getSessionManager().createSession(exchange, getSessionConfig()); 
     }
     return session;
   }
