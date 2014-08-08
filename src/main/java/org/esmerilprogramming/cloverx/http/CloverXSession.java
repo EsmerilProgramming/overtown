@@ -1,15 +1,22 @@
 package org.esmerilprogramming.cloverx.http;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import io.undertow.server.HttpServerExchange;
 import io.undertow.server.session.Session;
+
+import java.util.Date;
 
 public class CloverXSession {
   
   private HttpServerExchange exchange;
   private Session session;
+  
+  public CloverXSession(Session session) {
+    this.session = session;
+  }
+  public CloverXSession(HttpServerExchange exchange , Session session ) { 
+    this.session = session;
+    this.exchange = exchange;
+  }
   
   public void setAttribute(String attrName , Object value ){
     session.setAttribute( attrName , value );
@@ -51,8 +58,5 @@ public class CloverXSession {
   public Integer getMaxInactiveInterval(){
     return session.getMaxInactiveInterval();
   }
-  
-  
-  
   
 }

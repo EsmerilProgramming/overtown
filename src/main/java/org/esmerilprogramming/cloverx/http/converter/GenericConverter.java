@@ -9,7 +9,7 @@ public abstract class GenericConverter<ToType> implements ParameterConverter {
   
   public abstract ToType convert(String value);
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "hiding"})
   @Override
   public final <ToType> ToType translate(Class<ToType> clazz, String parameterName, CloverXRequest cloverRequest) {
     return (ToType) convert( String.valueOf( cloverRequest.getParameter(parameterName) ) );

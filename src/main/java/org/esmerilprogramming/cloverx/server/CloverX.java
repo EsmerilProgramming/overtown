@@ -2,7 +2,6 @@ package org.esmerilprogramming.cloverx.server;
 
 
 import static io.undertow.Handlers.path;
-import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.server.handlers.PathHandler;
 import io.undertow.server.session.InMemorySessionManager;

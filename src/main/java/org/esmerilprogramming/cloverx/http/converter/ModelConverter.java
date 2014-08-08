@@ -40,7 +40,7 @@ public class ModelConverter implements ParameterConverter {
               return retorno;
           } catch (NoSuchMethodException | SecurityException | InstantiationException | 
               IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-              Logger.getLogger(ModelConverter.class.getName()).log(Level.FATAL, e.getMessage());
+            LOGGER.log(Level.FATAL, e.getMessage());
           }
       }
       
