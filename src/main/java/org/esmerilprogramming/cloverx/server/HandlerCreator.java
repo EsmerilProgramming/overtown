@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.http.CloverXSessionManager;
 import org.esmerilprogramming.cloverx.http.HttpResponse;
 import org.esmerilprogramming.cloverx.http.Response;
 import org.esmerilprogramming.cloverx.http.converter.ParametersConverter;
@@ -112,9 +113,8 @@ public class HandlerCreator {
       }
     };
     
-    InMemorySessionManager sessionManager = CloverX.getSessionmanager();
-    SessionConfig sessionConfig = CloverX.getSessionconfig();
-    return new SessionAttachmentHandler( handler , sessionManager, sessionConfig);
+    CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
+    return new SessionAttachmentHandler( handler , sessionManager.getSessionManager(), sessionManager.getSessionConfig() );
   }
   
 }

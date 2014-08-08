@@ -20,13 +20,6 @@ public final class CloverX {
   private static final Logger LOGGER = Logger.getLogger(CloverX.class);
 
   private Undertow server;
-  private static final InMemorySessionManager sessionManager;
-  private static final SessionConfig sessionConfig;
-  
-  static {
-    sessionManager = new InMemorySessionManager("CLOVERX");
-    sessionConfig = new SessionCookieConfig();
-  }
   
   public CloverX( CloverXConfiguration configuration ){
     start(configuration);
@@ -86,14 +79,6 @@ public final class CloverX {
     .withHost("127.0.0.1")
     .withPort(8080)
     .build());
-  }
-
-  public static InMemorySessionManager getSessionmanager() {
-    return sessionManager;
-  }
-
-  public static SessionConfig getSessionconfig() {
-    return sessionConfig;
   }
 
 }
