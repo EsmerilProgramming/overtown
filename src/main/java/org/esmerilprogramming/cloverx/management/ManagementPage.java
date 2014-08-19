@@ -12,6 +12,7 @@ import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Converter;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.http.CloverXSession;
 import org.esmerilprogramming.cloverx.http.JsonResponse;
 import org.esmerilprogramming.cloverx.http.Response;
 import org.esmerilprogramming.cloverx.http.StatusError;
@@ -87,15 +88,18 @@ public class ManagementPage {
   @Page(value = "testeTemplate", responseTemplate = "teste.ftl")
   public void testeTemplate(CloverXRequest request) {
 //    request.addAttribute("name", "Efraim Gentil");
-    Session session = request.getSession();
+    CloverXSession session = request.getSession();
     System.out.println( session.getAttribute("nome") );
+    System.out.println( session.getAttribute("int", Integer.class ) );
+    
   }
   
   @Page(value = "nameInSession")
   public void testeTemplate(CloverXRequest request , String nome) {
-    Session session = request.getSession();
+    CloverXSession session = request.createSession();
     if(session.getAttribute("nome") == null ){  
       session.setAttribute("nome", nome );
+      session.setAttribute("int", 10 );
     }else{
       System.out.println( session.getAttribute("nome") );
     }

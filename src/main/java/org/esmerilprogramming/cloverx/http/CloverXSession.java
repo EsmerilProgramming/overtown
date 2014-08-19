@@ -27,10 +27,10 @@ public class CloverXSession {
   }
   
   @SuppressWarnings("unchecked")
-  public <T> T getAttribute(String attrName, Class<T> espectedType ){
+  public <T> T getAttribute(String attrName, Class<T> espectedType ) throws IllegalArgumentException{
     Object value = session.getAttribute(attrName);
     if(value != null && espectedType.equals( value.getClass() ) ){
-      return (T) session.getAttribute(attrName);
+      return (T) value;
     }
     throw new IllegalArgumentException("Espected type is not from the same type of the attribute value");
   }

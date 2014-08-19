@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
+import org.esmerilprogramming.cloverx.server.CloverX;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 import org.jboss.logging.Logger;
 
@@ -62,16 +63,14 @@ public class CloverXRequest {
     return sessionConfig;
   }
   
-  public Session getSession(){
-    return getSessionManager().getSession(exchange, getSessionConfig() );
+  public CloverXSession getSession(){
+    Session session = getSessionManager().getSession(exchange, getSessionConfig() );
+    return session == null ? createSession() : new CloverXSession( exchange , session ); 
   }
   
-  public Session getOrCreateSession(){
-    Session session = getSession();
-    if(session == null){
-      session = getSessionManager().createSession(exchange, getSessionConfig()); 
-    }
-    return session;
+  public CloverXSession createSession(){
+    Session undertowSesion = getSessionManager().createSession(exchange, getSessionConfig());
+    return new CloverXSession( exchange , undertowSesion );
   }
   
   public <T> void addAttribute(String name , T value ){
