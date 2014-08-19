@@ -26,6 +26,7 @@ public class CloverXRequest {
   private static final Logger LOGGER = Logger.getLogger(CloverXRequest.class);
 
   private HttpServerExchange exchange;
+  private CloverXSessionManager sessionManager;
   private Map<String, Deque<String>> queryParameters;
   private Map<String, GenericConverter<?>> parameterConverters;
   private FormData formData;
@@ -39,6 +40,7 @@ public class CloverXRequest {
     this.queryParameters = exchange.getQueryParameters();
     this.parameterConverters = new HashMap<>();
     this.viewAttributes = new ViewAttributes();
+    this.sessionManager = CloverXSessionManager.getInstance(); 
     if (isPostRequest()) {
       FormDataParser create = new FormEncodedDataDefinition().create(exchange);
       try {
@@ -47,6 +49,14 @@ public class CloverXRequest {
         LOGGER.error(ioe.getMessage());
       }
     }
+  }
+
+  public CloverXSession getSession(){
+    return sessionManager.getSession( exchange ); 
+  }
+  
+  public CloverXSession createSession(){
+    return sessionManager.createNewSession(exchange);
   }
   
   public <T> void addAttribute(String name , T value ){

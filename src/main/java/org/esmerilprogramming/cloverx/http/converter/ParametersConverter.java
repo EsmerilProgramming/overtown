@@ -1,9 +1,6 @@
 package org.esmerilprogramming.cloverx.http.converter;
 
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
-import org.esmerilprogramming.cloverx.view.ViewAttributes;
-
-import io.undertow.server.HttpServerExchange;
 
 public class ParametersConverter {
 	

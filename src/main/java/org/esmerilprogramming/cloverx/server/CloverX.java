@@ -4,6 +4,9 @@ package org.esmerilprogramming.cloverx.server;
 import static io.undertow.Handlers.path;
 import io.undertow.Undertow;
 import io.undertow.server.handlers.PathHandler;
+import io.undertow.server.session.InMemorySessionManager;
+import io.undertow.server.session.SessionConfig;
+import io.undertow.server.session.SessionCookieConfig;
 
 import java.io.IOException;
 
@@ -17,7 +20,7 @@ public final class CloverX {
   private static final Logger LOGGER = Logger.getLogger(CloverX.class);
 
   private Undertow server;
-
+  
   public CloverX( CloverXConfiguration configuration ){
     start(configuration);
   }
@@ -36,6 +39,7 @@ public final class CloverX {
   }
 
   private Undertow buildServer( CloverXConfiguration configuration ) {
+    
     return Undertow.builder()
         .addHttpListener( configuration.getPort() ,  configuration.getHost() )
         .setHandler(

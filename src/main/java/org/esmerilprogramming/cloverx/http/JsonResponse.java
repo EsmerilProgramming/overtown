@@ -1,7 +1,6 @@
 package org.esmerilprogramming.cloverx.http;
 
 import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
 
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 
