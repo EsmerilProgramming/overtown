@@ -96,13 +96,20 @@ public class ManagementPage {
   
   @Page(value = "nameInSession")
   public void testeTemplate(CloverXRequest request , String nome) {
-    CloverXSession session = request.createSession();
+    CloverXSession session = request.getSession();
     if(session.getAttribute("nome") == null ){  
       session.setAttribute("nome", nome );
       session.setAttribute("int", 10 );
     }else{
       System.out.println( session.getAttribute("nome") );
     }
+  }
+  
+  @Page(value = "newSession")
+  public void testeTemplateT(CloverXRequest request , String nome) {
+    CloverXSession session = request.createSession();
+    session.setAttribute("nome", "TESTE HIHE HE" );
+    session.setAttribute("int", 9999 );
   }
   
   @Page(value = "testeTemplate2", responseTemplate = "teste.ftl")

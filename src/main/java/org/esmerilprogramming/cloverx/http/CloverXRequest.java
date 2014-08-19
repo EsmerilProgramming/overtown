@@ -5,9 +5,6 @@ import io.undertow.server.handlers.form.FormData;
 import io.undertow.server.handlers.form.FormData.FormValue;
 import io.undertow.server.handlers.form.FormDataParser;
 import io.undertow.server.handlers.form.FormEncodedDataDefinition;
-import io.undertow.server.session.Session;
-import io.undertow.server.session.SessionConfig;
-import io.undertow.server.session.SessionManager;
 
 import java.io.IOException;
 import java.util.Deque;
@@ -18,7 +15,6 @@ import java.util.Set;
 
 import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
-import org.esmerilprogramming.cloverx.server.CloverX;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 import org.jboss.logging.Logger;
 
@@ -30,6 +26,7 @@ public class CloverXRequest {
   private static final Logger LOGGER = Logger.getLogger(CloverXRequest.class);
 
   private HttpServerExchange exchange;
+  private CloverXSessionManager sessionManager;
   private Map<String, Deque<String>> queryParameters;
   private Map<String, GenericConverter<?>> parameterConverters;
   private FormData formData;
@@ -43,6 +40,7 @@ public class CloverXRequest {
     this.queryParameters = exchange.getQueryParameters();
     this.parameterConverters = new HashMap<>();
     this.viewAttributes = new ViewAttributes();
+    this.sessionManager = CloverXSessionManager.getInstance(); 
     if (isPostRequest()) {
       FormDataParser create = new FormEncodedDataDefinition().create(exchange);
       try {
@@ -52,25 +50,13 @@ public class CloverXRequest {
       }
     }
   }
-  
-  private SessionManager getSessionManager(){
-    SessionManager sessionManager = exchange.getAttachment( SessionManager.ATTACHMENT_KEY );
-    return sessionManager;
-  }
-  
-  private SessionConfig getSessionConfig(){
-    SessionConfig sessionConfig = exchange.getAttachment( SessionConfig.ATTACHMENT_KEY );
-    return sessionConfig;
-  }
-  
+
   public CloverXSession getSession(){
-    Session session = getSessionManager().getSession(exchange, getSessionConfig() );
-    return session == null ? createSession() : new CloverXSession( exchange , session ); 
+    return sessionManager.getSession( exchange ); 
   }
   
   public CloverXSession createSession(){
-    Session undertowSesion = getSessionManager().createSession(exchange, getSessionConfig());
-    return new CloverXSession( exchange , undertowSesion );
+    return sessionManager.createNewSession(exchange);
   }
   
   public <T> void addAttribute(String name , T value ){

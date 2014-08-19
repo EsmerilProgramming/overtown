@@ -29,16 +29,24 @@ public class CloverXSessionManager {
     return getSessionManager().getSession(exchange, getSessionConfig() );
   }
   
-  public CloverXSession getSession(HttpServerExchange exchange){
+  /*public CloverXSession getSession(HttpServerExchange exchange){
     Session session = getUndertowSession(exchange);
     if(session != null){
       return new CloverXSession(exchange, session);
     }else{
       return null;
     }
+  }*/
+  
+  public CloverXSession createNewSession(HttpServerExchange exchange ){
+    Session undertowSession = getUndertowSession(exchange);
+    if(undertowSession != null ){
+      undertowSession.invalidate(exchange);
+    }
+    return getSession(exchange);
   }
   
-  public CloverXSession getOrCreateSession(HttpServerExchange exchange){
+  public CloverXSession getSession(HttpServerExchange exchange){
     Session session = getUndertowSession(exchange);
     if(session == null){
       session = getSessionManager().createSession(exchange, getSessionConfig() ); 
@@ -48,10 +56,10 @@ public class CloverXSessionManager {
   
   //TODO
   //Needs exchange to operate in the session
-  public CloverXSession getSessionById(String id){
+  public CloverXSession getSessionById(String id , HttpServerExchange exchange ){
     Session session = getSessionManager().getSession(id);
     if(session != null){
-      return new CloverXSession( session );
+      return new CloverXSession( exchange , session );
     }else{
       return null;
     }
