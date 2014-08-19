@@ -1,10 +1,8 @@
 package org.esmerilprogramming.cloverx.management;
 
 import io.undertow.server.HttpServerExchange;
-import io.undertow.server.session.Session;
 import io.undertow.util.Headers;
 
-import java.nio.ByteBuffer;
 import java.util.Date;
 
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
@@ -14,8 +12,6 @@ import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.CloverXSession;
 import org.esmerilprogramming.cloverx.http.JsonResponse;
-import org.esmerilprogramming.cloverx.http.Response;
-import org.esmerilprogramming.cloverx.http.StatusError;
 import org.esmerilprogramming.cloverx.management.converters.DateConverter;
 import org.esmerilprogramming.cloverx.management.converters.ServerStatusConverter;
 import org.esmerilprogramming.cloverx.management.model.ServerStatus;
