@@ -8,27 +8,26 @@ CloverX
 #### Maven
   You need to configure the snapshot reposiroty from Sonatype ( sorry we are not yet in the central ) 
 ```xml
-  <repositories>
-    ...
-    <repository>
-        <id>Sonatype-Snapshots</id>
-        <url>https://oss.sonatype.org/content/groups/public</url>
-    </repository>
-    ...
-  </repositories>
+<repositories>
+  ...
+  <repository>
+    <id>Sonatype-Snapshots</id>
+    <url>https://oss.sonatype.org/content/groups/public</url>
+  </repository>
+  ...
+</repositories>
 ```
  And configure our dependency
 ```xml
-    
-    <dependencies>
-      ...
-      <dependency>
-        <groupId>com.github.esmerilprogramming</groupId>
-        <artifactId>cloverx</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-      </dependency>
-      ...
-    </dependencies>
+<dependencies>
+  ...
+  <dependency>
+    <groupId>com.github.esmerilprogramming</groupId>
+    <artifactId>cloverx</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </dependency>
+  ...
+</dependencies>
 ```
 
 #### Hardcore
