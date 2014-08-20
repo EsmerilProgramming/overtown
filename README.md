@@ -4,6 +4,36 @@ CloverX
 
 ## Getting started
 
+### Getting the lib
+#### Maven
+  You need to configure the snapshot reposiroty from Sonatype ( sorry we are not yet in the central ) 
+```xml
+  <repositories>
+    ...
+    <repository>
+        <id>Sonatype-Snapshots</id>
+        <url>https://oss.sonatype.org/content/groups/public</url>
+    </repository>
+    ...
+  </repositories>
+```
+ And configure our dependency
+```xml
+    
+    <dependencies>
+      ...
+      <dependency>
+        <groupId>com.github.esmerilprogramming</groupId>
+        <artifactId>cloverx</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      ...
+    </dependencies>
+```
+
+#### Hardcore
+ You can download from the repository https://oss.sonatype.org/content/groups/public/com/github/esmerilprogramming/cloverx/
+
 ### Creating a controller
 
 To create a controller is pretty simple, use the annotation @Controller and inform the path that this controller will listen, each controller can have many pages, each page is a method annotated with @Page in the controller, don't worry in which package, your controllers are, the CloverX will hunt it and prepare everything for you
