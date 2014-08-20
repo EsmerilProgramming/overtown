@@ -14,21 +14,15 @@ import org.esmerilprogramming.cloverx.server.injection.CoreClassInjector;
 import org.esmerilprogramming.cloverx.server.injection.CoreClassInjectorImpl;
 import org.esmerilprogramming.cloverx.server.mounters.ConverterMounter;
 import org.esmerilprogramming.cloverx.server.mounters.ConverterMounterImpl;
-import org.esmerilprogramming.cloverx.view.ViewParser;
 import org.jboss.logging.Logger;
 
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
-import freemarker.template.TemplateException;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
-import io.undertow.server.session.InMemorySessionManager;
 import io.undertow.server.session.SessionAttachmentHandler;
-import io.undertow.server.session.SessionConfig;
-import io.undertow.server.session.SessionCookieConfig;
-import io.undertow.servlet.core.InMemorySessionManagerFactory;
 
 public class HandlerCreator {
   

@@ -4,9 +4,6 @@ package org.esmerilprogramming.cloverx.server;
 import static io.undertow.Handlers.path;
 import io.undertow.Undertow;
 import io.undertow.server.handlers.PathHandler;
-import io.undertow.server.session.InMemorySessionManager;
-import io.undertow.server.session.SessionConfig;
-import io.undertow.server.session.SessionCookieConfig;
 
 import java.io.IOException;
 
