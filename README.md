@@ -2,6 +2,8 @@ CloverX
 =======
 
 
+[travis](https://travis-ci.org/EsmerilProgramming/cloverx.svg?branch=master["Build Status", link="https://travis-ci.org/EsmerilProgramming/cloverx")
+
 ## Getting started
 
 ### Getting the lib
