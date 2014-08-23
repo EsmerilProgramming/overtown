@@ -2,7 +2,9 @@
 *.jar
 .classpath
 .settings
+.gradle
 target
+build
 .project
 .idea
 *.iml
