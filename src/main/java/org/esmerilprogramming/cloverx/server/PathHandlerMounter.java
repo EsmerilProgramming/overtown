@@ -3,6 +3,11 @@ package org.esmerilprogramming.cloverx.server;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.PathHandler;
+import io.undertow.server.handlers.resource.ClassPathResourceManager;
+import io.undertow.servlet.api.DeploymentInfo;
+import io.undertow.servlet.api.DeploymentManager;
+import io.undertow.servlet.api.ServletContainer;
+import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -15,13 +20,15 @@ import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.management.JsrChatWebSocketEndpoint;
 import org.jboss.logging.Logger;
+import org.xnio.ByteBufferSlicePool;
 
 public class PathHandlerMounter {
 
   private static final Logger LOGGER = Logger.getLogger(PathHandlerMounter.class);
 
-  public PathHandler mount(List<Class<? extends HttpHandler>> handlers) {
+  public PathHandler mount(List<Class<?>> handlers) {
     
     PathHandler pathHandler = Handlers.path();
     try {
@@ -33,6 +40,25 @@ public class PathHandlerMounter {
           mountMethods(pathHandler, handlerClass);
         }
       }
+      
+      final ServletContainer container = ServletContainer.Factory.newInstance();
+
+      DeploymentInfo builder = new DeploymentInfo()
+              .setClassLoader(this.getClass().getClassLoader())
+              .setContextPath("/")
+              .setResourceManager(new ClassPathResourceManager(this.getClass().getClassLoader(), this.getClass().getPackage() ) )
+              .addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME,
+                      new WebSocketDeploymentInfo()
+                              .setBuffers(new ByteBufferSlicePool(100, 1000))
+                              .addEndpoint(JsrChatWebSocketEndpoint.class)
+              )
+              .setDeploymentName("chat.war");
+
+
+      DeploymentManager manager = container.addDeployment(builder);
+      manager.deploy();
+      pathHandler.addPrefixPath("/", manager.start() );
+      
     } catch (Exception e) {
       LOGGER.error(e.getMessage());
     }

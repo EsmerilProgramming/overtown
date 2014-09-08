@@ -12,7 +12,9 @@ import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
 import org.esmerilprogramming.cloverx.scanner.testpackage.First;
+import org.esmerilprogramming.cloverx.scanner.testpackage.Second;
 import org.esmerilprogramming.cloverx.scanner.testpackage.Third;
+import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.AnotherSeverEndpoint;
 import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fifth;
 import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fourth;
 import org.junit.Before;
@@ -35,18 +37,30 @@ public class PackageScannerTest {
 
     scanner.scan("com.wrong.package", classLoader);
   }
-
-  @Ignore
-  // TODO Verify why is not findingthe httpHandleCLasses
+  
   @Test
-  public void givenAPackagedShouldFindAllHttpHandlerClassesInThisPackageAndSubPackages()
+  public void givenAPackagedShouldFindAllServerEndpointAnnotatedClassesInThisPackageAndSubPackages()
       throws PackageNotFoundException, IOException {
     ClassLoader classLoader = PackageScanner.class.getClassLoader();
 
     ScannerResult pageClasses =
-        scanner.scan("org.esmerilprogramming.clover.scanner.testpackage", classLoader);
+        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage", classLoader);
 
-    List<Class<? extends HttpHandler>> handlers = pageClasses.getHandlers();
+    List<Class<?>> handlers = pageClasses.getServerEndpoints();
+    assertSame(2, handlers.size());
+    assertTrue("Should have found the Second.class", handlers.contains(Second.class));
+    assertTrue("Should have found the AnotherSeverEndpoint.class", handlers.contains(AnotherSeverEndpoint.class));
+  }
+  
+  @Test
+  public void givenAPackagedShouldFindAllControllerAnnotatedClassesInThisPackageAndSubPackages()
+      throws PackageNotFoundException, IOException {
+    ClassLoader classLoader = PackageScanner.class.getClassLoader();
+
+    ScannerResult pageClasses =
+        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage", classLoader);
+
+    List<Class<?>> handlers = pageClasses.getHandlers();
     assertSame(2, handlers.size());
     assertTrue("Should have found the First.class", handlers.contains(First.class));
     assertTrue("Should have found the Fifth.class", handlers.contains(Fifth.class));

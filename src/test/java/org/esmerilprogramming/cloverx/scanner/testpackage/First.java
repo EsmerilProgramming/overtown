@@ -1,14 +1,12 @@
 package org.esmerilprogramming.cloverx.scanner.testpackage;
 
+import org.esmerilprogramming.cloverx.annotation.Controller;
+
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 
-public class First implements HttpHandler {
+@Controller
+public class First {
 
-	@Override
-	public void handleRequest(HttpServerExchange arg0) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
