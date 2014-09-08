@@ -30,6 +30,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <undertow-version>1.0.15.Final</undertow-version>
   </properties>
 
   <build>
@@ -49,12 +50,17 @@
     <dependency>
       <groupId>io.undertow</groupId>
       <artifactId>undertow-core</artifactId>
-      <version>1.0.1.Final</version>
+      <version>${undertow-version}</version>
     </dependency>
     <dependency>
       <groupId>io.undertow</groupId>
       <artifactId>undertow-servlet</artifactId>
-      <version>1.0.1.Final</version>
+      <version>${undertow-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.undertow</groupId>
+      <artifactId>undertow-websockets-jsr</artifactId>
+      <version>${undertow-version}</version>
     </dependency>
     <dependency>
       <groupId>com.thoughtworks.paranamer</groupId>
@@ -65,6 +71,11 @@
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker-gae</artifactId>
       <version>2.3.20</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.websocket</groupId>
+      <artifactId>javax.websocket-api</artifactId>
+      <version>1.1</version>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>

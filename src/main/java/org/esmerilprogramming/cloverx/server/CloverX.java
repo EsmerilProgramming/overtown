@@ -4,13 +4,23 @@ package org.esmerilprogramming.cloverx.server;
 import static io.undertow.Handlers.path;
 import io.undertow.Undertow;
 import io.undertow.server.handlers.PathHandler;
+import io.undertow.server.handlers.resource.ClassPathResourceManager;
+import io.undertow.servlet.api.DeploymentInfo;
+import io.undertow.servlet.api.DeploymentManager;
+import io.undertow.servlet.api.ServletContainer;
+import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+
+import org.esmerilprogramming.cloverx.management.JsrChatWebSocketEndpoint;
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
+import org.esmerilprogramming.cloverx.server.exception.NoControllerException;
 import org.jboss.logging.Logger;
+import org.xnio.ByteBufferSlicePool;
 
 public final class CloverX {
 
@@ -28,15 +38,18 @@ public final class CloverX {
 
   private void start( CloverXConfiguration configuration ) {
     LOGGER.info("ignition...");
-    server = buildServer( configuration );
+    try {
+      server = buildServer( configuration );
+    } catch (ServletException e) {
+      e.printStackTrace();
+    }
     server.start();
     LOGGER.info("Enjoy it! http://" + configuration.getHost()
         + ":" + configuration.getPort()
         + "/" + configuration.getAppContext() );
   }
 
-  private Undertow buildServer( CloverXConfiguration configuration ) {
-    
+  private Undertow buildServer( CloverXConfiguration configuration ) throws ServletException {
     return Undertow.builder()
         .addHttpListener( configuration.getPort() ,  configuration.getHost() )
         .setHandler(
@@ -53,7 +66,7 @@ public final class CloverX {
       PathHandlerMounter mounter = new PathHandlerMounter();
       return mounter.mount(scan.getHandlers());
     }
-    return null;
+    throw new NoControllerException("You should specify at least one controller. See https://github.com/EsmerilProgramming/cloverx for more info");
   }
 
   private ScannerResult scanPackagesForHandlers() {
