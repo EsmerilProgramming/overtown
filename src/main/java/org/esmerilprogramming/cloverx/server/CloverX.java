@@ -10,6 +10,7 @@ import java.io.IOException;
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
+import org.esmerilprogramming.cloverx.server.exception.NoControllerException;
 import org.jboss.logging.Logger;
 
 public final class CloverX {
@@ -53,7 +54,7 @@ public final class CloverX {
       PathHandlerMounter mounter = new PathHandlerMounter();
       return mounter.mount(scan.getHandlers());
     }
-    return null;
+    throw new NoControllerException("You should specify at least one controller. See https://github.com/EsmerilProgramming/cloverx for more info");
   }
 
   private ScannerResult scanPackagesForHandlers() {
