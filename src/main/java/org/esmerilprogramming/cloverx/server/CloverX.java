@@ -4,23 +4,16 @@ package org.esmerilprogramming.cloverx.server;
 import static io.undertow.Handlers.path;
 import io.undertow.Undertow;
 import io.undertow.server.handlers.PathHandler;
-import io.undertow.server.handlers.resource.ClassPathResourceManager;
-import io.undertow.servlet.api.DeploymentInfo;
-import io.undertow.servlet.api.DeploymentManager;
-import io.undertow.servlet.api.ServletContainer;
-import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import org.esmerilprogramming.cloverx.management.JsrChatWebSocketEndpoint;
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
 import org.esmerilprogramming.cloverx.server.exception.NoControllerException;
 import org.jboss.logging.Logger;
-import org.xnio.ByteBufferSlicePool;
 
 public final class CloverX {
 
@@ -73,6 +66,7 @@ public final class CloverX {
     ClassLoader classLoader = this.getClass().getClassLoader();
     ScannerResult scan = null;
     try {
+      System.out.println( classLoader );
       scan = new PackageScanner().scan("", classLoader);
     } catch (PackageNotFoundException | IOException e) {
       LOGGER.error(e.getMessage());

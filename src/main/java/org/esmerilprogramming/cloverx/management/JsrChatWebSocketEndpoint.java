@@ -1,6 +1,5 @@
 package org.esmerilprogramming.cloverx.management;
 
-
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
