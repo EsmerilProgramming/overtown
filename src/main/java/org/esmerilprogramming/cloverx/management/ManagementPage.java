@@ -27,7 +27,12 @@ public class ManagementPage {
     System.out.println("SOMETHING BEFORE TRANSLATE");
     request.addAttribute("name", "Efraim Gentil");
   }
-
+  
+  @Page(value = "ws" , responseTemplate = "index.ftl")
+  public void wsTeste() {
+    
+  }
+  
   @Page("teste")
   public void teste(String nomeDaString, CloverXRequest request) {
     System.out.println(nomeDaString);

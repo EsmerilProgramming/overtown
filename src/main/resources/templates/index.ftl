@@ -3,7 +3,7 @@
 <script>
     var socket;
     if (window.WebSocket) {
-        socket = new WebSocket("ws://localhost:8080/ws/myapp");
+        socket = new WebSocket("ws://127.0.0.1:8080/myapp");
         socket.onmessage = function (event) {
             var chat = document.getElementById('chat');
             chat.innerHTML = chat.innerHTML + event.data + "<br />";
