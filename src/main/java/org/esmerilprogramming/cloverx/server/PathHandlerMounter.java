@@ -3,7 +3,6 @@ package org.esmerilprogramming.cloverx.server;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.PathHandler;
-import io.undertow.server.handlers.resource.ClassPathResourceManager;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
@@ -16,11 +15,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.ServletException;
+
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
-import org.esmerilprogramming.cloverx.management.JsrChatWebSocketEndpoint;
+import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.jboss.logging.Logger;
 import org.xnio.ByteBufferSlicePool;
 
@@ -28,41 +29,41 @@ public class PathHandlerMounter {
 
   private static final Logger LOGGER = Logger.getLogger(PathHandlerMounter.class);
 
-  public PathHandler mount(List<Class<?>> handlers) {
+  public PathHandler mount(ScannerResult scanResult) {
     
     PathHandler pathHandler = Handlers.path();
     try {
-      for (Class<?> handlerClass : handlers) {
-        Controller controllerAnnotation = handlerClass.getAnnotation(Controller.class);
-        if (controllerAnnotation != null) {
+      for (Class<?> handlerClass : scanResult.getHandlers()) {
           Constructor<?> constructor = handlerClass.getConstructor();
           constructor.setAccessible(true);
           mountMethods(pathHandler, handlerClass);
-        }
       }
-      
-      final ServletContainer container = ServletContainer.Factory.newInstance();
-
-      DeploymentInfo builder = new DeploymentInfo()
-              .setClassLoader(this.getClass().getClassLoader())
-              .setContextPath("/")
-              .setResourceManager(new ClassPathResourceManager(this.getClass().getClassLoader(), this.getClass().getPackage() ) )
-              .addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME,
-                      new WebSocketDeploymentInfo()
-                              .setBuffers(new ByteBufferSlicePool(100, 1000))
-                              .addEndpoint(JsrChatWebSocketEndpoint.class)
-              )
-              .setDeploymentName("chat.war");
-
-
-      DeploymentManager manager = container.addDeployment(builder);
-      manager.deploy();
-      pathHandler.addPrefixPath("/", manager.start() );
-      
+      pathHandler = mountServerEndpoints(pathHandler , scanResult.getServerEndpoints() );
     } catch (Exception e) {
       LOGGER.error(e.getMessage());
     }
 
+    return pathHandler;
+  }
+  
+  protected PathHandler mountServerEndpoints(final PathHandler pathHandler , List<Class<?>> serverEndpoints) throws ServletException{
+    if(!serverEndpoints.isEmpty()){
+      DeploymentInfo builder = new DeploymentInfo()
+        .setClassLoader(this.getClass().getClassLoader())
+        .setContextPath("/");
+      WebSocketDeploymentInfo wsDeployInfo = new WebSocketDeploymentInfo();
+      wsDeployInfo.setBuffers(new ByteBufferSlicePool(100, 1000));
+      for(Class<?> serverEndpoint : serverEndpoints ){
+        wsDeployInfo.addEndpoint( serverEndpoint );
+      }
+      builder.addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME, wsDeployInfo );
+      builder.setDeploymentName("websocketDeploy.war");
+      
+      final ServletContainer container = ServletContainer.Factory.newInstance();
+      DeploymentManager manager = container.addDeployment(builder);
+      manager.deploy();
+      pathHandler.addPrefixPath("/", manager.start() );
+    }      
     return pathHandler;
   }
 

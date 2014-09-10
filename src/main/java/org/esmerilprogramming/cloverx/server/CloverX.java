@@ -64,7 +64,7 @@ public final class CloverX {
     ScannerResult scan = scanPackagesForHandlers();
     if (!scan.getHandlers().isEmpty()) {
       PathHandlerMounter mounter = new PathHandlerMounter();
-      return mounter.mount(scan.getHandlers());
+      return mounter.mount( scan );
     }
     throw new NoControllerException("You should specify at least one controller. See https://github.com/EsmerilProgramming/cloverx for more info");
   }
