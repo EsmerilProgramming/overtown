@@ -1,7 +1,5 @@
 package org.esmerilprogramming.cloverx.scanner;
 
-import io.undertow.server.HttpHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 

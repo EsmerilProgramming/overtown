@@ -91,7 +91,6 @@ public class ManagementPage {
 //    request.addAttribute("name", "Efraim Gentil");
     CloverXSession session = request.getSession();
     System.out.println( session.getAttribute("nome") );
-    System.out.println( session.getAttribute("int", Integer.class ) );
     
   }
   

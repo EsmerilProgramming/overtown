@@ -18,6 +18,7 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
 
   private ClassLoader classLoader;
   private Pattern classPatern = Pattern.compile("\\.class$");
+  private String pathToReplace = null;
 
   public ClassFileVisitor(ClassLoader classLoader) {
     this.classLoader = classLoader;
@@ -27,8 +28,9 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
   public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
     if (isClass(file)) {
       LOGGER.info(file.toString());
-      
       try {
+//        System.out.println("scanning file: " + file );
+//        System.out.println("scanning as package: " + asPackageClass(file) );
         Class<?> loadedClass = classLoader.loadClass(asPackageClass(file));
         getResult().addClass(loadedClass);
       } catch (ClassNotFoundException e) {
@@ -43,9 +45,14 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
   }
 
   public String asPackageClass(Path file) {
-    URL url = ClassFileVisitor.class.getResource("/");
-    String strPackage = file.toString().replace(url.getPath(), "");
-    return strPackage.replaceAll("\\/", ".").replace(".class", "");
+    String strPackage = file.toString();
+    if(getPathToReplace() != null){
+      strPackage = strPackage.replace( getPathToReplace() , "");
+    }
+    String asPackaged = strPackage.replaceAll("\\/|\\\\", ".").replace(".class", "");
+    if( asPackaged.charAt(0) == ".".charAt(0))
+      asPackaged = asPackaged.substring(1);
+    return asPackaged;
   }
 
   public ScannerResult getResult() {
@@ -53,6 +60,14 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
       result = new ScannerResult();
     }
     return result;
+  }
+
+  public String getPathToReplace() {
+    return pathToReplace;
+  }
+
+  public void setPathToReplace(String pathToReplace) {
+    this.pathToReplace = pathToReplace;
   }
 
 }

@@ -33,7 +33,7 @@ public final class CloverX {
     LOGGER.info("ignition...");
     try {
       server = buildServer( configuration );
-    } catch (ServletException e) {
+    } catch (ServletException | IOException e) {
       e.printStackTrace();
     }
     server.start();
@@ -42,7 +42,8 @@ public final class CloverX {
         + "/" + configuration.getAppContext() );
   }
 
-  private Undertow buildServer( CloverXConfiguration configuration ) throws ServletException {
+  private Undertow buildServer( CloverXConfiguration configuration ) throws ServletException, IOException {
+    ConfigurationHandler.getInstance().prepareConfiguration(configuration);
     return Undertow.builder()
         .addHttpListener( configuration.getPort() ,  configuration.getHost() )
         .setHandler(
@@ -66,9 +67,9 @@ public final class CloverX {
     ClassLoader classLoader = this.getClass().getClassLoader();
     ScannerResult scan = null;
     try {
-      System.out.println( classLoader );
       scan = new PackageScanner().scan("", classLoader);
     } catch (PackageNotFoundException | IOException e) {
+      e.printStackTrace();
       LOGGER.error(e.getMessage());
     }
     return scan;

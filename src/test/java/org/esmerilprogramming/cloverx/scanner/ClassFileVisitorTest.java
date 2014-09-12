@@ -63,7 +63,8 @@ public class ClassFileVisitorTest {
     URL url = ClassFileVisitorTest.class.getResource("/");
     Path path = Paths.get(url.getPath() + "/com/clover/scanner/testpackage/First.class");
     String expectedResult = "com.clover.scanner.testpackage.First";
-
+    
+    fileVisitor.setPathToReplace( url.getPath() );
     String result = fileVisitor.asPackageClass(path);
 
     assertEquals(expectedResult, result);

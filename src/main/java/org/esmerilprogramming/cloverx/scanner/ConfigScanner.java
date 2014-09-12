@@ -18,9 +18,7 @@ public class ConfigScanner {
     String[] list = getFileList(packageToSearch);
     try {
       for (String s : list) {
-
         LOGGER.info(s);
-
         Class<?> loadedClass =
             classLoader.loadClass(packageToSearch + "." + s.replace(".properties", ""));
         pageClasses.add(loadedClass);
