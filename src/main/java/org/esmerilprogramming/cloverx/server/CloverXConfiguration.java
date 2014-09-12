@@ -6,6 +6,7 @@ public class CloverXConfiguration {
   private Integer port;
   private String appContext;
   private String staticRootPath;
+  private String templateRootPath;
   
   public String getHost() {
     return host;
@@ -30,6 +31,12 @@ public class CloverXConfiguration {
   }
   public void setStaticRootPath(String staticRootPath) {
     this.staticRootPath = staticRootPath;
+  }
+  public String getTemplateRootPath() {
+    return templateRootPath;
+  }
+  public void setTemplateRootPath(String templateRootPath) {
+    this.templateRootPath = templateRootPath;
   }
   
 }

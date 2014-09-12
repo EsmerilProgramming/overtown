@@ -1,15 +1,13 @@
 package org.esmerilprogramming.cloverx.scanner;
 
-import static org.junit.Assert.*;
-import io.undertow.server.HttpHandler;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
-import org.esmerilprogramming.cloverx.scanner.PackageScanner;
-import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
 import org.esmerilprogramming.cloverx.scanner.testpackage.First;
 import org.esmerilprogramming.cloverx.scanner.testpackage.Second;
@@ -18,7 +16,6 @@ import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.AnotherSeverEn
 import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fifth;
 import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fourth;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class PackageScannerTest {
@@ -37,12 +34,12 @@ public class PackageScannerTest {
 
     scanner.scan("com.wrong.package", classLoader);
   }
-  
+
   @Test
   public void givenAPackagedShouldFindAllServerEndpointAnnotatedClassesInThisPackageAndSubPackages()
       throws PackageNotFoundException, IOException {
     ClassLoader classLoader = PackageScanner.class.getClassLoader();
-
+    
     ScannerResult pageClasses =
         scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage", classLoader);
 

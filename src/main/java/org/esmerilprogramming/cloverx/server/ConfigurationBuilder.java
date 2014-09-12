@@ -6,6 +6,7 @@ public class ConfigurationBuilder {
   private Integer port = 8080;
   private String appContext = "";
   private String staticRootPath = "static";
+  private String templateRootPath = "templates";
   
   
   public ConfigurationBuilder withHost(String host){
@@ -47,6 +48,7 @@ public class ConfigurationBuilder {
     config.setPort(port);
     config.setAppContext(appContext);
     config.setStaticRootPath(staticRootPath);
+    config.setTemplateRootPath(templateRootPath);
     return config;
   }
   
@@ -55,7 +57,8 @@ public class ConfigurationBuilder {
     config.setHost("127.0.0.1");
     config.setPort(8080);
     config.setAppContext("");
-    config.setStaticRootPath("static");
+    config.setStaticRootPath(staticRootPath);
+    config.setTemplateRootPath(templateRootPath);
     return config;
   }
   
