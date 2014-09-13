@@ -43,7 +43,7 @@ public final class CloverX {
   }
 
   private Undertow buildServer( CloverXConfiguration configuration ) throws ServletException, IOException {
-    ConfigurationHandler.getInstance().prepareConfiguration(configuration);
+    ConfigurationHolder.getInstance().prepareConfiguration(configuration);
     return Undertow.builder()
         .addHttpListener( configuration.getPort() ,  configuration.getHost() )
         .setHandler(

@@ -12,43 +12,50 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class UnzipJar {
-
-  public void unzipJar(String destinationDir, String jarPath) throws IOException {
+  
+  public void unzipJar(ConfigurationHolder configHandler, String jarPath) throws IOException {
     try {
-      CloverXConfiguration configuration = ConfigurationHandler.getInstance().getConfiguration();
-      
+      String destinationDir = configHandler.getRootTemp() + File.separator + configHandler.getRootName();
       File file = new File(jarPath);
-      JarFile jar = new JarFile(file);
-      
-      Enumeration<JarEntry> enums = jar.entries();
-      while (enums.hasMoreElements()) {
-        JarEntry entry = enums.nextElement();
-        
-        if (entry.getName().startsWith( configuration.getStaticRootPath() ) || entry.getName().startsWith( configuration.getTemplateRootPath() ) ) {
-          File toWrite = new File(destinationDir + "/" + entry.getName());
-          System.out.println( toWrite );
-          if (entry.isDirectory()) {
-            toWrite.mkdirs();
-            continue;
-          }
-          InputStream in = new BufferedInputStream(jar.getInputStream(entry));
-          OutputStream out = new BufferedOutputStream(new FileOutputStream(toWrite));
-          byte[] buffer = new byte[2048];
-          for (;;) {
-            int nBytes = in.read(buffer);
-            if (nBytes <= 0) {
-              break;
+      try (JarFile jar = new JarFile(file)) {
+        Enumeration<JarEntry> enums = jar.entries();
+        while (enums.hasMoreElements()) {
+          JarEntry entry = enums.nextElement();
+          if( isResource(entry, configHandler) ) {
+            File toWrite = new File( destinationDir + "/" + entry.getName() );
+            System.out.println(toWrite);
+            if (entry.isDirectory()) {
+              toWrite.mkdirs();
+              continue;
             }
-            out.write(buffer, 0, nBytes);
+            writeToFile( jar , entry , toWrite );
           }
-          out.flush();
-          out.close();
-          in.close();
         }
       }
     } catch (IOException ex) {
-        ex.printStackTrace();
+      ex.printStackTrace();
     }
-    
   }
+  
+  protected boolean isResource(JarEntry entry , ConfigurationHolder configHandler){
+    CloverXConfiguration configuration = configHandler.getConfiguration();
+    String fileName = entry.getName();
+    return fileName.startsWith( configuration.getStaticRootPath() )
+              || fileName.startsWith( configuration.getTemplateRootPath()) ;
+  }
+  
+  public void writeToFile(JarFile jFile , JarEntry jEntry , File toWrite ) throws IOException{
+    try( InputStream in = new BufferedInputStream(jFile.getInputStream(jEntry));
+         OutputStream out = new BufferedOutputStream(new FileOutputStream(toWrite)) ){
+      byte[] buffer = new byte[2048];
+      for (;;) {
+        int nBytes = in.read(buffer);
+        if (nBytes <= 0) {
+          break;
+        }
+        out.write(buffer, 0, nBytes);
+      }
+    }
+  }
+  
 }

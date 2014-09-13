@@ -11,7 +11,6 @@ public class ViewAttributes {
     attributes = new HashMap<String, Object>();
   }
   
-  
   public <T> void add(String name , T value){
     attributes.put(name, value);
   }
