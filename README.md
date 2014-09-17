@@ -6,6 +6,8 @@ CloverX
 
 ## Getting started
 
+Current version - 0.1.0-SNAPSHOT
+
 ### Getting the lib
 #### Maven
   You need to configure the snapshot repository from Sonatype 
@@ -23,7 +25,7 @@ CloverX
   <dependency>
     <groupId>com.github.esmerilprogramming</groupId>
     <artifactId>cloverx</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
