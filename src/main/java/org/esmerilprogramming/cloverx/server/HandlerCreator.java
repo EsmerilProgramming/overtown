@@ -60,52 +60,51 @@ public class HandlerCreator {
     Page methodPagePath = method.getAnnotation(Page.class);
     final String responseTemplate = methodPagePath.responseTemplate();
     
-    HttpHandler handler = new HttpHandler() {
-      private final Logger LOGGER = Logger.getLogger(pageClass);
-      
-      public void handleRequest(HttpServerExchange exchange) throws Exception {
-        Object newInstance;
-        try {
-          newInstance = pageClass.getConstructor().newInstance();
-          try {
-            Class<?>[] parameterTypes = method.getParameterTypes();
-            CloverXRequest request = new CloverXRequest(exchange);
-            //Call before methods
-            for (Method method : beforeExecutemethods) {
-              method.invoke(newInstance, request);
-            }
-            
-            request = converterMounter.mountParameterConveters(method, parameterNames, request);
-            
-            ParametersConverter translator = new ParametersConverter();
-            Object[] parameters =  translator.translateAllParameters(parameterNames, parameterTypes, request);
-            CoreClassInjector injector = new CoreClassInjectorImpl();
-            parameters =  injector.injectCoreInstances(parameterNames , parameters , parameterTypes, request);
-            
-            method.invoke(newInstance, parameters);
+    HttpHandler handler = null;
+    try {
+      handler = new HttpHandler() {
+        private final Logger LOGGER = Logger.getLogger(pageClass);
+        
+        private final Object newInstance = pageClass.getConstructor().newInstance();
+        
+        public void handleRequest(HttpServerExchange exchange) throws Exception {
+            try {
+              Class<?>[] parameterTypes = method.getParameterTypes();
+              CloverXRequest request = new CloverXRequest(exchange);
 
-            Response response = request.getResponse();
-            if (!Page.NO_TEMPLATE.equals(responseTemplate) && !response.isResponseSend()) {
-               request.respondAsHttp();
-               ((HttpResponse)request.getResponse() ).fowardTo( responseTemplate );  
-            }else{
-              //TODO should check json or xml response 
-              if(!response.isResponseSend()){
-                response.close();
+              for (Method method : beforeExecutemethods) {
+                method.invoke(newInstance, request);
               }
+              request = converterMounter.mountParameterConveters(method, parameterNames, request);
+              
+              ParametersConverter translator = new ParametersConverter();
+              Object[] parameters =  translator.translateAllParameters(parameterNames, parameterTypes, request);
+              CoreClassInjector injector = new CoreClassInjectorImpl();
+              parameters =  injector.injectCoreInstances(parameterNames , parameters , parameterTypes, request);
+              
+              method.invoke(newInstance, parameters);
+
+              Response response = request.getResponse();
+              if (!Page.NO_TEMPLATE.equals(responseTemplate) && !response.isResponseSend()) {
+                 request.respondAsHttp();
+                 ((HttpResponse)request.getResponse() ).fowardTo( responseTemplate );  
+              }else{
+                //TODO should check json or xml response 
+                if(!response.isResponseSend()){
+                  response.close();
+                }
+              }
+            } catch (IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {
+              e.printStackTrace();
+              LOGGER.error(e.getMessage());
             }
-          } catch (IllegalAccessException | IllegalArgumentException
-              | InvocationTargetException e) {
-            e.printStackTrace();
-            LOGGER.error(e.getMessage());
-          }
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-            | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-          e1.printStackTrace();
-          LOGGER.error(e1.getMessage());
         }
-      }
-    };
+      };
+    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+        | InvocationTargetException e) {
+      e.printStackTrace();
+    }
     
     CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
     return new SessionAttachmentHandler( handler , sessionManager.getSessionManager(), sessionManager.getSessionConfig() );
