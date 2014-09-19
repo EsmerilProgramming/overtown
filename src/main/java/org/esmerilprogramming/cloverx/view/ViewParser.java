@@ -15,13 +15,8 @@ public class ViewParser {
   private Configuration cfg = new Configuration();
 
   public ViewParser() throws IOException {
-    try {
       ConfigurationHolder configHandler = ConfigurationHolder.getInstance();
-      cfg.setDirectoryForTemplateLoading( configHandler.getTemplateDir() );
-      cfg.setObjectWrapper( new DefaultObjectWrapper() );
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+      cfg = configHandler.getFreemarkerConfig();
   }
 
   public final String parse(ViewAttributes viewAttributes, String templateName)
