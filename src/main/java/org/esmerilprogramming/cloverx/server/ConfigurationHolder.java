@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.security.CodeSource;
 
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+
 public class ConfigurationHolder {
   
   private static ConfigurationHolder configurationHandler; 
@@ -32,8 +35,12 @@ public class ConfigurationHolder {
   private File templateDir;
   private File staticResourceDir;
   
+  private Configuration freemarkerConfig;
+  
+  
   public void prepareConfiguration(CloverXConfiguration configuration) throws IOException{
       this.configuration = configuration; 
+      @SuppressWarnings("rawtypes")
       Class thisClass = this.getClass();
       
       CodeSource src = this.getClass().getProtectionDomain().getCodeSource();
@@ -50,6 +57,11 @@ public class ConfigurationHolder {
         source = thisClass.getResource("/" + System.getProperty("java.class.path") );
         System.out.println("defined class path: " + classPathDir);
       }
+      
+      freemarkerConfig = new Configuration();
+      freemarkerConfig.setDirectoryForTemplateLoading( getTemplateDir() );
+      freemarkerConfig.setObjectWrapper( new DefaultObjectWrapper() );
+      
       processDeploy(source);
   }
 
@@ -123,6 +135,10 @@ public class ConfigurationHolder {
       staticResourceDir = new File( url.getPath() );
     }
     return staticResourceDir;
+  }
+
+  public Configuration getFreemarkerConfig() {
+    return freemarkerConfig;
   }
   
 }

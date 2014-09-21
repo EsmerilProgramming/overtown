@@ -5,6 +5,7 @@ import io.undertow.server.session.InMemorySessionManager;
 import io.undertow.server.session.Session;
 import io.undertow.server.session.SessionConfig;
 import io.undertow.server.session.SessionCookieConfig;
+import io.undertow.server.session.SessionListener;
 
 public class CloverXSessionManager {
   
