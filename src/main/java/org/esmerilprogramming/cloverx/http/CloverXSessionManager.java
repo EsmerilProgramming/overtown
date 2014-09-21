@@ -1,11 +1,13 @@
 package org.esmerilprogramming.cloverx.http;
 
+import org.esmerilprogramming.cloverx.scanner.ScannerResult;
+import org.esmerilprogramming.cloverx.server.CloverXConfiguration;
+
 import io.undertow.server.HttpServerExchange;
 import io.undertow.server.session.InMemorySessionManager;
 import io.undertow.server.session.Session;
 import io.undertow.server.session.SessionConfig;
 import io.undertow.server.session.SessionCookieConfig;
-import io.undertow.server.session.SessionListener;
 
 public class CloverXSessionManager {
   
@@ -29,15 +31,6 @@ public class CloverXSessionManager {
   private Session getUndertowSession(HttpServerExchange exchange){
     return getSessionManager().getSession(exchange, getSessionConfig() );
   }
-  
-  /*public CloverXSession getSession(HttpServerExchange exchange){
-    Session session = getUndertowSession(exchange);
-    if(session != null){
-      return new CloverXSession(exchange, session);
-    }else{
-      return null;
-    }
-  }*/
   
   public CloverXSession createNewSession(HttpServerExchange exchange ){
     Session undertowSession = getUndertowSession(exchange);

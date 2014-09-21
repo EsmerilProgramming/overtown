@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.websocket.server.ServerEndpoint;
 
 import org.esmerilprogramming.cloverx.annotation.Controller;
+import org.esmerilprogramming.cloverx.annotation.session.SessionListener;
 
 /**
  * 
@@ -16,12 +17,14 @@ public class ScannerResult {
 
   private List<Class<?>> handlers;
   private List<Class<?>> serverEndpoints;
+  private List<Class<?>> sessionListeners;
   private List<Class<? extends HttpServlet>> servlets;
 
   public ScannerResult() {
     handlers = new ArrayList<>();
     servlets = new ArrayList<>();
     serverEndpoints = new ArrayList<>();
+    sessionListeners = new ArrayList<>();
   }
 
   @SuppressWarnings("unchecked")
@@ -34,7 +37,8 @@ public class ScannerResult {
       addServletClass((Class<? extends HttpServlet>) unkownClass);
     if( unkownClass.getAnnotation(ServerEndpoint.class) != null)
       addServerEndpointClass(unkownClass);
-    
+    if( unkownClass.getAnnotation(SessionListener.class) != null )
+      sessionListeners.add( unkownClass );
   }
 
   protected void addHandlerClass(Class<?> handlerClass) {
@@ -59,6 +63,10 @@ public class ScannerResult {
 
   public List<Class<?>> getServerEndpoints() {
     return serverEndpoints;
+  }
+
+  public List<Class<?>> getSessionListeners() {
+    return sessionListeners;
   }
 
 }

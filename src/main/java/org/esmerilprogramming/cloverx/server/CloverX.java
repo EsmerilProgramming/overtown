@@ -13,6 +13,8 @@ import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
 import org.esmerilprogramming.cloverx.server.exception.NoControllerException;
+import org.esmerilprogramming.cloverx.server.handlers.PreBuildHandler;
+import org.esmerilprogramming.cloverx.server.handlers.PreBuildHandlerImpl;
 import org.jboss.logging.Logger;
 
 public final class CloverX {
@@ -43,26 +45,28 @@ public final class CloverX {
   }
 
   private Undertow buildServer( CloverXConfiguration configuration ) throws ServletException, IOException {
-    ConfigurationHolder.getInstance().prepareConfiguration(configuration);
+    PreBuildHandler preBuildHandler = new PreBuildHandlerImpl();
+    preBuildHandler.prepareBuild(configuration);
     return Undertow.builder()
         .addHttpListener( configuration.getPort() ,  configuration.getHost() )
         .setHandler(
             path()
-            .addPrefixPath("/" + configuration.getAppContext() , createHandler())
+            .addPrefixPath("/" + configuration.getAppContext() , preBuildHandler.createAppHandlers() )
             .addPrefixPath("/" + configuration.getStaticRootPath() , new ResourceHandlerMounter()
             .mount()))
         .build();
   }
-
-  private PathHandler createHandler() {
-    ScannerResult scan = scanPackagesForHandlers();
-    if (!scan.getHandlers().isEmpty()) {
+  
+  @Deprecated
+  private PathHandler createHandler( ScannerResult scan ) {
+    if( !scan.getHandlers().isEmpty() ) {
       PathHandlerMounter mounter = new PathHandlerMounter();
       return mounter.mount( scan );
     }
     throw new NoControllerException("You should specify at least one controller. See https://github.com/EsmerilProgramming/cloverx for more info");
   }
-
+  
+  @Deprecated
   private ScannerResult scanPackagesForHandlers() {
     ClassLoader classLoader = this.getClass().getClassLoader();
     ScannerResult scan = null;

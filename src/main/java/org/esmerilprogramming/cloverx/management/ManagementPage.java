@@ -105,6 +105,13 @@ public class ManagementPage {
     }
   }
   
+  @Page(value = "logout")
+  public void logout(CloverXRequest request , String nome) {
+    CloverXSession session = request.getSession();
+    session.destroy();
+  }
+  
+  
   @Page(value = "newSession")
   public void testeTemplateT(CloverXRequest request , String nome) {
     CloverXSession session = request.createSession();
