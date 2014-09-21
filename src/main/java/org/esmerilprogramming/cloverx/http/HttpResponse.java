@@ -6,6 +6,7 @@ import io.undertow.server.HttpServerExchange;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import org.esmerilprogramming.cloverx.server.ConfigurationHolder;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 import org.esmerilprogramming.cloverx.view.ViewParser;
 
@@ -20,7 +21,7 @@ public class HttpResponse extends Response {
   @Override
   public void fowardTo(String viewName) {
     try {
-      sendAsResponse( new ViewParser().parse(viewAttributes, viewName ) );
+      sendAsResponse( new ViewParser( ConfigurationHolder.getInstance() ).parse(viewAttributes, viewName ) );
     } catch (TemplateException  | IOException e ) {
       e.printStackTrace();
       throw new RuntimeException("Sorry but an error occurred,  verify if the view exists and try again");

@@ -40,6 +40,7 @@ public class ConfigurationHolder {
   
   public void prepareConfiguration(CloverXConfiguration configuration) throws IOException{
       this.configuration = configuration; 
+      @SuppressWarnings("rawtypes")
       Class thisClass = this.getClass();
       
       CodeSource src = this.getClass().getProtectionDomain().getCodeSource();

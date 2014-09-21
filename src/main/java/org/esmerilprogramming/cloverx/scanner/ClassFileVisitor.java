@@ -1,7 +1,6 @@
 package org.esmerilprogramming.cloverx.scanner;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;

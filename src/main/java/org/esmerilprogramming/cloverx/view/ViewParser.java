@@ -6,7 +6,6 @@ import java.io.StringWriter;
 import org.esmerilprogramming.cloverx.server.ConfigurationHolder;
 
 import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -14,8 +13,7 @@ public class ViewParser {
 
   private Configuration cfg = new Configuration();
 
-  public ViewParser() throws IOException {
-      ConfigurationHolder configHandler = ConfigurationHolder.getInstance();
+  public ViewParser( ConfigurationHolder configHandler ) throws IOException {
       cfg = configHandler.getFreemarkerConfig();
   }
 
