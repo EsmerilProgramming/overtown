@@ -58,10 +58,6 @@ public class ConfigurationHolder {
         System.out.println("defined class path: " + classPathDir);
       }
       
-      freemarkerConfig = new Configuration();
-      freemarkerConfig.setDirectoryForTemplateLoading( getTemplateDir() );
-      freemarkerConfig.setObjectWrapper( new DefaultObjectWrapper() );
-      
       processDeploy(source);
   }
 
@@ -69,8 +65,16 @@ public class ConfigurationHolder {
     System.out.println("Processing the deploy type: " + deployType);
     if(deployType == DeployType.JAR){
       //UNZIP RESOURCES;
+      System.out.println("IS JAR FILE");
       new UnzipJar().unzipJar( this , source.getPath() );
     }
+    prepareFremarker() ;
+  }
+  
+  private void prepareFremarker() throws IOException{
+    freemarkerConfig = new Configuration();
+    freemarkerConfig.setDirectoryForTemplateLoading( getTemplateDir() );
+    freemarkerConfig.setObjectWrapper( new DefaultObjectWrapper() );
   }
 
   public CloverXConfiguration getConfiguration() {
