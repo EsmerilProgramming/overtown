@@ -129,6 +129,14 @@ public class CloverXRequest {
   public void addConverter(String parameterName , GenericConverter<?> converter){
     parameterConverters.put(parameterName, converter);
   }
+  
+  public void addConverters( Map<String, GenericConverter<?>> converterMaps ){
+    parameterConverters.putAll(converterMaps);
+  }
+  
+  public void setConverters( Map<String, GenericConverter<?>> converterMaps ){
+    parameterConverters = converterMaps;
+  }
 
   public boolean shouldConvertParameter(String parameterName) {
     return parameterConverters.containsKey(parameterName);

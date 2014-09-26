@@ -2,9 +2,10 @@ package org.esmerilprogramming.cloverx.server.mounters;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.esmerilprogramming.cloverx.annotation.Converter;
-import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
 import org.jboss.logging.Logger;
 
@@ -17,21 +18,21 @@ public class ConverterMounterImpl implements ConverterMounter {
    * if found will add the custom converter to the CloverXRequest to be used in the parameter conversion 
    */
   @Override
-  public CloverXRequest mountParameterConveters(Method method, String[] parameterNames,
-      CloverXRequest request) {
+  public  Map<String, GenericConverter<?>> mountParameterConveters(Method method, String[] parameterNames) {
+    Map<String, GenericConverter<?>> converterMap = new HashMap<>();
     try {
-      request = mountFromMethodConverterAnnotation(method, parameterNames, request);
-      request = mountFromParamConveterAnnotation(method, parameterNames, request);
+      converterMap = mountFromMethodConverterAnnotation(method, parameterNames, converterMap);
+      converterMap = mountFromParamConveterAnnotation(method, parameterNames, converterMap);
     } catch (InstantiationException e) {
       LOGGER.error("There is a problem on instantiating the converter, verify if the converter have a default constructor");
       e.printStackTrace();
     } catch (IllegalAccessException e) {
       e.printStackTrace();
     }
-    return request;
+    return converterMap;
   }
   
-  private CloverXRequest mountFromMethodConverterAnnotation(Method method, String[] parameterNames , CloverXRequest request) throws InstantiationException, IllegalAccessException{
+  protected Map<String, GenericConverter<?>> mountFromMethodConverterAnnotation(Method method, String[] parameterNames , Map<String, GenericConverter<?>> converterMap) throws InstantiationException, IllegalAccessException{
     Annotation[] annotations = method.getAnnotations();
     for (Annotation annotation : annotations) {
       if(annotation instanceof Converter){
@@ -43,14 +44,14 @@ public class ConverterMounterImpl implements ConverterMounter {
               + " the parameter name that will be converted");
         }else{
           Class<? extends GenericConverter<?>> converterClass = c.value();
-          request.addConverter(paramName, converterClass.newInstance() );
+          converterMap.put(paramName, converterClass.newInstance() );
         }
       }
     }
-    return request;
+    return converterMap;
   }
   
-  private CloverXRequest mountFromParamConveterAnnotation(Method method, String[] parameterNames , CloverXRequest request) throws InstantiationException, IllegalAccessException{
+  protected Map<String, GenericConverter<?>> mountFromParamConveterAnnotation(Method method, String[] parameterNames , Map<String, GenericConverter<?>> converterMap) throws InstantiationException, IllegalAccessException{
     Annotation[][] parameterAnnotations = method.getParameterAnnotations();
     for( int i = 0 ; i < parameterNames.length ; i++){
       String parameterName = parameterNames[i];
@@ -58,14 +59,11 @@ public class ConverterMounterImpl implements ConverterMounter {
       for (Annotation annotation : ann) {
         if(annotation instanceof Converter){
           Class<? extends GenericConverter<?>> value = ((Converter) annotation).value();
-          request.addConverter( parameterName ,  value.newInstance() );
+          converterMap.put( parameterName ,  value.newInstance() );
         }
       }
     }
-    return request;
+    return converterMap;
   }
-  
- 
-  
   
 }

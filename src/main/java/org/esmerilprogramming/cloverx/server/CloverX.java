@@ -19,14 +19,18 @@ public final class CloverX {
   private Undertow server;
   
   public CloverX( CloverXConfiguration configuration ){
-    start(configuration);
+    try{
+      start(configuration);
+    }catch(RuntimeException e){
+      LOGGER.error("Erro on startup");
+    }
   }
 
   public CloverX() {
     this( new ConfigurationBuilder().defaultConfiguration() );
   }
 
-  private void start( CloverXConfiguration configuration ) {
+  private void start( CloverXConfiguration configuration ) throws RuntimeException {
     LOGGER.info("ignition...");
     try {
       server = buildServer( configuration );
@@ -37,6 +41,10 @@ public final class CloverX {
     LOGGER.info("Enjoy it! http://" + configuration.getHost()
         + ":" + configuration.getPort()
         + "/" + configuration.getAppContext() );
+  }
+  
+  public void stop(){
+    server.stop();
   }
 
   private Undertow buildServer( CloverXConfiguration configuration ) throws ServletException, IOException {
