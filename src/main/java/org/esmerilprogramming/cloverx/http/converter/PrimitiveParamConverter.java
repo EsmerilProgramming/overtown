@@ -25,5 +25,17 @@ public class PrimitiveParamConverter implements ParameterConverter {
 				|| PrimitiveDoubleConverter.isPrimitiveDouble(clazz)
 				|| PrimitiveLongConverter.isPrimitiveLong(clazz);
 	}
+	
+	public ParameterConverter getConveter(Class<?> clazz){
+	  ParameterConverter translator = null;
+      if( PrimitiveIntegerConverter.isPrimitiveInteger(clazz) ){
+          translator = new PrimitiveIntegerConverter();
+      }else if ( PrimitiveLongConverter.isPrimitiveLong(clazz) ){
+          translator = new PrimitiveLongConverter();
+      }else if ( PrimitiveDoubleConverter.isPrimitiveDouble(clazz) ){
+          translator = new PrimitiveDoubleConverter();
+      }
+      return translator;
+	}
 
 }

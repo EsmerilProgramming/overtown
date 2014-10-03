@@ -34,6 +34,22 @@ public class CommonsParamConverter implements ParameterConverter {
 
     return translator;
   }
+  
+  public ParameterConverter getConveter(Class<?> clazz){
+    ParameterConverter translator = new EmptyParamConverter();
+    if (isString(clazz))
+      translator = new StringConverter();
+    else if (isInteger(clazz))
+      translator = new IntegerConverter();
+    else if (isDouble(clazz))
+      translator = new DoubleConverter();
+    else if (isLong(clazz))
+      translator = new LongConverter();
+    else if (isBoolean(clazz))
+      translator = new BooleanConverter();
+    return translator;
+  }
+  
 
   public static boolean isCommonParam(Class<?> clazz) {
     return (isString(clazz) || isInteger(clazz) || isLong(clazz) || isDouble(clazz));
