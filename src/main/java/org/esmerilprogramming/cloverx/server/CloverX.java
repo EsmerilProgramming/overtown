@@ -23,6 +23,7 @@ public final class CloverX {
       start(configuration);
     }catch(RuntimeException e){
       LOGGER.error("Erro on startup");
+      LOGGER.error( e.getMessage() );
     }
   }
 

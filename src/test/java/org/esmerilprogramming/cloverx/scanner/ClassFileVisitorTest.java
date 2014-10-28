@@ -1,6 +1,7 @@
 package org.esmerilprogramming.cloverx.scanner;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,12 +30,12 @@ public class ClassFileVisitorTest {
 
   @Test
   @Ignore
-  public void t() throws IOException {
+  public void t() throws IOException, URISyntaxException {
     ClassLoader classLoader = this.getClass().getClassLoader();
     ClassFileVisitor visitor = new ClassFileVisitor(classLoader);
     URL url = ClassFileVisitorTest.class.getResource("/");
 
-    Files.walkFileTree(Paths.get(url.getPath() + "/com/clover/scanner/testpackage"), visitor);
+    Files.walkFileTree(Paths.get( Paths.get( url.toURI()  ).toString() + "/com/clover/scanner/testpackage"), visitor);
 
     ScannerResult result = visitor.getResult();
 
@@ -43,28 +44,29 @@ public class ClassFileVisitorTest {
   }
 
   @Test
-  public void givenAPathToAClassFileShouldReturnTrue() {
+  public void givenAPathToAClassFileShouldReturnTrue() throws URISyntaxException {
     URL url = ClassFileVisitorTest.class.getResource("/");
-    Path path = Paths.get(url.getPath() + "/com/clover/scanner/testpackage/First.class");
+    
+    Path path = Paths.get( Paths.get( url.toURI()  ).toString() + "/com/clover/scanner/testpackage/First.class");
 
     assertTrue("Sould return true when it is a class", fileVisitor.isClass(path));
   }
 
   @Test
-  public void givenAPathToANonClassFileShouldReturnFalse() {
+  public void givenAPathToANonClassFileShouldReturnFalse() throws URISyntaxException {
     URL url = ClassFileVisitorTest.class.getResource("/");
-    Path path = Paths.get(url.getPath() + "/com/clover/scanner/");
+    Path path = Paths.get( Paths.get( url.toURI()  ).toString() + "/com/clover/scanner/");
 
     assertFalse("Sould return false when it is not class", fileVisitor.isClass(path));
   }
 
   @Test
-  public void givenAClassFilePathShouldReturnStringWithThePackageAndClass() {
+  public void givenAClassFilePathShouldReturnStringWithThePackageAndClass() throws URISyntaxException {
     URL url = ClassFileVisitorTest.class.getResource("/");
-    Path path = Paths.get(url.getPath() + "/com/clover/scanner/testpackage/First.class");
+    Path path = Paths.get( Paths.get( url.toURI()  ).toString() + "/com/clover/scanner/testpackage/First.class");
+   
     String expectedResult = "com.clover.scanner.testpackage.First";
-    
-    fileVisitor.setPathToReplace( url.getPath() );
+    fileVisitor.setPathToReplace( Paths.get( url.toURI()  ).toString() );
     String result = fileVisitor.asPackageClass(path);
 
     assertEquals(expectedResult, result);

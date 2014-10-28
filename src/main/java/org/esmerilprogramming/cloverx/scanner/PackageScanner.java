@@ -42,7 +42,7 @@ public class PackageScanner {
             + packageToSearch + ") package to scan");
       try {
         Path path = Paths.get(currentClassPath.toURI());
-        visitor.setPathToReplace(thisClass.getResource("/").getPath().toString());
+        visitor.setPathToReplace( Paths.get( thisClass.getResource("/").toURI() ).toString() );
         Files.walkFileTree(path, visitor);
       } catch (URISyntaxException e) {
         e.printStackTrace();
