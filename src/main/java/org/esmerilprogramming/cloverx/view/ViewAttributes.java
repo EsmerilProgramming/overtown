@@ -15,6 +15,10 @@ public class ViewAttributes {
     attributes.put(name, value);
   }
   
+  public boolean attributeExists(String key){
+	  return attributes.containsKey(key);
+  }
+  
   public Map<String, Object> getAsMap(){
     return attributes;
   }

@@ -83,6 +83,10 @@ public abstract class Response {
     setStatus(statusError.getCode());
     close();
   }
+  
+  public void finishResponse(){
+	  close();
+  }
 
   public final void close() {
     if (!responseSend) {
