@@ -76,20 +76,43 @@ public class JsonResponse extends Response {
 	JsonGenerator generator = Json.createGenerator( stringWriter );
 	generator.writeStartObject();
 	for (Entry<String, Object> entry : entrySet) {
-	  ObjectToJsonConverter objectToJsonConverter = converters.get( entry.getKey() );
+	  String attrName =	entry.getKey();
+	  ObjectToJsonConverter objectToJsonConverter = converters.get(attrName);
 	  Object value = entry.getValue();
-	  JsonObject jsonObject = objectToJsonConverter.converter( value );
-	  generator.write( entry.getKey() , jsonObject );
-	  generator.writeEnd();
+	  if(isSimpleValue(value)){
+		  generator = writeSimpleValue( attrName , value , generator);
+	  }else{
+		  JsonObject jsonObject = objectToJsonConverter.converter( value );
+		  generator.write( attrName , jsonObject );
+	  }
     }
+	generator.writeEnd();
 	generator.flush();
 	return stringWriter.toString();
   }
   
   private boolean isSimpleValue(Object value) {
-	return value.getClass().isAssignableFrom( String.class );
+	Class<? extends Object> clazz = value.getClass();
+	return clazz.isAssignableFrom( String.class ) || clazz.isAssignableFrom( Double.class ) || clazz.isAssignableFrom( Integer.class )
+			|| clazz.isAssignableFrom( Boolean.class );
   }
-
+  
+  protected JsonGenerator writeSimpleValue(String attrName , Object value , JsonGenerator generator){
+	  Class<? extends Object> clazz = value.getClass();
+	  if( clazz.isAssignableFrom( String.class ) ){
+		  generator.write( attrName , value.toString() );
+	  }else if( clazz.isAssignableFrom( Double.class ) ){
+		  generator.write( attrName , (Double) value );
+	  }else if( clazz.isAssignableFrom( Integer.class ) ){
+		  generator.write( attrName , (Integer) value );
+	  }else if(value.getClass().isAssignableFrom(Boolean.class)){
+		  generator.write( attrName , new Boolean( value.toString() ) );
+	  }else{
+		  generator.write( attrName , value.toString() );
+	  }
+	  return generator;
+  }
+  
   public Map<String, ObjectToJsonConverter> getConverters() {
 	return converters;
   }

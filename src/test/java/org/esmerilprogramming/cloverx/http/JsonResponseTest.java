@@ -59,13 +59,51 @@ public class JsonResponseTest {
 	}
 	
 	@Test
-	public void doesReturnAddedAttributesAsJsonString(){
+	public void doesReturnAddedStringAttributesAsJsonString(){
 		jsonResponse.addAttribute("hello", "world");
 		
 		String generateStringResponse = jsonResponse.generateStringResponse();
 	
-		System.out.println( generateStringResponse );
+		assertEquals( "{\"hello\":\"world\"}", generateStringResponse );
 	}
 	
+	@Test
+	public void doesReturnAddedDoubleAttributesAsJsonString(){
+		jsonResponse.addAttribute("d1", new Double( 10.0 ) );
+		jsonResponse.addAttribute("d2",  15.55 );
+		
+		String generateStringResponse = jsonResponse.generateStringResponse();
+		
+		assertNotNull(generateStringResponse);
+		assertTrue( generateStringResponse.contains("\"d1\":10.0") );
+		assertTrue( generateStringResponse.contains("\"d2\":15.55") );
+	}
+	
+	@Test
+	public void doesReturnAddedIntegerAttributesAsJsonString(){
+		jsonResponse.addAttribute("i1", new Integer(10) );
+		jsonResponse.addAttribute("i2",  120 );
+		
+		String generateStringResponse = jsonResponse.generateStringResponse();
+		
+		assertNotNull(generateStringResponse);
+		assertTrue( generateStringResponse.contains("\"i1\":10") );
+		assertTrue( generateStringResponse.contains("\"i2\":120") );
+	}
+	
+	@Test
+	public void doesReturnAddedBooleanAttributesAsJsonString(){
+		jsonResponse.addAttribute("b1", new Boolean(false) );
+		jsonResponse.addAttribute("b2",  true );
+		
+		String generateStringResponse = jsonResponse.generateStringResponse();
+		
+		
+		System.out.println( generateStringResponse );
+		
+		assertNotNull(generateStringResponse);
+		assertTrue( generateStringResponse.contains("\"b1\":false") );
+		assertTrue( generateStringResponse.contains("\"b2\":true") );
+	}
 	
 }

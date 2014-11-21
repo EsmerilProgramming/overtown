@@ -10,6 +10,7 @@ import javax.json.JsonValue;
 public class DefaultObjectToJsonConverter implements ObjectToJsonConverter {
 	
 	public JsonObject converter(Object value) {
+	
 		try {
 			Field[] declaredFields = getFields( value );
 			JsonObjectBuilder builder = Json.createObjectBuilder();
