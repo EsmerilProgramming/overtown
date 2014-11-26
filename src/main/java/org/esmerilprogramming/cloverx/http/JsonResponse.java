@@ -49,9 +49,9 @@ public class JsonResponse extends Response {
   }
   
   @Override
-	public void addAttribute(String name, Object value) {
-		super.addAttribute(name , value);
-	}
+  public void addAttribute(String name, Object value) {
+	super.addAttribute(name , value);
+  }
   
   @Override
   public void sendAsResponse(String jsonAsString) {
