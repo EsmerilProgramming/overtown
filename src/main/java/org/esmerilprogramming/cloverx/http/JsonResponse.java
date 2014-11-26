@@ -81,18 +81,18 @@ public class JsonResponse extends Response {
 	  ObjectToJsonConverter objectToJsonConverter = converters.get( entry.getKey() );
 	  Object value = entry.getValue();
 	  if(isSimpleValue(value) ){
-	    writeSimpleValieEntry( entry, generator );
+	    writeSimpleValueEntry( entry, generator );
 	  }else{
 	    JsonObject jsonObject = objectToJsonConverter.converter( value );
 	    generator.write( entry.getKey() , jsonObject );
 	  }
-	  generator.writeEnd();
     }
+	generator.writeEnd();
 	generator.flush();
 	return stringWriter.toString();
   }
   
-  private void writeSimpleValieEntry(Entry<String, Object> entry, JsonGenerator generator) {
+  private void writeSimpleValueEntry(Entry<String, Object> entry, JsonGenerator generator) {
     Object value = entry.getValue();
     if( value.getClass().isAssignableFrom( String.class ) ){
       generator.write( entry.getKey() , (String) value );
