@@ -85,7 +85,7 @@ public abstract class Response {
   }
   
   public void finishResponse(){
-	  close();
+	close();
   }
 
   public final void close() {

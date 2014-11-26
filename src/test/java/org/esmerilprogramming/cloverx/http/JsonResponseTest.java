@@ -13,6 +13,7 @@ import org.esmerilprogramming.cloverx.http.converter.ObjectToJsonConverter;
 import org.esmerilprogramming.cloverx.http.converter.TestModel;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -53,7 +54,10 @@ public class JsonResponseTest {
 
     assertTrue("Should contains the hello attribute key", viewAttributes.attributeExists("hello"));
   }
-
+  
+  //Will not add the default convert, on the other hand in the moment of the response will use
+  // the defaultConveter if none is set
+  @Ignore  
   @Test
   public void doesAddToConvertesTheDefaultConverterToAnyAddedAttribute() {
     jsonResponse.addAttribute("hello", "world");

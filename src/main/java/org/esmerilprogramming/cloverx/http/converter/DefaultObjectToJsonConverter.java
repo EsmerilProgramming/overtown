@@ -5,12 +5,10 @@ import java.lang.reflect.Field;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
 
 public class DefaultObjectToJsonConverter implements ObjectToJsonConverter {
 	
 	public JsonObject converter(Object value) {
-	
 		try {
 			Field[] declaredFields = getFields( value );
 			JsonObjectBuilder builder = Json.createObjectBuilder();

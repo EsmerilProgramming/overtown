@@ -98,9 +98,8 @@ public class HandlerCreator {
             request.respondAsHttp();
             ((HttpResponse) request.getResponse()).fowardTo(responseTemplate);
           } else {
-            // TODO should check json or xml response
             if (!response.isResponseSend()) {
-              response.close();
+              response.finishResponse();
             }
           }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

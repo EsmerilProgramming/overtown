@@ -26,6 +26,7 @@ public class JsonResponse extends Response {
   public JsonResponse(HttpServerExchange exchange, ViewAttributes viewAttributes) {
     super(exchange, viewAttributes);
     super.setContentType( "application/json; charset=UTF-8;" );
+    converters = new HashMap<>();
   }
   
   @Override
@@ -49,15 +50,16 @@ public class JsonResponse extends Response {
   
   @Override
 	public void addAttribute(String name, Object value) {
-	  	addObjectToJsonConnveter(name , new DefaultObjectToJsonConverter() );
 		super.addAttribute(name , value);
 	}
   
   @Override
   public void sendAsResponse(String jsonAsString) {
-	Sender responseSender = exchange.getResponseSender();
-	responseSender.send(jsonAsString);
-	responseSender.close();
+    if(!exchange.isComplete()){
+    	Sender responseSender = exchange.getResponseSender();
+    	responseSender.send(jsonAsString);
+    	responseSender.close();
+    }
   }
   
   public void addObjectToJsonConnveter(String attributeName , ObjectToJsonConverter conveter){
@@ -80,6 +82,7 @@ public class JsonResponse extends Response {
 	for (Entry<String, Object> entry : entrySet) {
 	  String attrName =	entry.getKey();
 	  ObjectToJsonConverter objectToJsonConverter = converters.get(attrName);
+	  objectToJsonConverter = objectToJsonConverter == null ? new DefaultObjectToJsonConverter() : objectToJsonConverter;
 	  Object value = entry.getValue();
 	  if(isSimpleValue(value) ){
 	    writeSimpleValueEntry( entry, generator );

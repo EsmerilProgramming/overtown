@@ -180,5 +180,13 @@ public class ManagementPage {
   public void respondJson(JsonResponse response){
     response.sendAsResponse("{ \"name\" : \"Efraim Gentil\" , \"blah\" : \"çãoéàè\" }");
   }
+  
+  @Page("json3")
+  public void respondJson3(JsonResponse response){
+    response.addAttribute("name", "Efraim Gentil");
+    response.addAttribute("age", 26);
+    response.addAttribute("blah", "çãoéàè");
+  }
 
 }
+
