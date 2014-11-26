@@ -59,13 +59,67 @@ public class JsonResponseTest {
 	}
 	
 	@Test
-	public void doesReturnAddedAttributesAsJsonString(){
+	public void doesReturnAddedStringAttributesAsJsonString(){
 		jsonResponse.addAttribute("hello", "world");
 		
 		String generateStringResponse = jsonResponse.generateStringResponse();
-	
-		System.out.println( generateStringResponse );
+		
+		assertEquals("{\"hello\":\"world\"}" , generateStringResponse );
 	}
+	
+	@Test
+    public void doesReturnAddedPrimitiveIntegerAttributesAsJsonString(){
+        jsonResponse.addAttribute("age", 26);
+        
+        String generateStringResponse = jsonResponse.generateStringResponse();
+        
+        assertEquals("{\"age\":26}" , generateStringResponse );
+    }
+	
+	@Test
+    public void doesReturnAddedIntegerAttributesAsJsonString(){
+        jsonResponse.addAttribute("age", new Integer( 26 ));
+        
+        String generateStringResponse = jsonResponse.generateStringResponse();
+        
+        assertEquals("{\"age\":26}" , generateStringResponse );
+    }
+	
+	@Test
+    public void doesReturnAddedPrimitiveDoubleAttributesAsJsonString(){
+        jsonResponse.addAttribute("salary", 100.99d );
+        
+        String generateStringResponse = jsonResponse.generateStringResponse();
+        
+        assertEquals("{\"salary\":100.99}" , generateStringResponse );
+    }
+	
+	@Test
+    public void doesReturnAddedDoubleAttributesAsJsonString(){
+        jsonResponse.addAttribute("salary", new Double(100.99) );
+        
+        String generateStringResponse = jsonResponse.generateStringResponse();
+        
+        assertEquals("{\"salary\":100.99}" , generateStringResponse );
+    }
+	
+	@Test
+    public void doesReturnPrimitiveFloatAttributesAsJsonString(){
+        jsonResponse.addAttribute("salary", 100.99f );
+        
+        String generateStringResponse = jsonResponse.generateStringResponse();
+        //float value includes many decimal values
+        assertTrue( generateStringResponse.startsWith("{\"salary\":100.9") );
+    }
+	
+	@Test
+    public void doesReturnFloatAttributesAsJsonString(){
+        jsonResponse.addAttribute("salary", new Float(100.99) );
+        
+        String generateStringResponse = jsonResponse.generateStringResponse();
+        //float value includes many decimal values
+        assertTrue( generateStringResponse.startsWith("{\"salary\":100.9") );
+    }
 	
 	
 }

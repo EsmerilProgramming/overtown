@@ -1,6 +1,8 @@
 package org.esmerilprogramming.cloverx.http;
 
 import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -78,16 +80,47 @@ public class JsonResponse extends Response {
 	for (Entry<String, Object> entry : entrySet) {
 	  ObjectToJsonConverter objectToJsonConverter = converters.get( entry.getKey() );
 	  Object value = entry.getValue();
-	  JsonObject jsonObject = objectToJsonConverter.converter( value );
-	  generator.write( entry.getKey() , jsonObject );
+	  if(isSimpleValue(value) ){
+	    writeSimpleValieEntry( entry, generator );
+	  }else{
+	    JsonObject jsonObject = objectToJsonConverter.converter( value );
+	    generator.write( entry.getKey() , jsonObject );
+	  }
 	  generator.writeEnd();
     }
 	generator.flush();
 	return stringWriter.toString();
   }
   
+  private void writeSimpleValieEntry(Entry<String, Object> entry, JsonGenerator generator) {
+    Object value = entry.getValue();
+    if( value.getClass().isAssignableFrom( String.class ) ){
+      generator.write( entry.getKey() , (String) value );
+    }else if( value.getClass().isAssignableFrom( Integer.class ) || value.getClass().isAssignableFrom( int.class ) ){
+      generator.write( entry.getKey() , (Integer) value );
+    }else if ( value.getClass().isAssignableFrom( Double.class ) || value.getClass().isAssignableFrom( double.class ) ){
+      generator.write( entry.getKey() , (Double) value );
+    }else if ( value.getClass().isAssignableFrom( Long.class ) || value.getClass().isAssignableFrom( double.class ) ){
+      generator.write( entry.getKey() , (Long) value );
+    }else if ( value.getClass().isAssignableFrom( Float.class ) || value.getClass().isAssignableFrom( float.class ) ){
+      generator.write( entry.getKey() , (Float) value );
+    }else if ( value.getClass().isAssignableFrom( Boolean.class ) || value.getClass().isAssignableFrom( boolean.class ) ){
+      generator.write( entry.getKey() , (Boolean) value );
+    }else if ( value.getClass().isAssignableFrom( BigDecimal.class ) ){
+      generator.write( entry.getKey() , (BigDecimal) value );
+    }else if ( value.getClass().isAssignableFrom( BigInteger.class ) ){
+      generator.write( entry.getKey() , (BigInteger) value );
+    }
+  }
+
   private boolean isSimpleValue(Object value) {
-	return value.getClass().isAssignableFrom( String.class );
+	return value.getClass().isAssignableFrom( String.class ) || value.getClass().isAssignableFrom( Integer.class ) || value.getClass().isAssignableFrom( int.class )
+	    || value.getClass().isAssignableFrom( Double.class ) || value.getClass().isAssignableFrom( double.class )
+	    || value.getClass().isAssignableFrom( Long.class ) || value.getClass().isAssignableFrom( double.class ) 
+	    || value.getClass().isAssignableFrom( Float.class ) || value.getClass().isAssignableFrom( float.class )
+	    || value.getClass().isAssignableFrom( Boolean.class ) || value.getClass().isAssignableFrom( boolean.class ) 
+	    || value.getClass().isAssignableFrom( BigDecimal.class )
+	    || value.getClass().isAssignableFrom( BigInteger.class );
   }
 
   public Map<String, ObjectToJsonConverter> getConverters() {
