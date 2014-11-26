@@ -78,7 +78,8 @@ public class JsonResponse extends Response {
 	JsonGenerator generator = Json.createGenerator( stringWriter );
 	generator.writeStartObject();
 	for (Entry<String, Object> entry : entrySet) {
-	  ObjectToJsonConverter objectToJsonConverter = converters.get( entry.getKey() );
+	  String attrName =	entry.getKey();
+	  ObjectToJsonConverter objectToJsonConverter = converters.get(attrName);
 	  Object value = entry.getValue();
 	  if(isSimpleValue(value) ){
 	    writeSimpleValueEntry( entry, generator );
@@ -114,15 +115,33 @@ public class JsonResponse extends Response {
   }
 
   private boolean isSimpleValue(Object value) {
-	return value.getClass().isAssignableFrom( String.class ) || value.getClass().isAssignableFrom( Integer.class ) || value.getClass().isAssignableFrom( int.class )
-	    || value.getClass().isAssignableFrom( Double.class ) || value.getClass().isAssignableFrom( double.class )
-	    || value.getClass().isAssignableFrom( Long.class ) || value.getClass().isAssignableFrom( double.class ) 
-	    || value.getClass().isAssignableFrom( Float.class ) || value.getClass().isAssignableFrom( float.class )
-	    || value.getClass().isAssignableFrom( Boolean.class ) || value.getClass().isAssignableFrom( boolean.class ) 
-	    || value.getClass().isAssignableFrom( BigDecimal.class )
-	    || value.getClass().isAssignableFrom( BigInteger.class );
+    Class<? extends Object> clazz = value.getClass();
+	return clazz.isAssignableFrom( String.class )
+	    || clazz.isAssignableFrom( Integer.class ) || clazz.isAssignableFrom( int.class )
+	    || clazz.isAssignableFrom( Double.class ) || clazz.isAssignableFrom( double.class )
+	    || clazz.isAssignableFrom( Long.class ) || clazz.isAssignableFrom( double.class ) 
+	    || clazz.isAssignableFrom( Float.class ) || clazz.isAssignableFrom( float.class )
+	    || clazz.isAssignableFrom( Boolean.class ) || clazz.isAssignableFrom( boolean.class ) 
+	    || clazz.isAssignableFrom( BigDecimal.class )
+	    || clazz.isAssignableFrom( BigInteger.class );
   }
-
+  
+  protected JsonGenerator writeSimpleValue(String attrName , Object value , JsonGenerator generator){
+	  Class<? extends Object> clazz = value.getClass();
+	  if( clazz.isAssignableFrom( String.class ) ){
+		  generator.write( attrName , value.toString() );
+	  }else if( clazz.isAssignableFrom( Double.class ) ){
+		  generator.write( attrName , (Double) value );
+	  }else if( clazz.isAssignableFrom( Integer.class ) ){
+		  generator.write( attrName , (Integer) value );
+	  }else if(value.getClass().isAssignableFrom(Boolean.class)){
+		  generator.write( attrName , new Boolean( value.toString() ) );
+	  }else{
+		  generator.write( attrName , value.toString() );
+	  }
+	  return generator;
+  }
+  
   public Map<String, ObjectToJsonConverter> getConverters() {
 	return converters;
   }
