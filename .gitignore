@@ -1,5 +1,4 @@
 *.class
-*.jar
 .classpath
 .settings
 .gradle
@@ -9,4 +8,7 @@ build
 .idea
 *.iml
 *.versionsBackup
-
+/bin/
+*~
+.*
+!/.gitignore
