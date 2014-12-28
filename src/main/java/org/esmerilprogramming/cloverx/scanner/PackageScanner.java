@@ -47,10 +47,9 @@ public class PackageScanner {
       } catch (URISyntaxException e) {
         e.printStackTrace();
       }
-    }
-    if (resource.getProtocol().equals("jar")) {
+    } else if (resource.getProtocol().equals("jar")) {
       try {
-        jar = thisClass.getResource("/" + System.getProperty("java.class.path"));
+        jar = new URL("file://" + System.getProperty("user.dir") + "/" + System.getProperty("java.class.path"));
         FileSystem fs = FileSystems.newFileSystem(  Paths.get(jar.toURI() ), null);
         Path startPath = fs.getPath("/");
         Files.walkFileTree(startPath, visitor);

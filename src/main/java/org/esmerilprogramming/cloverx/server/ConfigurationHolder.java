@@ -48,13 +48,12 @@ public class ConfigurationHolder {
       URL resource = thisClass.getResource("");
       if (resource.getProtocol().equals("file")) {
         deployType = DeployType.FILE;
-      }
-      if (resource.getProtocol().equals("jar")) {
+      } else if (resource.getProtocol().equals("jar")) {
         deployType = DeployType.JAR;
         rootTemp = System.getProperty("java.io.tmpdir");
         rootName = System.getProperty("java.class.path");
         classPathDir = System.getProperty("user.dir");
-        source = thisClass.getResource("/" + System.getProperty("java.class.path") );
+        source = new URL("file://" + classPathDir + "/" + rootName);
         System.out.println("defined class path: " + classPathDir);
       }
       
