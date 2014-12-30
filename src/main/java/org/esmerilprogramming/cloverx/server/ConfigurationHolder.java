@@ -53,7 +53,8 @@ public class ConfigurationHolder {
         rootTemp = System.getProperty("java.io.tmpdir");
         rootName = System.getProperty("java.class.path");
         classPathDir = System.getProperty("user.dir");
-        source = new URL("file://" + classPathDir + "/" + rootName);
+        source = thisClass.getResource("/" + System.getProperty("java.class.path") );
+        /*source = new URL("file://" + classPathDir + "/" + rootName);*/
         System.out.println("defined class path: " + classPathDir);
       }
       
