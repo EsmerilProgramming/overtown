@@ -18,6 +18,10 @@ public class HttpResponse extends Response {
     super.setContentType( "text/html; charset=UTF-8;" );
   }
 
+  /**
+   * This method should not simply draw a template, it should also forward to a diferent method if necessary
+   */
+  @Deprecated
   @Override
   public void fowardTo(String viewName) {
     try {

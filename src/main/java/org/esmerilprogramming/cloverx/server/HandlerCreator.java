@@ -9,12 +9,9 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import org.esmerilprogramming.cloverx.annotation.JSONResponse;
 import org.esmerilprogramming.cloverx.annotation.Page;
-import org.esmerilprogramming.cloverx.http.CloverXRequest;
-import org.esmerilprogramming.cloverx.http.CloverXSessionManager;
-import org.esmerilprogramming.cloverx.http.HttpResponse;
-import org.esmerilprogramming.cloverx.http.ParameterConverterMounter;
-import org.esmerilprogramming.cloverx.http.Response;
+import org.esmerilprogramming.cloverx.http.*;
 import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParametersConverter;
@@ -62,6 +59,7 @@ public class HandlerCreator {
     final String[] parameterNames = paranamer.lookupParameterNames(method);
     Page methodPagePath = method.getAnnotation(Page.class);
     final String responseTemplate = methodPagePath.responseTemplate();
+    final boolean isJsonResponse = method.getAnnotation(JSONResponse.class) != null;
 
     HttpHandler handler = null;
     handler = new HttpHandler() {
@@ -93,18 +91,26 @@ public class HandlerCreator {
 
           method.invoke(newInstance, parameters);
 
-          Response response = request.getResponse();
-          if (!Page.NO_TEMPLATE.equals(responseTemplate) && !response.isResponseSend()) {
-            request.respondAsHttp();
-            ((HttpResponse) request.getResponse()).fowardTo(responseTemplate);
-          } else {
-            if (!response.isResponseSend()) {
-              response.finishResponse();
-            }
-          }
+          finishResponse( request );
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
           e.printStackTrace();
           LOGGER.error(e.getMessage());
+        }
+      }
+
+      public void finishResponse(CloverXRequest request){
+        if(isJsonResponse){
+          request.respondAsJson();
+        }
+        Response response = request.getResponse();
+        if (!Page.NO_TEMPLATE.equals(responseTemplate) && !response.isResponseSend()) {
+          request.respondAsHttp();
+
+          ((HttpResponse) request.getResponse()).fowardTo(responseTemplate);
+        } else {
+          if (!response.isResponseSend()) {
+            response.finishResponse();
+          }
         }
       }
     };
