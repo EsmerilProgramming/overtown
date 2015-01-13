@@ -6,7 +6,7 @@ CloverX
 
 ## Getting started
 
-Current version - 0.1.0-SNAPSHOT
+Current version - 0.2.0-SNAPSHOT
 
 ### Getting the lib
 #### Maven
