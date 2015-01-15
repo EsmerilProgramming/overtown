@@ -24,6 +24,7 @@ public final class CloverX {
     }catch(RuntimeException e){
       LOGGER.error("Error on startup");
       LOGGER.error( e.getMessage() );
+      e.printStackTrace();;
     }
   }
 

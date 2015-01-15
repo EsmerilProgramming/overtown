@@ -15,7 +15,7 @@ public class JsonTestPage {
   @JSONResponse
   @Page("testOne")
   public void testOne(CloverXRequest request){
-    logger.debug("Called test one");
+    logger.info("Called test one");
     request.addAttribute("name" , "Efraim Gentil");
     request.addAttribute("email" , "efraimgentil@gmail.com");
   }

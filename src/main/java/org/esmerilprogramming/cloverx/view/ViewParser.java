@@ -19,6 +19,7 @@ public class ViewParser {
 
   public final String parse(ViewAttributes viewAttributes, String templateName)
       throws TemplateException, IOException {
+     
     Template t = cfg.getTemplate(templateName);
     try( StringWriter writer = new StringWriter() ){
       t.process(viewAttributes.getAsMap(), writer);
