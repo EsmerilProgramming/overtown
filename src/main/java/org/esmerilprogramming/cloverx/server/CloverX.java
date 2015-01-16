@@ -24,7 +24,7 @@ public final class CloverX {
     }catch(RuntimeException e){
       LOGGER.error("Error on startup");
       LOGGER.error( e.getMessage() );
-      e.printStackTrace();;
+      e.printStackTrace();
     }
   }
 
@@ -68,6 +68,7 @@ public final class CloverX {
 
   public static void main(String[] args) {
     new CloverX(new ConfigurationBuilder()
+            .withPackageToScan("org.esmerilprogramming.cloverx.management")
     .withHost("0.0.0.0")
     .withPort(8080)
     .build());

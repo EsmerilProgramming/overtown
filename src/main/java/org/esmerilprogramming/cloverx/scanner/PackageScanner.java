@@ -32,10 +32,9 @@ public class PackageScanner {
     ClassLoader l = Thread.currentThread().getContextClassLoader();
 
     URL jar = new URL("file://" + System.getProperty("user.dir") + "/" + System.getProperty("java.class.path"));
-    System.out.println("SERIOUSLY?:" + jar);
     try{
       FileSystem fs = FileSystems.newFileSystem(  Paths.get(jar.toURI() ), null);
-      Path startPath = fs.getPath("/");
+      Path startPath = fs.getPath("/" + packageToSearch.replaceAll("\\.", "/") );
       Files.walkFileTree(startPath, visitor);
     }catch(Exception e){
       if (!"".equals(packageToSearch)) {
