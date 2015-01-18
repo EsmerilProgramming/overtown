@@ -7,6 +7,7 @@ public class CloverXConfiguration {
   private String appContext;
   private String staticRootPath;
   private String templateRootPath;
+  private String packageToSkan;
   
   public String getHost() {
     return host;
@@ -38,5 +39,6 @@ public class CloverXConfiguration {
   public void setTemplateRootPath(String templateRootPath) {
     this.templateRootPath = templateRootPath;
   }
-  
+  public String getPackageToSkan() { return packageToSkan;  }
+  public void setPackageToSkan(String packageToSkan) { this.packageToSkan = packageToSkan; }
 }

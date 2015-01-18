@@ -1,6 +1,8 @@
 package org.esmerilprogramming.cloverx.scanner;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystem;
@@ -29,10 +31,32 @@ public class PackageScanner {
 
     Class<? extends PackageScanner> thisClass = this.getClass();
     CodeSource src = this.getClass().getProtectionDomain().getCodeSource();
+    ClassLoader l = Thread.currentThread().getContextClassLoader();
 
-    URL jar = src.getLocation();
-    URL resource = thisClass.getResource("");
-    if (resource.getProtocol().equals("file")) {
+    try{
+      File f = new File( System.getProperty("user.dir") + File.separator + System.getProperty("java.class.path") );
+      URI uri = f.toURI();
+      FileSystem fs  = FileSystems.newFileSystem( Paths.get( uri ) , classLoader );
+      Path startPath = fs.getPath("/" + packageToSearch.replaceAll("\\.",  "/" ) );
+      Files.walkFileTree(startPath, visitor);
+    }catch(Exception e){
+      System.out.println("It is not a compresed file, trying to scan the classpath now");
+      if (!"".equals(packageToSearch)) {
+        packageToSearch = packageToSearch.replaceAll("\\.", "/");
+      }
+      URL currentClassPath = thisClass.getResource("/" + packageToSearch);
+      if (currentClassPath == null)
+        throw new PackageNotFoundException("Was not possible to find the especified ("
+                + packageToSearch + ") package to scan");
+      try {
+        Path path = Paths.get(currentClassPath.toURI());
+        visitor.setPathToReplace( Paths.get( thisClass.getResource("/").toURI() ).toString() );
+        Files.walkFileTree(path, visitor);
+      } catch (URISyntaxException ex) {
+        ex.printStackTrace();
+      }
+    }
+    /*if (jar == null) {
       if (!"".equals(packageToSearch)) {
         packageToSearch = packageToSearch.replaceAll("\\.", "/");
       }
@@ -47,16 +71,17 @@ public class PackageScanner {
       } catch (URISyntaxException e) {
         e.printStackTrace();
       }
-    } else if (resource.getProtocol().equals("jar")) {
+    } else if (jar != null) {
       try {
-        jar = new URL("file://" + System.getProperty("user.dir") + "/" + System.getProperty("java.class.path"));
+        //URL jar = src.getLocation();
+        //jar = new URL("file://" + System.getProperty("user.dir") + "/" + System.getProperty("java.class.path"));
         FileSystem fs = FileSystems.newFileSystem(  Paths.get(jar.toURI() ), null);
         Path startPath = fs.getPath("/");
         Files.walkFileTree(startPath, visitor);
       } catch (URISyntaxException e1) {
         e1.printStackTrace();
       }
-    }
+    }*/
     return visitor.getResult();
   }
 

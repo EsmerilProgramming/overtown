@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.CodeSource;
+import java.util.Map;
+import java.util.Properties;
+import java.util.jar.Manifest;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -45,19 +48,24 @@ public class ConfigurationHolder {
       
       CodeSource src = this.getClass().getProtectionDomain().getCodeSource();
       URL source = src.getLocation();
-      URL resource = thisClass.getResource("");
-      if (resource.getProtocol().equals("file")) {
+      /*URL resource = thisClass.getResource("");*/
+      ClassLoader l = Thread.currentThread().getContextClassLoader();
+      URL resource = l.getResource("");
+      System.out.println("RESOURCE 1:" + resource);
+      System.out.println("RESOURCE 1:" + l.getResource("/") );
+
+      /*if (resource.getProtocol().equals("file")) {*/
         deployType = DeployType.FILE;
-      } else if (resource.getProtocol().equals("jar")) {
+      /*} else if (resource.getProtocol().equals("jar")) {
         deployType = DeployType.JAR;
         rootTemp = System.getProperty("java.io.tmpdir");
         rootName = System.getProperty("java.class.path");
         classPathDir = System.getProperty("user.dir");
+        System.out.println( System.getProperty("java.class.path") );
         source = thisClass.getResource("/" + System.getProperty("java.class.path") );
-        /*source = new URL("file://" + classPathDir + "/" + rootName);*/
-        System.out.println("defined class path: " + classPathDir);
-      }
-      
+//        source = new URL("file://" + classPathDir + "/" + rootName);
+      }*/
+      System.out.println("defined class path: " + classPathDir);
       processDeploy(source);
   }
 
@@ -73,7 +81,8 @@ public class ConfigurationHolder {
   
   private void prepareFremarker() throws IOException{
     freemarkerConfig = new Configuration();
-    freemarkerConfig.setDirectoryForTemplateLoading( getTemplateDir() );
+    freemarkerConfig.setClassForTemplateLoading( this.getClass() ,  "/templates/" );
+    //freemarkerConfig.setDirectoryForTemplateLoading( getTemplateDir() );
     freemarkerConfig.setObjectWrapper( new DefaultObjectWrapper() );
   }
 
@@ -123,7 +132,12 @@ public class ConfigurationHolder {
       } else {
         String classPathDir = getClassPathDir();
         URL url = this.getClass().getResource(classPathDir + "templates");
-        templateDir = new File(url.getPath());
+        System.out.println( "URL++  : " +  url );
+        try {
+          templateDir = new File(url.toURI());
+        }catch(Exception e){
+          e.printStackTrace();
+        }
       }
     }
     return templateDir;

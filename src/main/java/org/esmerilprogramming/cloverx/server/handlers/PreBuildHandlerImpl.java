@@ -15,6 +15,7 @@ import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException
 import org.esmerilprogramming.cloverx.server.CloverXConfiguration;
 import org.esmerilprogramming.cloverx.server.ConfigurationHolder;
 import org.esmerilprogramming.cloverx.server.PathHandlerMounter;
+import org.esmerilprogramming.cloverx.server.exception.ConfigurationException;
 import org.esmerilprogramming.cloverx.server.exception.NoControllerException;
 import org.esmerilprogramming.cloverx.server.mounters.SessionListenerMounter;
 import org.esmerilprogramming.cloverx.server.mounters.SessionListenerMounterImpl;
@@ -28,19 +29,21 @@ public class PreBuildHandlerImpl implements PreBuildHandler {
   
   @Override
   public void prepareBuild(CloverXConfiguration configuration) throws IOException {
+    validateConfiguration(configuration);
     ConfigurationHolder.getInstance().prepareConfiguration(configuration);
-    scannerResult = identifyEligibleClasses();
+    scannerResult = identifyEligibleClasses( configuration );
     
     CloverXSessionManager instance = CloverXSessionManager.getInstance();
     InMemorySessionManager sessionManager = instance.getSessionManager();
     configureSessionManager(sessionManager, scannerResult.getSessionListeners() );
   }
 
-  public ScannerResult identifyEligibleClasses() {
+  public ScannerResult identifyEligibleClasses(CloverXConfiguration configuration) {
     ClassLoader classLoader = this.getClass().getClassLoader();
     ScannerResult scan = null;
     try {
-      scan = new PackageScanner().scan("", classLoader);
+
+      scan = new PackageScanner().scan( configuration.getPackageToSkan() , classLoader);
     } catch (PackageNotFoundException | IOException e) {
       e.printStackTrace();
       LOGGER.error(e.getMessage());
@@ -55,6 +58,14 @@ public class PreBuildHandlerImpl implements PreBuildHandler {
       if(sl != null){
         sessionManager.registerSessionListener( sl);
       }
+    }
+  }
+
+  protected void validateConfiguration(CloverXConfiguration configuration) {
+    String packageToSkan = configuration.getPackageToSkan();
+    packageToSkan = packageToSkan == null ? "" : packageToSkan.trim();
+    if( "".equals( configuration.getPackageToSkan() ) ){
+      throw new ConfigurationException("You should specify the package to be scanned. See https://github.com/EsmerilProgramming/cloverx for more info");
     }
   }
   

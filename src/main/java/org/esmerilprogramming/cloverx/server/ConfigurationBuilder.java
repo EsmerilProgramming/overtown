@@ -1,5 +1,7 @@
 package org.esmerilprogramming.cloverx.server;
 
+import org.esmerilprogramming.cloverx.server.exception.ConfigurationException;
+
 public class ConfigurationBuilder {
 
   private String host = "127.0.0.1";
@@ -7,6 +9,7 @@ public class ConfigurationBuilder {
   private String appContext = "";
   private String staticRootPath = "static";
   private String templateRootPath = "templates";
+  private String packageToScan = "";
   
   
   public ConfigurationBuilder withHost(String host){
@@ -21,10 +24,15 @@ public class ConfigurationBuilder {
   
   public ConfigurationBuilder withAppContext(String appContext){
     if(appContext.equalsIgnoreCase(staticRootPath)){
-      throw new CloverXConfigurationException("The appContext can't be the same of the staticRootPath");
+      throw new ConfigurationException("The appContext can't be the same of the staticRootPath");
     }
     this.appContext = appContext;
     return this; 
+  }
+
+  public ConfigurationBuilder withPackageToScan(String packageToScan){
+    this.packageToScan = packageToScan;
+    return this;
   }
   
   /**
@@ -36,7 +44,7 @@ public class ConfigurationBuilder {
    */
   public ConfigurationBuilder withStaticRootPath(String staticRootPath){
     if(staticRootPath.equalsIgnoreCase(appContext)){
-      throw new CloverXConfigurationException("The staticRootPath can't be the same of the appContext");
+      throw new ConfigurationException("The staticRootPath can't be the same of the appContext");
     }
     this.staticRootPath = staticRootPath;
     return this; 
@@ -49,6 +57,7 @@ public class ConfigurationBuilder {
     config.setAppContext(appContext);
     config.setStaticRootPath(staticRootPath);
     config.setTemplateRootPath(templateRootPath);
+    config.setPackageToSkan(packageToScan);
     return config;
   }
   
@@ -59,6 +68,7 @@ public class ConfigurationBuilder {
     config.setAppContext("");
     config.setStaticRootPath(staticRootPath);
     config.setTemplateRootPath(templateRootPath);
+    config.setPackageToSkan(packageToScan);
     return config;
   }
   
