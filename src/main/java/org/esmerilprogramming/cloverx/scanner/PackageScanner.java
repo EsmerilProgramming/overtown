@@ -1,6 +1,8 @@
 package org.esmerilprogramming.cloverx.scanner;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystem;
@@ -31,12 +33,14 @@ public class PackageScanner {
     CodeSource src = this.getClass().getProtectionDomain().getCodeSource();
     ClassLoader l = Thread.currentThread().getContextClassLoader();
 
-    URL jar = new URL("file://" + System.getProperty("user.dir") + "/" + System.getProperty("java.class.path"));
     try{
-      FileSystem fs = FileSystems.newFileSystem(  Paths.get(jar.toURI() ), null);
-      Path startPath = fs.getPath("/" + packageToSearch.replaceAll("\\.", "/") );
+      File f = new File( System.getProperty("user.dir") + File.separator + System.getProperty("java.class.path") );
+      URI uri = f.toURI();
+      FileSystem fs  = FileSystems.newFileSystem( Paths.get( uri ) , classLoader );
+      Path startPath = fs.getPath("/" + packageToSearch.replaceAll("\\.",  "/" ) );
       Files.walkFileTree(startPath, visitor);
     }catch(Exception e){
+      System.out.println("It is not a compresed file, trying to scan the classpath now");
       if (!"".equals(packageToSearch)) {
         packageToSearch = packageToSearch.replaceAll("\\.", "/");
       }
