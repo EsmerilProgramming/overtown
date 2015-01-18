@@ -4,7 +4,6 @@
 .gradle
 target
 build
-gradle
 .project
 .idea
 *.iml
