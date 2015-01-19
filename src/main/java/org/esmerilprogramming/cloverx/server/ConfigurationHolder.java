@@ -24,137 +24,23 @@ public class ConfigurationHolder {
     return configurationHandler;
   }
   
-  public enum DeployType {
-    JAR,
-    FILE
-  }
-  
-  private DeployType deployType;
-  private String rootName = "";
-  private String rootTemp = "";
-  private String classPathDir = "/";
   private CloverXConfiguration configuration;
-  
-  private File templateDir;
-  private File staticResourceDir;
-  
   private Configuration freemarkerConfig;
-  
-  
+
   public void prepareConfiguration(CloverXConfiguration configuration) throws IOException{
-      this.configuration = configuration; 
-      @SuppressWarnings("rawtypes")
-      Class thisClass = this.getClass();
-      
-      CodeSource src = this.getClass().getProtectionDomain().getCodeSource();
-      URL source = src.getLocation();
-      /*URL resource = thisClass.getResource("");*/
-      ClassLoader l = Thread.currentThread().getContextClassLoader();
-      URL resource = l.getResource("");
-      System.out.println("RESOURCE 1:" + resource);
-      System.out.println("RESOURCE 1:" + l.getResource("/") );
-
-      /*if (resource.getProtocol().equals("file")) {*/
-        deployType = DeployType.FILE;
-      /*} else if (resource.getProtocol().equals("jar")) {
-        deployType = DeployType.JAR;
-        rootTemp = System.getProperty("java.io.tmpdir");
-        rootName = System.getProperty("java.class.path");
-        classPathDir = System.getProperty("user.dir");
-        System.out.println( System.getProperty("java.class.path") );
-        source = thisClass.getResource("/" + System.getProperty("java.class.path") );
-//        source = new URL("file://" + classPathDir + "/" + rootName);
-      }*/
-      System.out.println("defined class path: " + classPathDir);
-      processDeploy(source);
+    this.configuration = configuration;
+    prepareFremarker();
   }
 
-  private void processDeploy(URL source) throws IOException {
-    System.out.println("Processing the deploy type: " + deployType);
-    if(deployType == DeployType.JAR){
-      //UNZIP RESOURCES;
-      System.out.println("IS JAR FILE");
-      new UnzipJar().unzipJar( this , source.getPath() );
-    }
-    prepareFremarker() ;
-  }
-  
   private void prepareFremarker() throws IOException{
     freemarkerConfig = new Configuration();
     freemarkerConfig.setClassForTemplateLoading( this.getClass() ,  "/templates/" );
-    //freemarkerConfig.setDirectoryForTemplateLoading( getTemplateDir() );
     freemarkerConfig.setObjectWrapper( new DefaultObjectWrapper() );
   }
 
   public CloverXConfiguration getConfiguration() {
     return configuration;
   }
-
-  public String getClassPathDir() {
-    return classPathDir;
-  }
-
-  public DeployType getDeployType() {
-    return deployType;
-  }
-
-  public String getRootName() {
-    return rootName;
-  }
-
-  public String getRootTemp() {
-    return rootTemp;
-  }
-  
-  public String getResourcePath(){
-    File file = new File(rootTemp);
-    return new File( file, rootName ).toPath().toString(); 
-  }
-  
-  public String getResourceStaticPath(){
-    File f = new File( getResourcePath() );
-    return new File( f , getConfiguration().getStaticRootPath() ).getPath().toString();
-  }
-  
-  public String getResourceTemplatesPath(){
-    File f = new File( getResourcePath() );
-    return new File( f , "templates" ).getPath().toString();
-  }
-  
-  public boolean isJarDeployment(){
-    return deployType == DeployType.JAR;
-  }
-
-  public File getTemplateDir(){
-    if(templateDir == null){
-      if ( isJarDeployment() ) {
-        templateDir = new File( getResourceTemplatesPath() );
-      } else {
-        String classPathDir = getClassPathDir();
-        URL url = this.getClass().getResource(classPathDir + "templates");
-        System.out.println( "URL++  : " +  url );
-        try {
-          templateDir = new File(url.toURI());
-        }catch(Exception e){
-          e.printStackTrace();
-        }
-      }
-    }
-    return templateDir;
-  }
-  
-  public File getStaticResourceDir(){
-    if( isJarDeployment() ){
-      staticResourceDir = new File( getResourceStaticPath() );
-    }else{
-      String staticRootPath = getConfiguration().getStaticRootPath();
-      String classPathDir = getClassPathDir();
-      URL url = this.getClass().getResource( classPathDir + staticRootPath );
-      staticResourceDir = new File( url.getPath() );
-    }
-    return staticResourceDir;
-  }
-
   public Configuration getFreemarkerConfig() {
     return freemarkerConfig;
   }

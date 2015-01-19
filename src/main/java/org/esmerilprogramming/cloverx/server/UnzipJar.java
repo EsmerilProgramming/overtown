@@ -11,10 +11,13 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+@Deprecated
 public class UnzipJar {
-  
+
+
   public void unzipJar(ConfigurationHolder configHandler, String jarPath) throws IOException {
-    try {
+    throw new RuntimeException("You should not use this class anymore.");
+    /*try {
       String destinationDir = configHandler.getRootTemp() + File.separator + configHandler.getRootName();
       File file = new File(jarPath);
       try (JarFile jar = new JarFile(file)) {
@@ -34,7 +37,7 @@ public class UnzipJar {
       }
     } catch (IOException ex) {
       ex.printStackTrace();
-    }
+    }*/
   }
   
   protected boolean isResource(JarEntry entry , ConfigurationHolder configHandler){

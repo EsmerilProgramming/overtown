@@ -11,9 +11,10 @@ import java.io.File;
 public class ResourceHandlerMounter {
 
   public ResourceHandler mount() {
-    System.out.println("Static Resource" + ConfigurationHolder.getInstance().getStaticResourceDir() );
-    File staticResourceDir = ConfigurationHolder.getInstance().getStaticResourceDir();
-    ResourceManager resourceManager = new ClassPathResourceManager( Thread.currentThread().getContextClassLoader() , "static/"); //new FileResourceManager( staticResourceDir , 1 );
+    CloverXConfiguration configuration = ConfigurationHolder.getInstance().getConfiguration();
+    ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+    ResourceManager resourceManager = new ClassPathResourceManager(contextClassLoader, configuration.getStaticRootPath() + "/");
     return Handlers.resource( resourceManager );
   }
+
 }

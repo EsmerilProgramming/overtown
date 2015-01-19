@@ -28,61 +28,39 @@ public class PackageScanner {
 
   protected ScannerResult scanPackage(String packageToSearch, ClassFileVisitor visitor,
       ClassLoader classLoader) throws PackageNotFoundException, IOException {
-
-    Class<? extends PackageScanner> thisClass = this.getClass();
-    CodeSource src = this.getClass().getProtectionDomain().getCodeSource();
-    ClassLoader l = Thread.currentThread().getContextClassLoader();
-
     try{
-      File f = new File( System.getProperty("user.dir") + File.separator + System.getProperty("java.class.path") );
-      URI uri = f.toURI();
-      FileSystem fs  = FileSystems.newFileSystem( Paths.get( uri ) , classLoader );
-      Path startPath = fs.getPath("/" + packageToSearch.replaceAll("\\.",  "/" ) );
-      Files.walkFileTree(startPath, visitor);
+      tryToReadJarFile(packageToSearch , visitor , classLoader );
     }catch(Exception e){
       System.out.println("It is not a compresed file, trying to scan the classpath now");
-      if (!"".equals(packageToSearch)) {
-        packageToSearch = packageToSearch.replaceAll("\\.", "/");
-      }
-      URL currentClassPath = thisClass.getResource("/" + packageToSearch);
-      if (currentClassPath == null)
-        throw new PackageNotFoundException("Was not possible to find the especified ("
-                + packageToSearch + ") package to scan");
       try {
-        Path path = Paths.get(currentClassPath.toURI());
-        visitor.setPathToReplace( Paths.get( thisClass.getResource("/").toURI() ).toString() );
-        Files.walkFileTree(path, visitor);
-      } catch (URISyntaxException ex) {
-        ex.printStackTrace();
-      }
-    }
-    /*if (jar == null) {
-      if (!"".equals(packageToSearch)) {
-        packageToSearch = packageToSearch.replaceAll("\\.", "/");
-      }
-      URL currentClassPath = thisClass.getResource("/" + packageToSearch);
-      if (currentClassPath == null)
-        throw new PackageNotFoundException("Was not possible to find the especified ("
-            + packageToSearch + ") package to scan");
-      try {
-        Path path = Paths.get(currentClassPath.toURI());
-        visitor.setPathToReplace( Paths.get( thisClass.getResource("/").toURI() ).toString() );
-        Files.walkFileTree(path, visitor);
-      } catch (URISyntaxException e) {
-        e.printStackTrace();
-      }
-    } else if (jar != null) {
-      try {
-        //URL jar = src.getLocation();
-        //jar = new URL("file://" + System.getProperty("user.dir") + "/" + System.getProperty("java.class.path"));
-        FileSystem fs = FileSystems.newFileSystem(  Paths.get(jar.toURI() ), null);
-        Path startPath = fs.getPath("/");
-        Files.walkFileTree(startPath, visitor);
+        loadWithDefaultFileSystem(packageToSearch , visitor , classLoader );
       } catch (URISyntaxException e1) {
         e1.printStackTrace();
       }
-    }*/
+    }
     return visitor.getResult();
+  }
+
+  protected void tryToReadJarFile(String packageToSearch, ClassFileVisitor visitor, ClassLoader classLoader) throws IOException {
+    File f = new File( System.getProperty("user.dir") + File.separator + System.getProperty("java.class.path") );
+    URI uri = f.toURI();
+    FileSystem fs  = FileSystems.newFileSystem( Paths.get( uri ) , classLoader );
+    Path startPath = fs.getPath("/" + packageToSearch.replaceAll("\\.",  "/" ) );
+    Files.walkFileTree(startPath, visitor);
+  }
+
+  protected void loadWithDefaultFileSystem(String packageToSearch, ClassFileVisitor visitor, ClassLoader classLoader) throws PackageNotFoundException, IOException, URISyntaxException {
+    if (!"".equals(packageToSearch)) {
+      packageToSearch = packageToSearch.replaceAll("\\.", "/");
+    }
+    URL currentClassPath = this.getClass().getResource("/" + packageToSearch);
+    if (currentClassPath == null) {
+      throw new PackageNotFoundException("Was not possible to find the especified ("
+              + packageToSearch + ") package to scan");
+    }
+    Path path = Paths.get(currentClassPath.toURI());
+     visitor.setPathToReplace( Paths.get( this.getClass().getResource("/").toURI() ).toString() );
+     Files.walkFileTree(path, visitor);
   }
 
 }
