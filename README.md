@@ -6,7 +6,7 @@ CloverX
 
 ## Getting started
 
-Current version - 0.2.0-SNAPSHOT
+Current version - 0.2.2-SNAPSHOT
 
 ### Getting the lib
 #### Maven
@@ -25,7 +25,7 @@ Current version - 0.2.0-SNAPSHOT
   <dependency>
     <groupId>com.github.esmerilprogramming</groupId>
     <artifactId>cloverx</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.2-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
@@ -109,6 +109,7 @@ Declare a CloverX instance in your main method:
 ```java
 public static void main(String... args) {
   new CloverX(new ConfigurationBuilder()
+  .withPackageToScan("org.esmerilprogramming.app")
   .withHost("127.0.0.1")
   .withPort(8080)
   .build());
