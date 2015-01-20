@@ -10,9 +10,15 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.CodeSource;
+import java.util.Set;
 
+import org.esmerilprogramming.cloverx.annotation.Controller;
+import org.esmerilprogramming.cloverx.annotation.session.SessionListener;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
+import org.reflections.Reflections;
+
+import javax.servlet.http.HttpServlet;
+import javax.websocket.server.ServerEndpoint;
 
 /**
  * 
@@ -28,7 +34,26 @@ public class PackageScanner {
 
   protected ScannerResult scanPackage(String packageToSearch, ClassFileVisitor visitor,
       ClassLoader classLoader) throws PackageNotFoundException, IOException {
-    try{
+    Reflections reflections = new Reflections("");
+    Set<Class<?>> handlers = reflections.getTypesAnnotatedWith(Controller.class);
+    Set<Class<?>> serverEndpoints = reflections.getTypesAnnotatedWith(ServerEndpoint.class);
+    Set<Class<?>> sessionListeners = reflections.getTypesAnnotatedWith(SessionListener.class);
+    Set<Class<? extends HttpServlet>> servlets = reflections.getSubTypesOf(HttpServlet.class);
+
+    ScannerResult scannerResult = new ScannerResult();
+    for(Class<?> c : handlers){
+      scannerResult.addHandlerClass(c);
+    }
+    for(Class<?> c : serverEndpoints){
+      scannerResult.addServerEndpointClass(c);
+    }
+    for(Class<?> c : sessionListeners){
+      scannerResult.addSessionListener(c);
+    }
+    for(Class<? extends HttpServlet> c : servlets){
+      scannerResult.addServletClass(c);
+    }
+/*    try{
       tryToReadJarFile(packageToSearch , visitor , classLoader );
     }catch(Exception e){
       System.out.println("It is not a compresed file, trying to scan the classpath now");
@@ -37,8 +62,8 @@ public class PackageScanner {
       } catch (URISyntaxException e1) {
         e1.printStackTrace();
       }
-    }
-    return visitor.getResult();
+    }*/
+    return scannerResult; //visitor.getResult();
   }
 
   protected void tryToReadJarFile(String packageToSearch, ClassFileVisitor visitor, ClassLoader classLoader) throws IOException {

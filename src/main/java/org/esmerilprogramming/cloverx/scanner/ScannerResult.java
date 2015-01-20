@@ -44,13 +44,14 @@ public class ScannerResult {
   protected void addHandlerClass(Class<?> handlerClass) {
     handlers.add(handlerClass);
   }
-  
   protected void addServerEndpointClass(Class<?> serverEndpointClass) {
     serverEndpoints.add(serverEndpointClass);
   }
-
   protected void addServletClass(Class<? extends HttpServlet> servletClass) {
     servlets.add(servletClass);
+  }
+  protected void addSessionListener(Class<? > sessionListenerClass) {
+    sessionListeners.add(sessionListenerClass);
   }
 
   public List<Class<? extends HttpServlet>> getServlets() {
