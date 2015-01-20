@@ -16,6 +16,7 @@ import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.AnotherSeverEn
 import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fifth;
 import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fourth;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class PackageScannerTest {
@@ -27,12 +28,16 @@ public class PackageScannerTest {
     scanner = new PackageScanner();
   }
 
+  /*
+   * This won't happen when using Reflections project, will be ignored and removed later
+   */
+  @Ignore
   @Test(expected = PackageNotFoundException.class)
   public void givenANonExistentPackageShouldThrowException() throws PackageNotFoundException,
       IOException {
     ClassLoader classLoader = PackageScanner.class.getClassLoader();
 
-    scanner.scan("com.wrong.package", classLoader);
+    scanner.scan("com.wrong.package");
   }
 
   @Test
@@ -41,7 +46,7 @@ public class PackageScannerTest {
     ClassLoader classLoader = PackageScanner.class.getClassLoader();
     
     ScannerResult pageClasses =
-        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage", classLoader);
+        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage");
 
     List<Class<?>> handlers = pageClasses.getServerEndpoints();
     assertSame(2, handlers.size());
@@ -55,7 +60,7 @@ public class PackageScannerTest {
     ClassLoader classLoader = PackageScanner.class.getClassLoader();
 
     ScannerResult pageClasses =
-        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage", classLoader);
+        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage");
 
     List<Class<?>> handlers = pageClasses.getHandlers();
     assertSame(2, handlers.size());
@@ -69,7 +74,7 @@ public class PackageScannerTest {
     ClassLoader classLoader = PackageScanner.class.getClassLoader();
 
     ScannerResult pageClasses =
-        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage", classLoader);
+        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage");
 
     List<Class<? extends HttpServlet>> servlets = pageClasses.getServlets();
     assertSame(2, servlets.size());
