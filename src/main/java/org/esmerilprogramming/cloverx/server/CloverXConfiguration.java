@@ -8,6 +8,7 @@ public class CloverXConfiguration {
   private String staticRootPath;
   private String templateRootPath;
   private String packageToSkan;
+  private Boolean runManagement;
   
   public String getHost() {
     return host;
@@ -41,4 +42,10 @@ public class CloverXConfiguration {
   }
   public String getPackageToSkan() { return packageToSkan;  }
   public void setPackageToSkan(String packageToSkan) { this.packageToSkan = packageToSkan; }
+  public Boolean getRunManagement() {
+    return runManagement;
+  }
+  public void setRunManagement(Boolean runManagement) {
+    this.runManagement = runManagement;
+  }
 }
