@@ -15,6 +15,8 @@ import org.esmerilprogramming.cloverx.scanner.testpackage.Third;
 import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.AnotherSeverEndpoint;
 import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fifth;
 import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fourth;
+import org.esmerilprogramming.cloverx.server.ConfigurationBuilder;
+import org.esmerilprogramming.cloverx.server.ConfigurationHolder;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,6 +27,11 @@ public class PackageScannerTest {
 
   @Before
   public void setUp() {
+    try {
+      ConfigurationHolder.getInstance().prepareConfiguration(new ConfigurationBuilder().build());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     scanner = new PackageScanner();
   }
 
@@ -36,7 +43,6 @@ public class PackageScannerTest {
   public void givenANonExistentPackageShouldThrowException() throws PackageNotFoundException,
       IOException {
     ClassLoader classLoader = PackageScanner.class.getClassLoader();
-
     scanner.scan("com.wrong.package");
   }
 
