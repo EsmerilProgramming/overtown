@@ -10,9 +10,19 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.CodeSource;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import org.esmerilprogramming.cloverx.annotation.Controller;
+import org.esmerilprogramming.cloverx.annotation.session.SessionListener;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
+import org.esmerilprogramming.cloverx.server.CloverXConfiguration;
+import org.esmerilprogramming.cloverx.server.ConfigurationHolder;
+import org.reflections.Reflections;
+import org.reflections.Store;
+
+import javax.servlet.http.HttpServlet;
+import javax.websocket.server.ServerEndpoint;
 
 /**
  * 
@@ -20,47 +30,50 @@ import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException
  */
 public class PackageScanner {
 
-  public ScannerResult scan(String packageToSearch, ClassLoader classLoader)
+  private CloverXConfiguration configuration;
+
+  public ScannerResult scan( String packageToSearch )
       throws PackageNotFoundException, IOException {
-    ClassFileVisitor visitor = new ClassFileVisitor(classLoader);
-    return scanPackage(packageToSearch, visitor, classLoader);
+    configuration = ConfigurationHolder.getInstance().getConfiguration();
+    return scanPackage( packageToSearch );
   }
 
-  protected ScannerResult scanPackage(String packageToSearch, ClassFileVisitor visitor,
-      ClassLoader classLoader) throws PackageNotFoundException, IOException {
-    try{
-      tryToReadJarFile(packageToSearch , visitor , classLoader );
-    }catch(Exception e){
-      System.out.println("It is not a compresed file, trying to scan the classpath now");
-      try {
-        loadWithDefaultFileSystem(packageToSearch , visitor , classLoader );
-      } catch (URISyntaxException e1) {
-        e1.printStackTrace();
+  protected ScannerResult scanPackage(String packageToSearch) throws PackageNotFoundException, IOException {
+    Reflections reflections = new Reflections( packageToSearch );
+    Store store = reflections.getStore();
+    Set<Class<?>> handlers = reflections.getTypesAnnotatedWith(Controller.class);
+    Set<Class<?>> serverEndpoints = reflections.getTypesAnnotatedWith(ServerEndpoint.class);
+    Set<Class<?>> sessionListeners = reflections.getTypesAnnotatedWith(SessionListener.class);
+    Set<Class<? extends HttpServlet>> servlets = reflections.getSubTypesOf(HttpServlet.class);
+
+    ScannerResult scannerResult = new ScannerResult();
+    for(Class<?> c : filtrateClasses(handlers) ){
+      scannerResult.addHandlerClass(c);
+    }
+    for(Class<?> c : filtrateClasses(serverEndpoints) ){
+      scannerResult.addServerEndpointClass(c);
+    }
+    for(Class<?> c : filtrateClasses(sessionListeners) ){
+      scannerResult.addSessionListener(c);
+    }
+    for(Class c : filtrateClasses( servlets )  ){
+      scannerResult.addServletClass(c);
+    }
+
+    return scannerResult;
+  }
+
+  protected <T> Set<Class<? extends T>> filtrateClasses(Set<Class<? extends T>> classes){
+    if( !configuration.getRunManagement() ){
+      Set<Class<?>> classesToRemove = new LinkedHashSet<>();
+      for ( Class<?> c : classes){
+        if( c.getPackage().getName().startsWith("org.esmerilprogramming.cloverx.management") ){
+          classesToRemove.add(c);
+        }
       }
+      classes.removeAll( classesToRemove );
     }
-    return visitor.getResult();
-  }
-
-  protected void tryToReadJarFile(String packageToSearch, ClassFileVisitor visitor, ClassLoader classLoader) throws IOException {
-    File f = new File( System.getProperty("user.dir") + File.separator + System.getProperty("java.class.path") );
-    URI uri = f.toURI();
-    FileSystem fs  = FileSystems.newFileSystem( Paths.get( uri ) , classLoader );
-    Path startPath = fs.getPath("/" + packageToSearch.replaceAll("\\.",  "/" ) );
-    Files.walkFileTree(startPath, visitor);
-  }
-
-  protected void loadWithDefaultFileSystem(String packageToSearch, ClassFileVisitor visitor, ClassLoader classLoader) throws PackageNotFoundException, IOException, URISyntaxException {
-    if (!"".equals(packageToSearch)) {
-      packageToSearch = packageToSearch.replaceAll("\\.", "/");
-    }
-    URL currentClassPath = this.getClass().getResource("/" + packageToSearch);
-    if (currentClassPath == null) {
-      throw new PackageNotFoundException("Was not possible to find the especified ("
-              + packageToSearch + ") package to scan");
-    }
-    Path path = Paths.get(currentClassPath.toURI());
-     visitor.setPathToReplace( Paths.get( this.getClass().getResource("/").toURI() ).toString() );
-     Files.walkFileTree(path, visitor);
+    return classes;
   }
 
 }

@@ -27,44 +27,28 @@ public class ScannerResult {
     sessionListeners = new ArrayList<>();
   }
 
-  @SuppressWarnings("unchecked")
-  public void addClass(Class<?> unkownClass) {
-
-    Controller annotation = unkownClass.getAnnotation(Controller.class);
-    if (annotation != null)
-      addHandlerClass( unkownClass);
-    if (HttpServlet.class.isAssignableFrom(unkownClass))
-      addServletClass((Class<? extends HttpServlet>) unkownClass);
-    if( unkownClass.getAnnotation(ServerEndpoint.class) != null)
-      addServerEndpointClass(unkownClass);
-    if( unkownClass.getAnnotation(SessionListener.class) != null )
-      sessionListeners.add( unkownClass );
-  }
-
   protected void addHandlerClass(Class<?> handlerClass) {
     handlers.add(handlerClass);
   }
-  
   protected void addServerEndpointClass(Class<?> serverEndpointClass) {
     serverEndpoints.add(serverEndpointClass);
   }
-
   protected void addServletClass(Class<? extends HttpServlet> servletClass) {
     servlets.add(servletClass);
+  }
+  protected void addSessionListener(Class<? > sessionListenerClass) {
+    sessionListeners.add(sessionListenerClass);
   }
 
   public List<Class<? extends HttpServlet>> getServlets() {
     return servlets;
   }
-
   public List<Class<?>> getHandlers() {
     return handlers;
   }
-
   public List<Class<?>> getServerEndpoints() {
     return serverEndpoints;
   }
-
   public List<Class<?>> getSessionListeners() {
     return sessionListeners;
   }

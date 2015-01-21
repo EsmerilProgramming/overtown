@@ -68,10 +68,10 @@ public final class CloverX {
 
   public static void main(String[] args) {
     new CloverX(new ConfigurationBuilder()
-            .withPackageToScan("org.esmerilprogramming.cloverx.management")
-    .withHost("0.0.0.0")
-    .withPort(8080)
-    .build());
+      .withPackageToScan("org.esmerilprogramming.cloverx.management")
+      .withHost("0.0.0.0")
+      .withPort(8080)
+      .build());
   }
 
 }

@@ -10,6 +10,7 @@ public class ConfigurationBuilder {
   private String staticRootPath = "static";
   private String templateRootPath = "templates";
   private String packageToScan = "";
+  private Boolean runManagement = false;
   
   
   public ConfigurationBuilder withHost(String host){
@@ -32,6 +33,11 @@ public class ConfigurationBuilder {
 
   public ConfigurationBuilder withPackageToScan(String packageToScan){
     this.packageToScan = packageToScan;
+    return this;
+  }
+
+  public ConfigurationBuilder shouldRunManagement(boolean shouldRun){
+    this.runManagement = shouldRun;
     return this;
   }
   
@@ -58,18 +64,12 @@ public class ConfigurationBuilder {
     config.setStaticRootPath(staticRootPath);
     config.setTemplateRootPath(templateRootPath);
     config.setPackageToSkan(packageToScan);
+    config.setRunManagement(runManagement);
     return config;
   }
   
   protected CloverXConfiguration defaultConfiguration(){
-    CloverXConfiguration config = new CloverXConfiguration();
-    config.setHost("127.0.0.1");
-    config.setPort(8080);
-    config.setAppContext("");
-    config.setStaticRootPath(staticRootPath);
-    config.setTemplateRootPath(templateRootPath);
-    config.setPackageToSkan(packageToScan);
-    return config;
+    return withAppContext("").withHost("127.0.0.1").withPort(8080).build();
   }
   
 }

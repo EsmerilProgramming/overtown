@@ -39,11 +39,9 @@ public class PreBuildHandlerImpl implements PreBuildHandler {
   }
 
   public ScannerResult identifyEligibleClasses(CloverXConfiguration configuration) {
-    ClassLoader classLoader = this.getClass().getClassLoader();
     ScannerResult scan = null;
     try {
-
-      scan = new PackageScanner().scan( configuration.getPackageToSkan() , classLoader);
+      scan = new PackageScanner().scan( configuration.getPackageToSkan() );
     } catch (PackageNotFoundException | IOException e) {
       e.printStackTrace();
       LOGGER.error(e.getMessage());
@@ -64,7 +62,7 @@ public class PreBuildHandlerImpl implements PreBuildHandler {
   protected void validateConfiguration(CloverXConfiguration configuration) {
     String packageToSkan = configuration.getPackageToSkan();
     packageToSkan = packageToSkan == null ? "" : packageToSkan.trim();
-    if( "".equals( configuration.getPackageToSkan() ) ){
+    if( "".equals( packageToSkan ) ){
       throw new ConfigurationException("You should specify the package to be scanned. See https://github.com/EsmerilProgramming/cloverx for more info");
     }
   }
@@ -75,7 +73,7 @@ public class PreBuildHandlerImpl implements PreBuildHandler {
       PathHandlerMounter mounter = new PathHandlerMounter();
       return mounter.mount( scannerResult );
     }
-    throw new NoControllerException("You should specify at least one controller. See https://github.com/EsmerilProgramming/cloverx for more info");
+    throw new NoControllerException("You should specify at least one controller, verify if you informed the right package to be scanned or see https://github.com/EsmerilProgramming/cloverx for more info");
   }
 
 }

@@ -31,7 +31,7 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
 //        System.out.println("scanning file: " + file );
 //        System.out.println("scanning as package: " + asPackageClass(file) );
         Class<?> loadedClass = classLoader.loadClass(asPackageClass(file));
-        getResult().addClass(loadedClass);
+        //getResult().addClass(loadedClass);
       } catch (ClassNotFoundException e) {
         LOGGER.error(e.getMessage());
       }
