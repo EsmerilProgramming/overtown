@@ -6,7 +6,7 @@ CloverX
 
 ## Getting started
 
-Current version - 0.2.2-SNAPSHOT
+Current version - 0.3.0-SNAPSHOT
 
 ### Getting the lib
 #### Maven
@@ -25,7 +25,7 @@ Current version - 0.2.2-SNAPSHOT
   <dependency>
     <groupId>com.github.esmerilprogramming</groupId>
     <artifactId>cloverx</artifactId>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
