@@ -35,22 +35,10 @@ public class PackageScannerTest {
     scanner = new PackageScanner();
   }
 
-  /*
-   * This won't happen when using Reflections project, will be ignored and removed later
-   */
-  @Ignore
-  @Test(expected = PackageNotFoundException.class)
-  public void givenANonExistentPackageShouldThrowException() throws PackageNotFoundException,
-      IOException {
-    ClassLoader classLoader = PackageScanner.class.getClassLoader();
-    scanner.scan("com.wrong.package");
-  }
-
   @Test
   public void givenAPackagedShouldFindAllServerEndpointAnnotatedClassesInThisPackageAndSubPackages()
       throws PackageNotFoundException, IOException {
-    ClassLoader classLoader = PackageScanner.class.getClassLoader();
-    
+
     ScannerResult pageClasses =
         scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage");
 
@@ -63,7 +51,6 @@ public class PackageScannerTest {
   @Test
   public void givenAPackagedShouldFindAllControllerAnnotatedClassesInThisPackageAndSubPackages()
       throws PackageNotFoundException, IOException {
-    ClassLoader classLoader = PackageScanner.class.getClassLoader();
 
     ScannerResult pageClasses =
         scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage");
@@ -77,7 +64,6 @@ public class PackageScannerTest {
   @Test
   public void givenAPackagedShouldFindAllHttpServletClassesInThisPackageAndSubPackages()
       throws PackageNotFoundException, IOException {
-    ClassLoader classLoader = PackageScanner.class.getClassLoader();
 
     ScannerResult pageClasses =
         scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage");

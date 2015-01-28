@@ -32,6 +32,8 @@ public class PackageScanner {
 
   private CloverXConfiguration configuration;
 
+  private final String MANAGEMENT_PACKAGE = "org.esmerilprogramming.cloverx.management";
+
   public ScannerResult scan( String packageToSearch )
       throws PackageNotFoundException, IOException {
     configuration = ConfigurationHolder.getInstance().getConfiguration();
@@ -40,7 +42,6 @@ public class PackageScanner {
 
   protected ScannerResult scanPackage(String packageToSearch) throws PackageNotFoundException, IOException {
     Reflections reflections = new Reflections( packageToSearch );
-    Store store = reflections.getStore();
     Set<Class<?>> handlers = reflections.getTypesAnnotatedWith(Controller.class);
     Set<Class<?>> serverEndpoints = reflections.getTypesAnnotatedWith(ServerEndpoint.class);
     Set<Class<?>> sessionListeners = reflections.getTypesAnnotatedWith(SessionListener.class);
@@ -67,7 +68,7 @@ public class PackageScanner {
     if( !configuration.getRunManagement() ){
       Set<Class<?>> classesToRemove = new LinkedHashSet<>();
       for ( Class<?> c : classes){
-        if( c.getPackage().getName().startsWith("org.esmerilprogramming.cloverx.management") ){
+        if( c.getPackage().getName().startsWith( MANAGEMENT_PACKAGE ) ){
           classesToRemove.add(c);
         }
       }
