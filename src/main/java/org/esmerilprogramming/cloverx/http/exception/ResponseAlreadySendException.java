@@ -1,4 +1,4 @@
-package org.esmerilprogramming.cloverx.http;
+package org.esmerilprogramming.cloverx.http.exception;
 
 public class ResponseAlreadySendException extends RuntimeException {
 

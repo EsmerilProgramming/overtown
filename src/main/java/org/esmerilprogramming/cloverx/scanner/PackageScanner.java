@@ -1,28 +1,17 @@
 package org.esmerilprogramming.cloverx.scanner;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.session.SessionListener;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
 import org.esmerilprogramming.cloverx.server.CloverXConfiguration;
 import org.esmerilprogramming.cloverx.server.ConfigurationHolder;
 import org.reflections.Reflections;
-import org.reflections.Store;
 
 import javax.servlet.http.HttpServlet;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * 

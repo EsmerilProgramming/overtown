@@ -176,4 +176,7 @@ public class CloverXRequest {
     return (JsonResponse) response;
   }
 
+  public Object getHttpMethod() {
+    return exchange.getRequestMethod().toString();
+  }
 }

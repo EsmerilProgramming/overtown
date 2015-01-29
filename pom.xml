@@ -30,7 +30,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <undertow-version>1.0.15.Final</undertow-version>
+    <undertow-version>1.1.2.Final</undertow-version>
   </properties>
 
   <build>
