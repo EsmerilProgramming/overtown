@@ -28,7 +28,7 @@ public class ManagementPage {
     request.addAttribute("name", "Efraim Gentil");
   }
   
-  @Page(value = "ws" , responseTemplate = "index.ftl")
+  @Page(value = "ws" , responseTemplate = "form.ftl")
   public void wsTeste() {
     
   }

@@ -18,6 +18,7 @@ import java.util.Set;
  */
 public class ControllerMapping {
 
+  private Class<?> controllerClass;
   private String path;
   private Set<PathMapping> pathMappings;
   private Set<Method> beforeTranslationMethods;
@@ -38,7 +39,7 @@ public class ControllerMapping {
           for(VerbAndPaths vap : vaps) {
             for (String path : vap.paths) {
               path = path.trim().isEmpty() ? m.getName() : path.trim();
-              pathMappings.add(new PathMapping(path, vap.httpVerb, m));
+              pathMappings.add(new PathMapping(path, vap.httpVerb, m , vap.template));
             }
           }
         } catch (NotAPathAnnotationException e) {
@@ -52,24 +53,24 @@ public class ControllerMapping {
     Class<? extends Annotation> annotationClass = annotation.annotationType();
     if(annotationClass.equals(Get.class) ){
       Get get = (Get) annotation;
-      return new VerbAndPaths[]{ new VerbAndPaths( HttpMethod.GET , get.value() ) };
+      return new VerbAndPaths[]{ new VerbAndPaths( HttpMethod.GET , get.value() , get.template() ) };
     }
     if(annotationClass.equals(Post.class) ){
       Post post = (Post) annotation;
-      return new VerbAndPaths[]{ new VerbAndPaths( HttpMethod.POST , post.value() ) };
+      return new VerbAndPaths[]{ new VerbAndPaths( HttpMethod.POST , post.value()  , post.template()) };
     }
     if(annotationClass.equals(Path.class)){
       Path path = (Path) annotation;
       return new VerbAndPaths[]{
-              new VerbAndPaths( HttpMethod.GET , path.value() )
-              , new VerbAndPaths( HttpMethod.POST , path.value() )
+              new VerbAndPaths( HttpMethod.GET , path.value() ,  path.template() )
+              , new VerbAndPaths( HttpMethod.POST , path.value() ,  path.template() )
       };
     }
     if(annotationClass.equals(Page.class)){
       Page page = (Page) annotation;
       return new VerbAndPaths[]{
-              new VerbAndPaths( HttpMethod.GET , page.value() )
-              , new VerbAndPaths( HttpMethod.POST , page.value() )
+              new VerbAndPaths( HttpMethod.GET , page.value() , page.responseTemplate() )
+              , new VerbAndPaths( HttpMethod.POST , page.value() , page.responseTemplate() )
       };
     }
     throw new NotAPathAnnotationException();
@@ -78,9 +79,11 @@ public class ControllerMapping {
   private class VerbAndPaths{
     private String httpVerb;
     private String[] paths;
-    VerbAndPaths(String verb , String[] paths){
+    private String template;
+    VerbAndPaths(String verb , String[] paths , String template){
       this.httpVerb = verb;
       this.paths = paths;
+      this.template = template;
     }
   }
 
@@ -88,6 +91,15 @@ public class ControllerMapping {
     beforeTranslationMethods.addAll(methods);
   }
 
+  public void setControllerClass(Class<?> controllerClass) {
+    this.controllerClass = controllerClass;
+  }
+  public Class<?> getControllerClass() {
+    return controllerClass;
+  }
+  public Set<Method> getBeforeTranslationMethods() {
+    return beforeTranslationMethods;
+  }
   public String getPath() {
     return path;
   }

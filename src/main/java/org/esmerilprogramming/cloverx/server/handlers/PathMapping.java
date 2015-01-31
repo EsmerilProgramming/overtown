@@ -10,11 +10,13 @@ public class PathMapping {
   private String path;
   private String httpMethod;
   private Method method;
+  private String template;
 
-  public PathMapping(String path, String httpMethod, Method method) {
+  public PathMapping(String path, String httpMethod, Method method , String template) {
     this.path = path;
     this.httpMethod = httpMethod;
     this.method = method;
+    this.template = template;
   }
 
   @Override
@@ -36,27 +38,24 @@ public class PathMapping {
     return result;
   }
 
+  public String getTemplate() { return template; }
   public String getPath() {
     return path;
   }
-
   public void setPath(String path) {
     this.path = path;
   }
-
   public String getHttpMethod() {
     return httpMethod;
   }
-
   public void setHttpMethod(String httpMethod) {
     this.httpMethod = httpMethod;
   }
-
   public Method getMethod() {
     return method;
   }
-
   public void setMethod(Method method) {
     this.method = method;
   }
+
 }

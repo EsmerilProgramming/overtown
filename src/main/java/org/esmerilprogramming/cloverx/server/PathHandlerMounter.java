@@ -3,6 +3,7 @@ package org.esmerilprogramming.cloverx.server;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.PathHandler;
+import io.undertow.server.session.SessionAttachmentHandler;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
@@ -21,7 +22,10 @@ import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.http.CloverXSessionManager;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
+import org.esmerilprogramming.cloverx.server.handlers.ControllerHandlerCreator;
+import org.esmerilprogramming.cloverx.server.handlers.ControllerMapping;
 import org.jboss.logging.Logger;
 import org.xnio.ByteBufferSlicePool;
 
@@ -30,7 +34,6 @@ public class PathHandlerMounter {
   private static final Logger LOGGER = Logger.getLogger(PathHandlerMounter.class);
 
   public PathHandler mount(ScannerResult scanResult) {
-    
     PathHandler pathHandler = Handlers.path();
     try {
       for (Class<?> handlerClass : scanResult.getHandlers()) {

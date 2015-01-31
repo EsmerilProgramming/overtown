@@ -1,9 +1,12 @@
 package org.esmerilprogramming.cloverx.server;
 
 
+import io.undertow.Handlers;
 import io.undertow.Undertow;
-import org.esmerilprogramming.cloverx.server.handlers.PreBuildHandler;
-import org.esmerilprogramming.cloverx.server.handlers.PreBuildHandlerImpl;
+import io.undertow.server.HttpHandler;
+import io.undertow.server.HttpServerExchange;
+import org.esmerilprogramming.cloverx.server.handlers.StartupHandler;
+import org.esmerilprogramming.cloverx.server.handlers.StartupHandlerImpl;
 import org.jboss.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -49,18 +52,10 @@ public final class CloverX {
   }
 
   private Undertow buildServer( CloverXConfiguration configuration ) throws ServletException, IOException {
-    PreBuildHandler preBuildHandler = new PreBuildHandlerImpl();
-    preBuildHandler.prepareBuild(configuration);
-    return Undertow.builder()
-        .addHttpListener( configuration.getPort() ,  configuration.getHost() )
-        .setHandler(
-            path()
-            .addPrefixPath("/" + configuration.getAppContext() , preBuildHandler.createAppHandlers() )
-            .addPrefixPath("/" + configuration.getStaticRootPath() , new ResourceHandlerMounter()
-            .mount()))
-        .build();
+    StartupHandler startupHandler = new StartupHandlerImpl();
+    return startupHandler.prepareBuild(configuration);
   }
-  
+
   public Undertow getServer() {
     return server;
   }

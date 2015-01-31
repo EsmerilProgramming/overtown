@@ -46,6 +46,7 @@ public class ScannerResult {
     sessionListeners.add(sessionListenerClass);
   }
 
+  public List<ControllerMapping> getControllerMappings() { return controllerMappings; }
   public List<Class<? extends HttpServlet>> getServlets() {
     return servlets;
   }
