@@ -31,15 +31,13 @@ public class PackageScanner {
 
   protected ScannerResult scanPackage(String packageToSearch) throws PackageNotFoundException, IOException {
     Reflections reflections = new Reflections( packageToSearch );
-    Set<Class<?>> handlers = reflections.getTypesAnnotatedWith(Controller.class);
+    Set<Class<?>> controllers = reflections.getTypesAnnotatedWith(Controller.class);
     Set<Class<?>> serverEndpoints = reflections.getTypesAnnotatedWith(ServerEndpoint.class);
     Set<Class<?>> sessionListeners = reflections.getTypesAnnotatedWith(SessionListener.class);
     Set<Class<? extends HttpServlet>> servlets = reflections.getSubTypesOf(HttpServlet.class);
 
     ScannerResult scannerResult = new ScannerResult();
-    for(Class<?> c : filtrateClasses(handlers) ){
-      scannerResult.addHandlerClass(c);
-    }
+    scannerResult = mapControllers( scannerResult , filtrateClasses(controllers) );
     for(Class<?> c : filtrateClasses(serverEndpoints) ){
       scannerResult.addServerEndpointClass(c);
     }
@@ -50,6 +48,14 @@ public class PackageScanner {
       scannerResult.addServletClass(c);
     }
 
+    return scannerResult;
+  }
+
+  protected ScannerResult mapControllers( ScannerResult scannerResult , Set<Class<?>> controllers){
+    ControllerScanner scanner = new ControllerScanner();
+    for(Class<?> controller : controllers){
+       scannerResult.addControllerMapping( scanner.scanControllerForMapping(controller) );
+    }
     return scannerResult;
   }
 

@@ -72,4 +72,20 @@ public class ControllerMappingTest {
     }
   }
 
+  @Test
+  public void shouldAddAPathMappingGetAndPostByDefaultPathAnnotation() throws NoSuchMethodException {
+    Method path = RestTestController.class.getMethod("path");
+    Set<Method> methods = new LinkedHashSet<>( Arrays.asList( path ) );
+
+    controllerMapping.addPathMethods( methods );
+
+    Set<PathMapping> pathMappings = controllerMapping.getPathMappings();
+    assertTrue( controllerMapping.getPathMappings().size() == 2 );
+    for( PathMapping mapping : pathMappings ) {
+      assertEquals(path.getName(), mapping.getPath());
+    }
+  }
+
+
+
 }

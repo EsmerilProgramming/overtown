@@ -82,10 +82,9 @@ public class PathHandlerMounter {
             .withExecuteBeforeMethods(beforeTranslationMethods)
             .mount();
         
-        for (String pageRoot : controllerAnnotation.path()) {
-          for (String methodRoot : methodPagePath.value()) {
-            pathHandler.addExactPath(pageRoot + "/" + methodRoot, h);
-          }
+        String pageRoot = controllerAnnotation.path();
+        for (String methodRoot : methodPagePath.value()) {
+          pathHandler.addExactPath(pageRoot + "/" + methodRoot, h);
         }
       }
     }

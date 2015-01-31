@@ -8,8 +8,8 @@ import org.esmerilprogramming.cloverx.annotation.path.Post;
 /**
  * Created by efraimgentil<efraimgentil@gmail.com> on 28/01/15.
  */
-@Controller
-public class RestTestController {
+@Controller(path = "/user")
+public class TestUserController {
 
   @Path
   public void path(){

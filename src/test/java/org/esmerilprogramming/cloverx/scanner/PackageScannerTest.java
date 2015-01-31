@@ -18,7 +18,6 @@ import org.esmerilprogramming.cloverx.scanner.testpackage.subpack.Fourth;
 import org.esmerilprogramming.cloverx.server.ConfigurationBuilder;
 import org.esmerilprogramming.cloverx.server.ConfigurationHolder;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class PackageScannerTest {

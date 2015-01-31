@@ -1,9 +1,12 @@
 package org.esmerilprogramming.cloverx.server.handlers;
 
 import freemarker.template.utility.StringUtil;
+import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.annotation.path.Get;
+import org.esmerilprogramming.cloverx.annotation.path.Path;
 import org.esmerilprogramming.cloverx.annotation.path.Post;
 import org.esmerilprogramming.cloverx.http.HttpMethod;
+import org.esmerilprogramming.cloverx.server.handlers.exception.NotAPathAnnotationException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -29,32 +32,52 @@ public class ControllerMapping {
     for( Method m : methods ){
       Annotation[] annotations = m.getAnnotations();
       for(Annotation a : annotations ) {
-        VerbAndPaths vap = getVerbAndPaths(m , a);
-        for (String path : vap.paths) {
-          path = path.trim().isEmpty() ? m.getName() : path.trim();
-          pathMappings.add(new PathMapping(path, vap.httpVerb , m));
+        VerbAndPaths[] vaps = null;
+        try {
+          vaps = getVerbAndPaths( a );
+          for(VerbAndPaths vap : vaps) {
+            for (String path : vap.paths) {
+              path = path.trim().isEmpty() ? m.getName() : path.trim();
+              pathMappings.add(new PathMapping(path, vap.httpVerb, m));
+            }
+          }
+        } catch (NotAPathAnnotationException e) {
+          e.printStackTrace();
         }
       }
     }
   }
 
-  protected VerbAndPaths getVerbAndPaths( Method method , Annotation annotation ) {
-    VerbAndPaths vap = new VerbAndPaths();
-    if(annotation.annotationType().equals(Get.class) ){
+  protected VerbAndPaths[] getVerbAndPaths( Annotation annotation ) throws NotAPathAnnotationException {
+    Class<? extends Annotation> annotationClass = annotation.annotationType();
+    if(annotationClass.equals(Get.class) ){
       Get get = (Get) annotation;
-      return new VerbAndPaths( HttpMethod.GET , get.value() );
+      return new VerbAndPaths[]{ new VerbAndPaths( HttpMethod.GET , get.value() ) };
     }
-    if(annotation.annotationType().equals(Post.class ) ){
+    if(annotationClass.equals(Post.class) ){
       Post post = (Post) annotation;
-      return new VerbAndPaths( HttpMethod.POST , post.value() );
+      return new VerbAndPaths[]{ new VerbAndPaths( HttpMethod.POST , post.value() ) };
     }
-    return vap;
+    if(annotationClass.equals(Path.class)){
+      Path path = (Path) annotation;
+      return new VerbAndPaths[]{
+              new VerbAndPaths( HttpMethod.GET , path.value() )
+              , new VerbAndPaths( HttpMethod.POST , path.value() )
+      };
+    }
+    if(annotationClass.equals(Page.class)){
+      Page page = (Page) annotation;
+      return new VerbAndPaths[]{
+              new VerbAndPaths( HttpMethod.GET , page.value() )
+              , new VerbAndPaths( HttpMethod.POST , page.value() )
+      };
+    }
+    throw new NotAPathAnnotationException();
   }
 
   private class VerbAndPaths{
     private String httpVerb;
     private String[] paths;
-    VerbAndPaths(){}
     VerbAndPaths(String verb , String[] paths){
       this.httpVerb = verb;
       this.paths = paths;
@@ -62,9 +85,12 @@ public class ControllerMapping {
   }
 
   public void addBeforeTranslationMethods(Set<Method> methods){
-
+    beforeTranslationMethods.addAll(methods);
   }
 
+  public String getPath() {
+    return path;
+  }
   public Set<PathMapping> getPathMappings(){
     return pathMappings;
   }
