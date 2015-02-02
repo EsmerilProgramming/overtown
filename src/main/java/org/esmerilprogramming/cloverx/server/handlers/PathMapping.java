@@ -11,12 +11,14 @@ public class PathMapping {
   private String httpMethod;
   private Method method;
   private String template;
+  private boolean jsonResponse;
 
-  public PathMapping(String path, String httpMethod, Method method , String template) {
+  public PathMapping(String path, String httpMethod, Method method , String template, boolean jsonResponse) {
     this.path = path;
     this.httpMethod = httpMethod;
     this.method = method;
     this.template = template;
+    this.jsonResponse = jsonResponse;
   }
 
   @Override
@@ -57,5 +59,7 @@ public class PathMapping {
   public void setMethod(Method method) {
     this.method = method;
   }
-
+  public boolean isJsonResponse() {
+    return jsonResponse;
+  }
 }

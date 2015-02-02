@@ -38,8 +38,6 @@ public class ClassFileVisitorTest {
     Files.walkFileTree(Paths.get( Paths.get( url.toURI()  ).toString() + "/com/clover/scanner/testpackage"), visitor);
 
     ScannerResult result = visitor.getResult();
-
-    System.out.println(result.getHandlers());
     System.out.println(result.getServlets());
   }
 

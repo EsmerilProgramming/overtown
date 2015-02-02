@@ -33,9 +33,10 @@ public class PathHandlerMounter {
 
   private static final Logger LOGGER = Logger.getLogger(PathHandlerMounter.class);
 
+  @Deprecated
   public PathHandler mount(ScannerResult scanResult) {
     PathHandler pathHandler = Handlers.path();
-    try {
+/*    try {
       for (Class<?> handlerClass : scanResult.getHandlers()) {
           Constructor<?> constructor = handlerClass.getConstructor();
           constructor.setAccessible(true);
@@ -44,8 +45,7 @@ public class PathHandlerMounter {
       pathHandler = mountServerEndpoints(pathHandler , scanResult.getServerEndpoints() );
     } catch (Exception e) {
       LOGGER.error(e.getMessage());
-    }
-
+    }*/
     return pathHandler;
   }
   

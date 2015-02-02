@@ -16,14 +16,12 @@ import org.esmerilprogramming.cloverx.server.handlers.ControllerMapping;
  */
 public class ScannerResult {
 
-  private List<Class<?>> handlers;
   private List<Class<?>> serverEndpoints;
   private List<Class<?>> sessionListeners;
   private List<Class<? extends HttpServlet>> servlets;
   private List<ControllerMapping> controllerMappings;
 
   public ScannerResult() {
-    handlers = new ArrayList<>();
     servlets = new ArrayList<>();
     serverEndpoints = new ArrayList<>();
     sessionListeners = new ArrayList<>();
@@ -32,9 +30,6 @@ public class ScannerResult {
 
   public void addControllerMapping(ControllerMapping controllerMapping) {
     controllerMappings.add(controllerMapping);
-  }
-  protected void addHandlerClass(Class<?> handlerClass) {
-    handlers.add(handlerClass);
   }
   protected void addServerEndpointClass(Class<?> serverEndpointClass) {
     serverEndpoints.add(serverEndpointClass);
@@ -49,9 +44,6 @@ public class ScannerResult {
   public List<ControllerMapping> getControllerMappings() { return controllerMappings; }
   public List<Class<? extends HttpServlet>> getServlets() {
     return servlets;
-  }
-  public List<Class<?>> getHandlers() {
-    return handlers;
   }
   public List<Class<?>> getServerEndpoints() {
     return serverEndpoints;

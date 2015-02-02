@@ -16,7 +16,12 @@ import java.util.List;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
+import io.undertow.websockets.WebSocketConnectionCallback;
+import io.undertow.websockets.core.AbstractReceiveListener;
+import io.undertow.websockets.core.StreamSourceFrameChannel;
+import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
+import io.undertow.websockets.spi.WebSocketHttpExchange;
 import org.esmerilprogramming.cloverx.http.CloverXSessionManager;
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
@@ -56,8 +61,7 @@ public class StartupHandlerImpl implements StartupHandler {
 
   public HttpHandler createRootHandler(CloverXConfiguration configuration , ScannerResult scannerResult) {
     PathHandler pathHandler = Handlers.path();
-    pathHandler.add
-    pathHandler.addPrefixPath("/" + configuration.getAppContext(), createAppHandlers(scannerResult) );
+    pathHandler.addPrefixPath("/" + configuration.getAppContext(), createAppHandlers(scannerResult));
     if(!scannerResult.getServerEndpoints().isEmpty()){
       DeploymentInfo builder = new DeploymentInfo().setClassLoader(this.getClass().getClassLoader()).setContextPath("/");
       WebSocketDeploymentInfo wsDeployInfo = new WebSocketDeploymentInfo();
@@ -65,14 +69,17 @@ public class StartupHandlerImpl implements StartupHandler {
       for(Class<?> serverEndpoint : scannerResult.getServerEndpoints() ){
         wsDeployInfo.addEndpoint( serverEndpoint );
       }
-      builder.addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME, wsDeployInfo );
+      builder.addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME, wsDeployInfo);
       builder.setDeploymentName("websocketDeploy.war");
 
       final ServletContainer container = ServletContainer.Factory.newInstance();
       DeploymentManager manager = container.addDeployment(builder);
       manager.deploy();
       try {
-        pathHandler.addPrefixPath("/ss", manager.start() );
+        CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
+        pathHandler.addPrefixPath("/" + configuration.getAppContext() + "/ws",
+                new SessionAttachmentHandler(  manager.start() , sessionManager.getSessionManager(),
+                  sessionManager.getSessionConfig()) );
       } catch (ServletException e) {
         e.printStackTrace();
       }
@@ -118,38 +125,9 @@ public class StartupHandlerImpl implements StartupHandler {
       for(ControllerMapping mapping : scannerResult.getControllerMappings() ){
         chc.createHandler(mapping , rh);
       }
-
-      /*if( !scannerResult.getServerEndpoints().isEmpty() ){
-        DeploymentInfo builder = new DeploymentInfo()
-                .setClassLoader(this.getClass().getClassLoader())
-                .setContextPath("/");
-        WebSocketDeploymentInfo wsDeployInfo = new WebSocketDeploymentInfo();
-        wsDeployInfo.setBuffers(new ByteBufferSlicePool(100, 1000));
-        for(Class<?> serverEndpoint : scannerResult.getServerEndpoints() ){
-          wsDeployInfo.addEndpoint( serverEndpoint );
-        }
-        builder.addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME, wsDeployInfo );
-        builder.setDeploymentName("websocketDeploy.war");
-
-        final ServletContainer container = ServletContainer.Factory.newInstance();
-        DeploymentManager manager = container.addDeployment(builder);
-        manager.deploy();
-        try {
-          pathHandler.addPrefixPath("/", manager.start() );
-        } catch (ServletException e) {
-          e.printStackTrace();
-        }
-      }*/
-
       return new SessionAttachmentHandler( rh , sessionManager.getSessionManager(),
               sessionManager.getSessionConfig());
     }
-    /*if( !scannerResult.getHandlers().isEmpty() || !scannerResult.getControllerMappings().isEmpty() ) {
-      PathHandlerMounter mounter = new PathHandlerMounter();
-      CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
-      return new SessionAttachmentHandler( mounter.mount( scannerResult ) , sessionManager.getSessionManager(),
-              sessionManager.getSessionConfig());
-    }*/
     throw new NoControllerException("You should specify at least one controller, verify if you informed the right package to be scanned or see https://github.com/EsmerilProgramming/cloverx for more info");
   }
 

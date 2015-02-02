@@ -44,11 +44,10 @@ public class MainHttpHandler implements HttpHandler {
     this.method = pathMapping.getMethod();
     this.responseTemplate = pathMapping.getTemplate();
     this.parameterNames = parameterNames;
+    this.isJsonResponse = pathMapping.isJsonResponse();
 
-    // private final Object newInstance = pageClass.getConstructor().newInstance();
     this.converterMap = new ConverterMounterImpl().mountParameterConveters(method, parameterNames);
     this.paramConverterMap = new ParameterConverterMounter().identifyParametersTranslators(parameterNames, method.getParameterTypes());
-    //final boolean isJsonResponse = method.getAnnotation(JSONResponse.class) != null;
     LOGGER = Logger.getLogger(this.controller);
   }
 
