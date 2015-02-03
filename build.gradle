@@ -22,9 +22,9 @@ repositories {
 }
 
 dependencies {
-    compile group: 'io.undertow', name: 'undertow-core', version: '1.0.15.Final'
-    compile group: 'io.undertow', name: 'undertow-servlet', version: '1.0.15.Final'
-    compile group: 'io.undertow', name: 'undertow-websockets-jsr', version: '1.0.15.Final'
+    compile group: 'io.undertow', name: 'undertow-core', version: '1.1.2.Final'
+    compile group: 'io.undertow', name: 'undertow-servlet', version: '1.1.2.Final'
+    compile group: 'io.undertow', name: 'undertow-websockets-jsr', version: '1.1.2.Final'
     compile group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
     compile group: 'com.thoughtworks.paranamer', name: 'paranamer', version: '2.6'
     compile group: 'org.freemarker', name: 'freemarker-gae', version: '2.3.20'
