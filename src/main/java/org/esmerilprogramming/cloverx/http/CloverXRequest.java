@@ -78,6 +78,24 @@ public class CloverXRequest {
     return value;
   }
 
+  protected Object getFromFormData(String name) {
+    if (formData != null) {
+      Deque<FormValue> dequeVal = formData.get(name);
+      if (dequeVal != null) {
+        return dequeVal.getLast().getValue();
+      }
+    }
+    return null;
+  }
+
+  protected Object getFromParameters(String parameterName) {
+    Deque<String> deque = queryParameters.get(parameterName);
+    if (deque != null) {
+      return deque.getLast();
+    }
+    return null;
+  }
+
   public boolean containsAttributeStartingWith(String parameterName) {
     boolean contains = false;
     Set<String> keySet = queryParameters.keySet();
@@ -102,24 +120,6 @@ public class CloverXRequest {
 
   protected boolean isPostRequest() {
     return "POST".equalsIgnoreCase(exchange.getRequestMethod().toString());
-  }
-
-  protected Object getFromFormData(String name) {
-    if (formData != null) {
-      Deque<FormValue> dequeVal = formData.get(name);
-      if (dequeVal != null) {
-        return dequeVal.getLast().getValue();
-      }
-    }
-    return null;
-  }
-
-  protected Object getFromParameters(String parameterName) {
-    Deque<String> deque = queryParameters.get(parameterName);
-    if (deque != null) {
-      return deque.getLast();
-    }
-    return null;
   }
 
   public HttpServerExchange getExchange() {
@@ -176,4 +176,7 @@ public class CloverXRequest {
     return (JsonResponse) response;
   }
 
+  public Object getHttpMethod() {
+    return exchange.getRequestMethod().toString();
+  }
 }

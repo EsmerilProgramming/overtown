@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface Controller {
 
-  String[] path() default "";
+  String path() default "$$NO_PATH$$";
 
 }

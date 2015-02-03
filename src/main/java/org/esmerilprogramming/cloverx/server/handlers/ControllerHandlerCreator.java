@@ -1,0 +1,30 @@
+package org.esmerilprogramming.cloverx.server.handlers;
+
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
+import io.undertow.server.HttpHandler;
+import io.undertow.server.RoutingHandler;
+
+
+/**
+ * Created by efraimgentil<efraimgentil@gmail.com> on 31/01/15.
+ */
+public class ControllerHandlerCreator {
+
+  private Paranamer paranamer;
+
+  public ControllerHandlerCreator(){
+    paranamer = new CachingParanamer(new BytecodeReadingParanamer());
+  }
+
+  public HttpHandler createHandler(ControllerMapping mapping , RoutingHandler routing){
+    for( PathMapping pm: mapping.getPathMappings()){
+      routing.add( pm.getHttpMethod() ,
+              mapping.getPath() + "/" + pm.getPath() ,
+              new MainHttpHandler( mapping , pm  , paranamer.lookupParameterNames( pm.getMethod() ) ) );
+    }
+    return routing;
+  }
+
+}

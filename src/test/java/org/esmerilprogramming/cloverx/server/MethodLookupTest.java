@@ -1,16 +1,18 @@
 package org.esmerilprogramming.cloverx.server;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
-import org.esmerilprogramming.cloverx.annotation.Converter;
-import org.esmerilprogramming.cloverx.http.CloverXRequest;
-import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
-import org.junit.Test;
-
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
+import io.undertow.Undertow;
+import org.esmerilprogramming.cloverx.annotation.Converter;
+import org.esmerilprogramming.cloverx.annotation.path.Get;
+import org.esmerilprogramming.cloverx.annotation.path.Post;
+import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
+import org.junit.Test;
+import org.reflections.ReflectionUtils;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 public class MethodLookupTest {
 
@@ -27,11 +29,28 @@ public class MethodLookupTest {
     }
     
   }
+
+  public static void main(String ... a){
+    Undertow.Builder builder = Undertow.builder();
+  }
+
   
   public void teste( @Converter(StringLowerConverter.class) String name , String nah ){
     
   }
-  
+
+  @Post
+  @Get
+  public void lol(){
+
+  }
+
+  @Test
+  public void should_get_all_get_and_post(){
+    Class<MethodLookupTest> clazz = MethodLookupTest.class;
+    System.out.println( ReflectionUtils.getAllMethods(clazz, ReflectionUtils.withAnnotation(Get.class)) );
+  }
+
   @Test
   public void t(){
     

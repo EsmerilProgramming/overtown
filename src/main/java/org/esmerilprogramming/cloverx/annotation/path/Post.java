@@ -1,17 +1,19 @@
-package org.esmerilprogramming.cloverx.annotation;
+package org.esmerilprogramming.cloverx.annotation.path;
+
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Deprecated
+/**
+ * Created by efraimgentil<efraimgentil@gmail.com> on 28/01/15.
+ */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Page {
-  public static final String NO_TEMPLATE = "$$NO_TEMPLATE$$";
+public @interface Post {
 
-  String responseTemplate() default NO_TEMPLATE;
+  String template() default "";
 
   String[] value() default "";
 }

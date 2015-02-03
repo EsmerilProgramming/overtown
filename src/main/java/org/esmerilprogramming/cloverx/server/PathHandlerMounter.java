@@ -3,6 +3,7 @@ package org.esmerilprogramming.cloverx.server;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.PathHandler;
+import io.undertow.server.session.SessionAttachmentHandler;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
@@ -21,7 +22,10 @@ import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
+import org.esmerilprogramming.cloverx.http.CloverXSessionManager;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
+import org.esmerilprogramming.cloverx.server.handlers.ControllerHandlerCreator;
+import org.esmerilprogramming.cloverx.server.handlers.ControllerMapping;
 import org.jboss.logging.Logger;
 import org.xnio.ByteBufferSlicePool;
 
@@ -29,10 +33,10 @@ public class PathHandlerMounter {
 
   private static final Logger LOGGER = Logger.getLogger(PathHandlerMounter.class);
 
+  @Deprecated
   public PathHandler mount(ScannerResult scanResult) {
-    
     PathHandler pathHandler = Handlers.path();
-    try {
+/*    try {
       for (Class<?> handlerClass : scanResult.getHandlers()) {
           Constructor<?> constructor = handlerClass.getConstructor();
           constructor.setAccessible(true);
@@ -41,8 +45,7 @@ public class PathHandlerMounter {
       pathHandler = mountServerEndpoints(pathHandler , scanResult.getServerEndpoints() );
     } catch (Exception e) {
       LOGGER.error(e.getMessage());
-    }
-
+    }*/
     return pathHandler;
   }
   
@@ -82,10 +85,9 @@ public class PathHandlerMounter {
             .withExecuteBeforeMethods(beforeTranslationMethods)
             .mount();
         
-        for (String pageRoot : controllerAnnotation.path()) {
-          for (String methodRoot : methodPagePath.value()) {
-            pathHandler.addExactPath(pageRoot + "/" + methodRoot, h);
-          }
+        String pageRoot = controllerAnnotation.path();
+        for (String methodRoot : methodPagePath.value()) {
+          pathHandler.addExactPath(pageRoot + "/" + methodRoot, h);
         }
       }
     }
