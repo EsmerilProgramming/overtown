@@ -84,7 +84,7 @@ public class StartupHandlerImpl implements StartupHandler {
         e.printStackTrace();
       }
     }
-    pathHandler.addPrefixPath("/" + configuration.getStaticRootPath(), new ResourceHandlerMounter().mount());
+    pathHandler.addPrefixPath("/" + configuration.getAppContext() + "/" + configuration.getStaticRootPath(), new ResourceHandlerMounter().mount());
     return pathHandler;
   }
 

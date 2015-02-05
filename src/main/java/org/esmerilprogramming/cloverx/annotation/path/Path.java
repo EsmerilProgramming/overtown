@@ -10,7 +10,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Path {
 
+  public static final String NO_PATH = "$$NO_PATH$$";
+
   String template() default "";
 
-  String[] value() default "";
+  String[] value() default NO_PATH;
 }

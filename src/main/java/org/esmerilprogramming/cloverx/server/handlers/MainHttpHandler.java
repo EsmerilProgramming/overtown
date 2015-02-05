@@ -85,8 +85,9 @@ public class MainHttpHandler implements HttpHandler {
     Response response = request.getResponse();
     if (!Page.NO_TEMPLATE.equals(responseTemplate) && !response.isResponseSend()) {
       request.respondAsHttp();
-
-      ((HttpResponse) request.getResponse()).fowardTo(responseTemplate);
+      request.addAttribute("request" , request );
+      request.addAttribute("contextPath" , request.getExchange().getResolvedPath() );
+              ((HttpResponse) request.getResponse()).fowardTo(responseTemplate);
     } else {
       if (!response.isResponseSend()) {
         response.finishResponse();

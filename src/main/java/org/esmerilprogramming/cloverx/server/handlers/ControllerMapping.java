@@ -35,7 +35,7 @@ public class ControllerMapping {
       Set<VerbAndPaths> vaps = mountPathMapping(annotations);
       for (VerbAndPaths vap : vaps) {
         for (String path : vap.paths) {
-          path = path.trim().isEmpty() ? m.getName() : path.trim();
+          path = Path.NO_PATH.equals(path) ? m.getName() : path.trim();
           pathMappings.add(new PathMapping(path, vap.httpVerb, m, vap.template, vap.jsonResponse));
         }
       }

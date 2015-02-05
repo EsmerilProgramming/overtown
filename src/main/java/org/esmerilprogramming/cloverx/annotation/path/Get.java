@@ -12,6 +12,6 @@ public @interface Get {
 
   String template()  default "";
 
-  String[] value() default "";
+  String[] value() default Path.NO_PATH;
 
 }

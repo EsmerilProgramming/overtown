@@ -21,6 +21,19 @@ public class PathMapping {
     this.jsonResponse = jsonResponse;
   }
 
+  public String getFinalPath(String controllerPath){
+    if( controllerPath.endsWith("/") ){
+      controllerPath = controllerPath.substring(0 , controllerPath.length() - 2 );
+    }
+    String finalPath = controllerPath;
+    if( path.length() > 0 && new Character('/').equals( path.charAt(0) )){
+      finalPath += path;
+    }else if( path.length() > 0 ) {
+      finalPath += "/" + path;
+    }
+    return finalPath;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

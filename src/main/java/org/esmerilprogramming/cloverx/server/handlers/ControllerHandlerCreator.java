@@ -21,7 +21,7 @@ public class ControllerHandlerCreator {
   public HttpHandler createHandler(ControllerMapping mapping , RoutingHandler routing){
     for( PathMapping pm: mapping.getPathMappings()){
       routing.add( pm.getHttpMethod() ,
-              mapping.getPath() + "/" + pm.getPath() ,
+               pm.getFinalPath( mapping.getPath() ) ,
               new MainHttpHandler( mapping , pm  , paranamer.lookupParameterNames( pm.getMethod() ) ) );
     }
     return routing;

@@ -24,8 +24,19 @@ public class ConfigurationBuilder {
   }
   
   public ConfigurationBuilder withAppContext(String appContext){
+    if(appContext == null ){
+      throw new ConfigurationException("The appContext can't be null");
+    }
     if(appContext.equalsIgnoreCase(staticRootPath)){
       throw new ConfigurationException("The appContext can't be the same of the staticRootPath");
+    }
+    if(appContext.length() > 0) {
+      if (appContext.startsWith("/")) {
+        appContext = appContext.substring(1, appContext.length() - 1);
+      }
+      if (appContext.endsWith("/")) {
+        appContext = appContext.substring(0, appContext.length() - 2);
+      }
     }
     this.appContext = appContext;
     return this; 
@@ -51,6 +62,14 @@ public class ConfigurationBuilder {
   public ConfigurationBuilder withStaticRootPath(String staticRootPath){
     if(staticRootPath.equalsIgnoreCase(appContext)){
       throw new ConfigurationException("The staticRootPath can't be the same of the appContext");
+    }
+    if(staticRootPath.length() > 0) {
+      if (staticRootPath.startsWith("/")) {
+        staticRootPath = staticRootPath.substring(1, staticRootPath.length() - 1);
+      }
+      if (staticRootPath.endsWith("/")) {
+        staticRootPath = staticRootPath.substring(0, staticRootPath.length() - 2);
+      }
     }
     this.staticRootPath = staticRootPath;
     return this; 
