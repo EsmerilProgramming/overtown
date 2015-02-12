@@ -20,4 +20,11 @@ public class JsonTestPage {
     request.addAttribute("email" , "efraimgentil@gmail.com");
   }
 
+  @Page("testOne/")
+  public void testOneSlash(CloverXRequest request){
+    logger.info("Called test one");
+    request.addAttribute("name" , "Efraim Gentil");
+    request.addAttribute("email" , "efraimgentil@gmail.com");
+  }
+
 }

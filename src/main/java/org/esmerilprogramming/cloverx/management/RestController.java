@@ -24,9 +24,14 @@ public class RestController {
 
   public RestController() {}
 
-  @Get(template = "rest/form.ftl")
+  @Get( value ="form/" ,template = "rest/form.ftl")
   public void form(){
+    System.out.println("With slash");
+  }
 
+  @Get( value ="form" ,template = "rest/form.ftl")
+  public void formM(){
+    System.out.println("SAME BUT WHITOUT SLASH");
   }
 
   @Post(template = "rest/result.ftl")
