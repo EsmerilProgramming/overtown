@@ -1,18 +1,15 @@
 package org.esmerilprogramming.cloverx.server;
 
 
-import io.undertow.Handlers;
 import io.undertow.Undertow;
-import io.undertow.server.HttpHandler;
-import io.undertow.server.HttpServerExchange;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import org.esmerilprogramming.cloverx.server.handlers.StartupHandler;
 import org.esmerilprogramming.cloverx.server.handlers.StartupHandlerImpl;
 import org.jboss.logging.Logger;
-
-import javax.servlet.ServletException;
-import java.io.IOException;
-
-import static io.undertow.Handlers.path;
 
 public final class CloverX {
 
