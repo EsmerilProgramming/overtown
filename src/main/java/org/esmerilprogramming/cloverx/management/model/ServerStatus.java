@@ -3,17 +3,24 @@ package org.esmerilprogramming.cloverx.management.model;
 import java.util.List;
 
 public class ServerStatus {
-	
+
+	private Integer id;
 	private String host;
 	private String port;
+
 	private List<String> registeredPaths;
 	
 	public ServerStatus() {}
-	
+
 	@Override
 	public String toString() {
-		return "ServerStatus [host=" + host + ", port=" + port
-				+ ", registeredPaths=" + registeredPaths + "]";
+		final StringBuilder sb = new StringBuilder("ServerStatus{");
+		sb.append("id=").append(id);
+		sb.append(", host='").append(host).append('\'');
+		sb.append(", port='").append(port).append('\'');
+		sb.append(", registeredPaths=").append(registeredPaths);
+		sb.append('}');
+		return sb.toString();
 	}
 
 	public String getHost() {
@@ -43,3 +50,4 @@ public class ServerStatus {
 	
 	
 }
+

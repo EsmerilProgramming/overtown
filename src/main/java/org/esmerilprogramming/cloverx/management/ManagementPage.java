@@ -63,9 +63,12 @@ public class ManagementPage {
     System.out.println(serverStatus);
 
     exchange.getResponseSender().send(
-        "<form method='post' >" + "<input name='serverStatus.host' />"
-            + "<input name='serverStatus.port' />" + "<button type='submit'>Submit</button>"
-            + "</form>");
+        "<form method='post' >"
+            + "<input name='serverStatus.host' />"
+            + "<input name='serverStatus.port' />"
+                + "<input name='serverStatus.id' />"
+                + "<button type='submit'>Submit</button>"
+        + "</form>");
   }
 
   @Page("teste3")
