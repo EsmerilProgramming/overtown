@@ -17,6 +17,7 @@ import org.esmerilprogramming.cloverx.management.converters.ServerStatusConverte
 import org.esmerilprogramming.cloverx.management.model.ServerStatus;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Controller
@@ -24,9 +25,14 @@ public class RestController {
 
   public RestController() {}
 
-  @Get(template = "rest/form.ftl")
+  @Get( value ="form/" ,template = "rest/form.ftl")
   public void form(){
+    System.out.println("With slash");
+  }
 
+  @Get( value ="form" ,template = "rest/form.ftl")
+  public void formM(){
+    System.out.println("SAME BUT WHITOUT SLASH");
   }
 
   @Post(template = "rest/result.ftl")

@@ -120,7 +120,7 @@ public class StartupHandlerImpl implements StartupHandler {
   public HttpHandler createAppHandlers(ScannerResult scannerResult){
     CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
     if( !scannerResult.getControllerMappings().isEmpty() ) {
-      RoutingHandler rh = Handlers.routing();
+      RoutingHandler rh = new CustomRoutingHandler(); // Handlers.routing();
       ControllerHandlerCreator chc = new ControllerHandlerCreator();
       for(ControllerMapping mapping : scannerResult.getControllerMappings() ){
         chc.createHandler(mapping , rh);
