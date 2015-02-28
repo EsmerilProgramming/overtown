@@ -2,11 +2,9 @@ package org.esmerilprogramming.cloverx.server;
 
 import io.undertow.Handlers;
 import io.undertow.server.handlers.resource.ClassPathResourceManager;
-import io.undertow.server.handlers.resource.FileResourceManager;
 import io.undertow.server.handlers.resource.ResourceHandler;
 import io.undertow.server.handlers.resource.ResourceManager;
 
-import java.io.File;
 
 public class ResourceHandlerMounter {
 

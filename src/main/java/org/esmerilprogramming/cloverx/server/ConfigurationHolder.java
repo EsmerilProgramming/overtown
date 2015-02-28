@@ -1,12 +1,6 @@
 package org.esmerilprogramming.cloverx.server;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.security.CodeSource;
-import java.util.Map;
-import java.util.Properties;
-import java.util.jar.Manifest;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
