@@ -1,7 +1,6 @@
 package org.esmerilprogramming.cloverx.server.handlers;
 
 import io.undertow.UndertowMessages;
-import io.undertow.util.PathTemplate;
 
 import java.util.*;
 
