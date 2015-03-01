@@ -9,6 +9,7 @@ import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Converter;
 import org.esmerilprogramming.cloverx.annotation.Page;
+import org.esmerilprogramming.cloverx.annotation.path.Post;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.CloverXSession;
 import org.esmerilprogramming.cloverx.http.JsonResponse;
@@ -89,7 +90,8 @@ public class ManagementPage {
     exchange.getResponseSender().send("This is your x: " + x );
   }
 
-  @Page(value = "testeTemplate", responseTemplate = "teste.ftl")
+  @Post(value = "testeTemplate", template = "teste.ftl")
+  //@Page(value = "testeTemplate", responseTemplate = "teste.ftl")
   public void testeTemplate(CloverXRequest request) {
 //    request.addAttribute("name", "Efraim Gentil");
     CloverXSession session = request.getSession();

@@ -3,6 +3,7 @@ package org.esmerilprogramming.cloverx.server.handlers;
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
+import io.undertow.server.HttpServerExchange;
 import io.undertow.server.RoutingHandler;
 import io.undertow.server.handlers.PathHandler;
 import io.undertow.server.session.InMemorySessionManager;
@@ -23,6 +24,7 @@ import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import io.undertow.websockets.spi.WebSocketHttpExchange;
 import org.esmerilprogramming.cloverx.http.CloverXSessionManager;
+import org.esmerilprogramming.cloverx.http.NotFoundDefaultHandler;
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
@@ -52,7 +54,7 @@ public class StartupHandlerImpl implements StartupHandler {
     CloverXSessionManager instance = CloverXSessionManager.getInstance();
     InMemorySessionManager sessionManager = instance.getSessionManager();
     sessionManager.setDefaultSessionTimeout( configuration.getMaxSessionTime() );
-    configureSessionManager(sessionManager, scannerResult.getSessionListeners() );
+    configureSessionManager(sessionManager, scannerResult.getSessionListeners());
 
     return Undertow.builder()
             .addHttpListener( configuration.getPort(), configuration.getHost()  )
@@ -121,7 +123,8 @@ public class StartupHandlerImpl implements StartupHandler {
   public HttpHandler createAppHandlers(ScannerResult scannerResult){
     CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
     if( !scannerResult.getControllerMappings().isEmpty() ) {
-      RoutingHandler rh = new CustomRoutingHandler(); // Handlers.routing();
+      RoutingHandler rh = new CustomRoutingHandler();
+      rh.setFallbackHandler( new NotFoundDefaultHandler() );
       ControllerHandlerCreator chc = new ControllerHandlerCreator();
       for(ControllerMapping mapping : scannerResult.getControllerMappings() ){
         chc.createHandler(mapping , rh);
