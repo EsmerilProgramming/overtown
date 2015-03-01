@@ -55,6 +55,7 @@ public class ManagementPage {
   public void teste(Long val) {
     System.out.println("Teste Long");
     System.out.println(val);
+    throw new RuntimeException();
   }
 
   @Page("teste2")
