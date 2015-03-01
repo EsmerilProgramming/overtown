@@ -51,6 +51,7 @@ public class StartupHandlerImpl implements StartupHandler {
     
     CloverXSessionManager instance = CloverXSessionManager.getInstance();
     InMemorySessionManager sessionManager = instance.getSessionManager();
+    sessionManager.setDefaultSessionTimeout( configuration.getMaxSessionTime() );
     configureSessionManager(sessionManager, scannerResult.getSessionListeners() );
 
     return Undertow.builder()

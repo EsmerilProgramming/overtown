@@ -62,6 +62,7 @@ public final class CloverX {
       .withPackageToScan("org.esmerilprogramming.cloverx.management").shouldRunManagement(true)
       .withHost("0.0.0.0")
       .withPort(8080)
+            .withMaxSessionTime(1)
       .build());
   }
 

@@ -11,6 +11,7 @@ public class ConfigurationBuilder {
   private String templateRootPath = "templates";
   private String packageToScan = "";
   private Boolean runManagement = false;
+  private int maxSessionTime = 30;
   
   
   public ConfigurationBuilder withHost(String host){
@@ -40,6 +41,11 @@ public class ConfigurationBuilder {
     }
     this.appContext = appContext;
     return this; 
+  }
+
+  public ConfigurationBuilder withMaxSessionTime(int sessionTimeInMinutes){
+    this.maxSessionTime = sessionTimeInMinutes * 60;
+    return this;
   }
 
   public ConfigurationBuilder withPackageToScan(String packageToScan){
@@ -84,6 +90,7 @@ public class ConfigurationBuilder {
     config.setTemplateRootPath(templateRootPath);
     config.setPackageToSkan(packageToScan);
     config.setRunManagement(runManagement);
+    config.setMaxSessionTime(maxSessionTime);
     return config;
   }
   

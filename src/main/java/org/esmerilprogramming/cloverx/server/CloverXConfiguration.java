@@ -9,6 +9,7 @@ public class CloverXConfiguration {
   private String templateRootPath;
   private String packageToSkan;
   private Boolean runManagement;
+  private int maxSessionTime;
   
   public String getHost() {
     return host;
@@ -47,5 +48,11 @@ public class CloverXConfiguration {
   }
   public void setRunManagement(Boolean runManagement) {
     this.runManagement = runManagement;
+  }
+  public int getMaxSessionTime() {
+    return maxSessionTime;
+  }
+  public void setMaxSessionTime(int maxSessionTime) {
+    this.maxSessionTime = maxSessionTime;
   }
 }
