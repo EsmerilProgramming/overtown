@@ -24,6 +24,7 @@ import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import io.undertow.websockets.spi.WebSocketHttpExchange;
 import org.esmerilprogramming.cloverx.http.CloverXSessionManager;
+import org.esmerilprogramming.cloverx.http.MethodNotAllowedDefaultHandler;
 import org.esmerilprogramming.cloverx.http.NotFoundDefaultHandler;
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
@@ -125,6 +126,7 @@ public class StartupHandlerImpl implements StartupHandler {
     if( !scannerResult.getControllerMappings().isEmpty() ) {
       RoutingHandler rh = new CustomRoutingHandler();
       rh.setFallbackHandler( new NotFoundDefaultHandler() );
+      rh.setInvalidMethodHandler( new MethodNotAllowedDefaultHandler() );
       ControllerHandlerCreator chc = new ControllerHandlerCreator();
       for(ControllerMapping mapping : scannerResult.getControllerMappings() ){
         chc.createHandler(mapping , rh);
