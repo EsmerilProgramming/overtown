@@ -8,6 +8,8 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.session.SessionListener;
+import org.esmerilprogramming.cloverx.http.MethodNotAllowed;
+import org.esmerilprogramming.cloverx.http.NotFound;
 import org.esmerilprogramming.cloverx.server.handlers.ControllerMapping;
 
 /**
@@ -20,6 +22,8 @@ public class ScannerResult {
   private List<Class<?>> sessionListeners;
   private List<Class<? extends HttpServlet>> servlets;
   private List<ControllerMapping> controllerMappings;
+  private Class<? extends NotFound> notFoundClass;
+  private Class<? extends MethodNotAllowed> methodNotAllowedClass;
 
   public ScannerResult() {
     servlets = new ArrayList<>();
@@ -51,6 +55,16 @@ public class ScannerResult {
   public List<Class<?>> getSessionListeners() {
     return sessionListeners;
   }
-
-
+  public Class<? extends MethodNotAllowed> getMethodNotAllowedClass() {
+    return methodNotAllowedClass;
+  }
+  public void setMethodNotAllowedClass(Class<? extends MethodNotAllowed> methodNotAllowedClass) {
+    this.methodNotAllowedClass = methodNotAllowedClass;
+  }
+  public Class<? extends NotFound> getNotFoundClass() {
+    return notFoundClass;
+  }
+  public void setNotFoundClass(Class<? extends NotFound> notFoundClass) {
+    this.notFoundClass = notFoundClass;
+  }
 }

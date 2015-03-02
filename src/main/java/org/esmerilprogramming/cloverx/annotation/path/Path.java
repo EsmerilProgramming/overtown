@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 public @interface Path {
 
   public static final String NO_PATH = "$$NO_PATH$$";
+  public static final String NO_TEMPLATE = "$$NO_TEMPLATE$$";
 
   String template() default "";
 

@@ -1,37 +1,29 @@
 package org.esmerilprogramming.cloverx.server.handlers;
 
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
-import io.undertow.server.HttpServerExchange;
 import io.undertow.server.RoutingHandler;
 import io.undertow.server.handlers.PathHandler;
 import io.undertow.server.session.InMemorySessionManager;
 import io.undertow.server.session.SessionAttachmentHandler;
 import io.undertow.server.session.SessionListener;
 import io.undertow.server.session.SessionManager;
-
-import java.io.IOException;
-import java.util.List;
-
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
-import io.undertow.websockets.WebSocketConnectionCallback;
-import io.undertow.websockets.core.AbstractReceiveListener;
-import io.undertow.websockets.core.StreamSourceFrameChannel;
-import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
-import io.undertow.websockets.spi.WebSocketHttpExchange;
-import org.esmerilprogramming.cloverx.http.CloverXSessionManager;
-import org.esmerilprogramming.cloverx.http.MethodNotAllowedDefaultHandler;
-import org.esmerilprogramming.cloverx.http.NotFoundDefaultHandler;
+import org.esmerilprogramming.cloverx.annotation.path.Get;
+import org.esmerilprogramming.cloverx.annotation.path.Path;
+import org.esmerilprogramming.cloverx.http.*;
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
 import org.esmerilprogramming.cloverx.server.CloverXConfiguration;
 import org.esmerilprogramming.cloverx.server.ConfigurationHolder;
-import org.esmerilprogramming.cloverx.server.PathHandlerMounter;
 import org.esmerilprogramming.cloverx.server.ResourceHandlerMounter;
 import org.esmerilprogramming.cloverx.server.exception.ConfigurationException;
 import org.esmerilprogramming.cloverx.server.exception.NoControllerException;
@@ -41,6 +33,9 @@ import org.jboss.logging.Logger;
 import org.xnio.ByteBufferSlicePool;
 
 import javax.servlet.ServletException;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.List;
 
 public class StartupHandlerImpl implements StartupHandler {
   
@@ -125,7 +120,7 @@ public class StartupHandlerImpl implements StartupHandler {
     CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
     if( !scannerResult.getControllerMappings().isEmpty() ) {
       RoutingHandler rh = new CustomRoutingHandler();
-      rh.setFallbackHandler( new NotFoundDefaultHandler() );
+      rh.setFallbackHandler(  mount404( scannerResult ) );
       rh.setInvalidMethodHandler( new MethodNotAllowedDefaultHandler() );
       ControllerHandlerCreator chc = new ControllerHandlerCreator();
       for(ControllerMapping mapping : scannerResult.getControllerMappings() ){
@@ -135,6 +130,21 @@ public class StartupHandlerImpl implements StartupHandler {
               sessionManager.getSessionConfig());
     }
     throw new NoControllerException("You should specify at least one controller, verify if you informed the right package to be scanned or see https://github.com/EsmerilProgramming/cloverx for more info");
+  }
+  protected HttpHandler mount404(ScannerResult scannerResult){
+    ControllerMapping controllerMapping = new ControllerMapping("404");
+    controllerMapping.setControllerClass(DefaultNotFoundPage.class);
+    try {
+      Method notFound = DefaultNotFoundPage.class.getMethod("notFound", CloverXRequest.class);
+
+      PathMapping methodMapping = new PathMapping("404" , null , notFound , Path.NO_TEMPLATE , false );
+
+      Paranamer paranamer = new CachingParanamer(new BytecodeReadingParanamer());
+      return new MainHttpHandler( controllerMapping , methodMapping , paranamer.lookupParameterNames( notFound ) );
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
 }
