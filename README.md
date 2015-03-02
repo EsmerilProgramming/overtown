@@ -45,22 +45,28 @@ Current version - 0.3.0-SNAPSHOT
 
 ### Creating a controller
 
-To create a controller is pretty simple, just use the annotation @Controller and inform the path that this controller will listen, each controller can have many pages, each page is a method annotated with @Page in the controller, don't worry in which package, the CloverX will hunt it and prepare everything for you
+To create a controller is pretty simple, just use the annotation @Controller and inform the path that this controller will listen, each controller can have many pages, each page is a method annotated with @Page in the controller, don't worry in which package, the CloverX will hunt it and prepare everything for you.
 
 ```java
 import org.esmerilprogramming.cloverx.annotoation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Page;
 
-@Controller(path = "/myController")
+@Controller(path = "/home")
 public class MyController  {
-  
-  @Page("ola")
-  public void hello(){
-     //Say your hello here
-  }
-
+  @Get("hi") //The final path will be "/home/hi"
+  public void hello(){ /* ... */ }
 }
 ```
+By convention each controller add his prefix for each path defined. If you do not specify the "path" attribute in the @Controller annotation, the default path will be the name of the controller(without the sufix Controller if any) 
+example:
+```java
+@Controller //Will add "/my"
+public class MyController  {
+  @Get //The final path will be "/my/hello"
+  public void hello(){ /* ... */ }
+}
+```
+
 
 ### Reading parameters from request
 
