@@ -1,5 +1,6 @@
 package org.esmerilprogramming.cloverx.server.handlers;
 
+import com.google.common.base.Predicate;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
@@ -16,8 +17,10 @@ import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
+import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.annotation.path.Get;
 import org.esmerilprogramming.cloverx.annotation.path.Path;
+import org.esmerilprogramming.cloverx.annotation.path.Post;
 import org.esmerilprogramming.cloverx.http.*;
 import org.esmerilprogramming.cloverx.scanner.PackageScanner;
 import org.esmerilprogramming.cloverx.scanner.ScannerResult;
@@ -30,12 +33,15 @@ import org.esmerilprogramming.cloverx.server.exception.NoControllerException;
 import org.esmerilprogramming.cloverx.server.mounters.SessionListenerMounter;
 import org.esmerilprogramming.cloverx.server.mounters.SessionListenerMounterImpl;
 import org.jboss.logging.Logger;
+import org.reflections.ReflectionUtils;
 import org.xnio.ByteBufferSlicePool;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Set;
 
 public class StartupHandlerImpl implements StartupHandler {
   
@@ -132,12 +138,40 @@ public class StartupHandlerImpl implements StartupHandler {
     throw new NoControllerException("You should specify at least one controller, verify if you informed the right package to be scanned or see https://github.com/EsmerilProgramming/cloverx for more info");
   }
   protected HttpHandler mount404(ScannerResult scannerResult){
+    Class notFoundClass = scannerResult.getNotFoundClass();
+    notFoundClass = notFoundClass == null ? DefaultNotFoundPage.class : notFoundClass;
     ControllerMapping controllerMapping = new ControllerMapping("404");
-    controllerMapping.setControllerClass(DefaultNotFoundPage.class);
+    controllerMapping.setControllerClass( notFoundClass );
     try {
-      Method notFound = DefaultNotFoundPage.class.getMethod("notFound", CloverXRequest.class);
+      Method notFound = notFoundClass.getMethod("handleError", CloverXRequest.class);
+      Set<Annotation> annotations = ReflectionUtils.getAnnotations(notFound, new Predicate<Annotation>() {
+        public boolean apply(Annotation input) {
+          Class<? extends Annotation> aClass = input.annotationType();
+          return Path.class.equals(aClass) && !((Path) input).template().equals(Path.NO_TEMPLATE)
+                  || Get.class.equals(aClass) && !((Get) input).template().equals(Path.NO_TEMPLATE)
+                  || Post.class.equals(aClass) && !((Post) input).template().equals(Path.NO_TEMPLATE)
+                  || Page.class.equals(aClass) && !((Page) input).responseTemplate().equals(Path.NO_TEMPLATE);
+        }
+      });
 
-      PathMapping methodMapping = new PathMapping("404" , null , notFound , Path.NO_TEMPLATE , false );
+      String template = Path.NO_TEMPLATE;
+      if(annotations.size() > 0) {
+        Annotation next = annotations.iterator().next();
+        if (Path.class.equals(next.annotationType())) {
+          template = ((Path) next).template();
+        }
+        if (Get.class.equals(next.annotationType())) {
+          template = ((Get) next).template();
+        }
+        if (Post.class.equals(next.annotationType())) {
+          template = ((Post) next).template();
+        }
+        if (Page.class.equals(next.annotationType())) {
+          template = ((Page) next).responseTemplate();
+        }
+      }
+
+      PathMapping methodMapping = new PathMapping("404" , null , notFound , template , false );
 
       Paranamer paranamer = new CachingParanamer(new BytecodeReadingParanamer());
       return new MainHttpHandler( controllerMapping , methodMapping , paranamer.lookupParameterNames( notFound ) );

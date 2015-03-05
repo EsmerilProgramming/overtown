@@ -6,7 +6,7 @@ import io.undertow.server.HttpServerExchange;
 /**
  * Created by efraimgentil<efraimgentil@gmail.com> on 02/03/15.
  */
-public class DefaultMethodNotAllowedPage implements MethodNotAllowed {
+public class DefaultMethodNotAllowedPage implements ErrorHandler {
   @Override
   public void handleError(CloverXRequest request) {
     HttpServerExchange exchange = request.getExchange();

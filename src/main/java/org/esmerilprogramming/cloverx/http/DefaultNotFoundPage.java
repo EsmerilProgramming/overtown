@@ -6,7 +6,7 @@ import io.undertow.server.HttpServerExchange;
 /**
  * Created by efraimgentil<efraimgentil@gmail.com> on 02/03/15.
  */
-public class DefaultNotFoundPage implements  NotFound {
+public class DefaultNotFoundPage implements ErrorHandler {
   @Override
   public void handleError(CloverXRequest request) {
     HttpServerExchange exchange = request.getExchange();Sender rs = exchange.getResponseSender();
