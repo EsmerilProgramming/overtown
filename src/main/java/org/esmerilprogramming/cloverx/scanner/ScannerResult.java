@@ -20,7 +20,7 @@ public class ScannerResult {
   private List<Class<? extends HttpServlet>> servlets;
   private List<ControllerMapping> controllerMappings;
   private Class<? extends ErrorHandler> notFoundClass;
-  private Class<? extends MethodNotAllowed> methodNotAllowedClass;
+  private Class<? extends ErrorHandler> methodNotAllowedClass;
 
   public ScannerResult() {
     servlets = new ArrayList<>();
@@ -52,10 +52,10 @@ public class ScannerResult {
   public List<Class<?>> getSessionListeners() {
     return sessionListeners;
   }
-  public Class<? extends MethodNotAllowed> getMethodNotAllowedClass() {
+  public Class<? extends ErrorHandler> getMethodNotAllowedClass() {
     return methodNotAllowedClass;
   }
-  public void setMethodNotAllowedClass(Class<? extends MethodNotAllowed> methodNotAllowedClass) {
+  public void setMethodNotAllowedClass(Class<? extends ErrorHandler> methodNotAllowedClass) {
     this.methodNotAllowedClass = methodNotAllowedClass;
   }
   public Class<? extends ErrorHandler> getNotFoundClass() {

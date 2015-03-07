@@ -126,8 +126,8 @@ public class StartupHandlerImpl implements StartupHandler {
     CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
     if( !scannerResult.getControllerMappings().isEmpty() ) {
       RoutingHandler rh = new CustomRoutingHandler();
-      rh.setFallbackHandler(  mount404( scannerResult ) );
-      rh.setInvalidMethodHandler( new MethodNotAllowedDefaultHandler() );
+      rh.setFallbackHandler(  mount404( scannerResult.getNotFoundClass() ) );
+      rh.setInvalidMethodHandler( mount405( scannerResult.getMethodNotAllowedClass() ) );
       ControllerHandlerCreator chc = new ControllerHandlerCreator();
       for(ControllerMapping mapping : scannerResult.getControllerMappings() ){
         chc.createHandler(mapping , rh);
@@ -137,48 +137,58 @@ public class StartupHandlerImpl implements StartupHandler {
     }
     throw new NoControllerException("You should specify at least one controller, verify if you informed the right package to be scanned or see https://github.com/EsmerilProgramming/cloverx for more info");
   }
-  protected HttpHandler mount404(ScannerResult scannerResult){
-    Class notFoundClass = scannerResult.getNotFoundClass();
-    notFoundClass = notFoundClass == null ? DefaultNotFoundPage.class : notFoundClass;
-    ControllerMapping controllerMapping = new ControllerMapping("404");
-    controllerMapping.setControllerClass( notFoundClass );
+
+  protected HttpHandler mount404( Class notFoundClass ){
+    return createErrorController("404" , notFoundClass , DefaultNotFoundPage.class );
+  }
+
+  protected HttpHandler mount405( Class methodNotAllowed ){
+    return createErrorController("405" , methodNotAllowed , DefaultMethodNotAllowedPage.class );
+  }
+
+  protected HttpHandler createErrorController(String error , Class<?> clazz , Class defaultClass){
+    clazz = clazz == null ? defaultClass : clazz;
+    ControllerMapping controllerMapping = new ControllerMapping(error);
+    controllerMapping.setControllerClass( clazz );
     try {
-      Method notFound = notFoundClass.getMethod("handleError", CloverXRequest.class);
-      Set<Annotation> annotations = ReflectionUtils.getAnnotations(notFound, new Predicate<Annotation>() {
-        public boolean apply(Annotation input) {
-          Class<? extends Annotation> aClass = input.annotationType();
-          return Path.class.equals(aClass) && !((Path) input).template().equals(Path.NO_TEMPLATE)
-                  || Get.class.equals(aClass) && !((Get) input).template().equals(Path.NO_TEMPLATE)
-                  || Post.class.equals(aClass) && !((Post) input).template().equals(Path.NO_TEMPLATE)
-                  || Page.class.equals(aClass) && !((Page) input).responseTemplate().equals(Path.NO_TEMPLATE);
-        }
-      });
-
-      String template = Path.NO_TEMPLATE;
-      if(annotations.size() > 0) {
-        Annotation next = annotations.iterator().next();
-        if (Path.class.equals(next.annotationType())) {
-          template = ((Path) next).template();
-        }
-        if (Get.class.equals(next.annotationType())) {
-          template = ((Get) next).template();
-        }
-        if (Post.class.equals(next.annotationType())) {
-          template = ((Post) next).template();
-        }
-        if (Page.class.equals(next.annotationType())) {
-          template = ((Page) next).responseTemplate();
-        }
-      }
-
-      PathMapping methodMapping = new PathMapping("404" , null , notFound , template , false );
-
+      Method handlerError = clazz.getMethod("handleError", CloverXRequest.class);
+      PathMapping methodMapping = new PathMapping("404" , null , handlerError , getTemplate(handlerError) , false );
       Paranamer paranamer = new CachingParanamer(new BytecodeReadingParanamer());
-      return new MainHttpHandler( controllerMapping , methodMapping , paranamer.lookupParameterNames( notFound ) );
+      return new MainHttpHandler( controllerMapping , methodMapping , paranamer.lookupParameterNames( handlerError ) );
     } catch (NoSuchMethodException e) {
       e.printStackTrace();
     }
     return null;
+  }
+
+  private String getTemplate( Method notFound ){
+    Set<Annotation> annotations = ReflectionUtils.getAnnotations(notFound, new Predicate<Annotation>() {
+      public boolean apply(Annotation input) {
+        Class<? extends Annotation> aClass = input.annotationType();
+        return Path.class.equals(aClass) && !((Path) input).template().equals(Path.NO_TEMPLATE)
+                || Get.class.equals(aClass) && !((Get) input).template().equals(Path.NO_TEMPLATE)
+                || Post.class.equals(aClass) && !((Post) input).template().equals(Path.NO_TEMPLATE)
+                || Page.class.equals(aClass) && !((Page) input).responseTemplate().equals(Path.NO_TEMPLATE);
+      }
+    });
+
+    String template = Path.NO_TEMPLATE;
+    if(annotations.size() > 0) {
+      Annotation next = annotations.iterator().next();
+      if (Path.class.equals(next.annotationType())) {
+        template = ((Path) next).template();
+      }
+      if (Get.class.equals(next.annotationType())) {
+        template = ((Get) next).template();
+      }
+      if (Post.class.equals(next.annotationType())) {
+        template = ((Post) next).template();
+      }
+      if (Page.class.equals(next.annotationType())) {
+        template = ((Page) next).responseTemplate();
+      }
+    }
+    return template;
   }
 
 }

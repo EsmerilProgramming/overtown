@@ -1,6 +1,7 @@
 package org.esmerilprogramming.cloverx.scanner;
 
 import org.esmerilprogramming.cloverx.annotation.Controller;
+import org.esmerilprogramming.cloverx.annotation.path.MethodNotAllowed;
 import org.esmerilprogramming.cloverx.annotation.path.NotFound;
 import org.esmerilprogramming.cloverx.annotation.session.SessionListener;
 import org.esmerilprogramming.cloverx.http.ErrorHandler;
@@ -54,25 +55,26 @@ public class PackageScanner {
     for(Class c : filtrateClasses( servlets )  ){
       scannerResult.addServletClass(c);
     }
-    scannerResult = mapNotFoundClasse(reflections , scannerResult );
+    scannerResult.setNotFoundClass( findErrorHandler( NotFound.class , reflections )  );
+    scannerResult.setMethodNotAllowedClass( findErrorHandler(MethodNotAllowed.class, reflections) );
 
     return scannerResult;
   }
 
-  protected ScannerResult mapNotFoundClasse(Reflections reflections , ScannerResult scannerResult){
-    Set<Class<?>> notFoundMaps = reflections.getTypesAnnotatedWith(NotFound.class);
-    if(notFoundMaps.size() >= 1){
-      Class c = notFoundMaps.iterator().next();
+  protected Class<? extends ErrorHandler> findErrorHandler( Class annotationClass , Reflections reflections){
+    Set<Class<?>> result = reflections.getTypesAnnotatedWith( annotationClass );
+    if(result.size() >= 1){
+      Class c = result.iterator().next();
       if(!Arrays.asList( c.getInterfaces() ).contains(ErrorHandler.class)){
-        logger.warn("The class '" + c.getName() + "' is mapped as @NotFound but doesn't implements org.esmerilprogramming.cloverx.http.ErrorHandler it will be disconsidered");
+        logger.warn("The class '" + c.getName() + "' is mapped as @" + annotationClass.getSimpleName()  +" but doesn't implements org.esmerilprogramming.cloverx.http.ErrorHandler it will be disconsidered");
       }else{
-        scannerResult.setNotFoundClass( c );
-        if(notFoundMaps.size() > 2){
+        if(result.size() > 2){
           logger.info("Was found more than one class with @NotFound annotation, only the first will be considered");
         }
+        return c;
       }
     }
-    return scannerResult;
+    return null;
   }
 
   protected ScannerResult mapControllers( ScannerResult scannerResult , Set<Class<?>> controllers){

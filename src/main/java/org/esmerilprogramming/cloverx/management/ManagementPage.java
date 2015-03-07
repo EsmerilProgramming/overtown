@@ -2,13 +2,11 @@ package org.esmerilprogramming.cloverx.management;
 
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
-
-import java.util.Date;
-
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Converter;
 import org.esmerilprogramming.cloverx.annotation.Page;
+import org.esmerilprogramming.cloverx.annotation.path.Get;
 import org.esmerilprogramming.cloverx.annotation.path.Post;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
 import org.esmerilprogramming.cloverx.http.CloverXSession;
@@ -17,6 +15,8 @@ import org.esmerilprogramming.cloverx.management.converters.DateConverter;
 import org.esmerilprogramming.cloverx.management.converters.ServerStatusConverter;
 import org.esmerilprogramming.cloverx.management.model.ServerStatus;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
+
+import java.util.Date;
 
 @Controller(path = "/management")
 public class ManagementPage {
@@ -27,6 +27,11 @@ public class ManagementPage {
   public void doSomething( CloverXRequest request ) {
     System.out.println("SOMETHING BEFORE TRANSLATE");
     request.addAttribute("name", "Efraim Gentil");
+  }
+
+  @Get(value = "" , template = "home.ftl")
+  public void index() {
+
   }
   
   @Page(value = "ws" , responseTemplate = "form.ftl")
@@ -91,7 +96,7 @@ public class ManagementPage {
     exchange.getResponseSender().send("This is your x: " + x );
   }
 
-  @Post(value = "testeTemplate", template = "teste.ftl")
+  @Post(value = "testeTemplate", template = "methodNotAllowed.ftl")
   //@Page(value = "testeTemplate", responseTemplate = "teste.ftl")
   public void testeTemplate(CloverXRequest request) {
 //    request.addAttribute("name", "Efraim Gentil");
