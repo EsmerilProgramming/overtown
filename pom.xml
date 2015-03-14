@@ -4,7 +4,10 @@
   <groupId>com.github.esmerilprogramming</groupId>
   <artifactId>cloverx</artifactId>
   <version>0.3.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <modules>
+    <module>cloverx-acceptance</module>
+  </modules>
+  <packaging>pom</packaging>
 
   <name>cloverx</name>
   <description></description>
