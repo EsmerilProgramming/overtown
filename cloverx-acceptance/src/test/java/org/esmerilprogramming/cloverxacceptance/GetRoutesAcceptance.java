@@ -46,12 +46,17 @@ public class GetRoutesAcceptance {
   }
 
   @Test
-  public void doesGetINdexWithTemplatePage() throws InterruptedException{
+  public void doesGetIndexWithTemplatePage() throws InterruptedException{
     webDriver.get("localhost:8080/acceptance/index/indexWithTemplate");
     WebElement title = webDriver.findElement(By.id("pageTitle"));
     assertTrue("Index with template".equalsIgnoreCase(title.getText()));
   }
 
-
+  @Test
+  public void doesGetIndexWithRootTemplatePage() throws InterruptedException{
+    webDriver.get("localhost:8080/acceptance/index/indexWithRootTemplate");
+    WebElement title = webDriver.findElement(By.id("pageTitle"));
+    assertTrue("Root Index Template".equalsIgnoreCase(title.getText()));
+  }
 
 }

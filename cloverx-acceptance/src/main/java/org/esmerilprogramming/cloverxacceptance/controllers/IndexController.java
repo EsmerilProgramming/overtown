@@ -22,5 +22,10 @@ public class IndexController {
 
   }
 
+  @Get(template = "/index.ftl")
+  public void indexWithRootTemplate(CloverXRequest request){
+
+  }
+
 
 }
