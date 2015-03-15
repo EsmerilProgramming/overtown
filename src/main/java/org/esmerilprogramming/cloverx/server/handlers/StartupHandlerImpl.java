@@ -148,11 +148,11 @@ public class StartupHandlerImpl implements StartupHandler {
 
   protected HttpHandler createErrorController(String error , Class<?> clazz , Class defaultClass){
     clazz = clazz == null ? defaultClass : clazz;
-    ControllerMapping controllerMapping = new ControllerMapping(error);
+    ControllerMapping controllerMapping = new ControllerMapping( error , error);
     controllerMapping.setControllerClass( clazz );
     try {
       Method handlerError = clazz.getMethod("handleError", CloverXRequest.class);
-      PathMapping methodMapping = new PathMapping("404" , null , handlerError , getTemplate(handlerError) , false );
+      PathMapping methodMapping = new PathMapping( error , null , handlerError , getTemplate(handlerError) , false );
       Paranamer paranamer = new CachingParanamer(new BytecodeReadingParanamer());
       return new MainHttpHandler( controllerMapping , methodMapping , paranamer.lookupParameterNames( handlerError ) );
     } catch (NoSuchMethodException e) {

@@ -19,11 +19,13 @@ import java.util.Set;
 public class ControllerMapping {
 
   private Class<?> controllerClass;
+  private String name;
   private String path;
   private Set<PathMapping> pathMappings;
   private Set<Method> beforeTranslationMethods;
 
-  public ControllerMapping(String path) {
+  public ControllerMapping(String name , String path) {
+    this.name = name;
     this.path = path;
     pathMappings = new LinkedHashSet<>();
     beforeTranslationMethods = new LinkedHashSet<>();
@@ -36,6 +38,11 @@ public class ControllerMapping {
       for (VerbAndPaths vap : vaps) {
         for (String path : vap.paths) {
           path = Path.NO_PATH.equals(path) ? m.getName() : path.trim();
+          if(!Path.NO_TEMPLATE.equalsIgnoreCase( vap.template)) {
+            if (!vap.template.startsWith("/")) { //Mount template with the controllerName/templateName
+              vap.template = name + "/" + vap.template;
+            }
+          }
           pathMappings.add(new PathMapping(path, vap.httpVerb, m, vap.template, vap.jsonResponse));
         }
       }
@@ -149,6 +156,10 @@ public class ControllerMapping {
   public Set<PathMapping> getPathMappings() {
     return pathMappings;
   }
-
-
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
+  }
 }

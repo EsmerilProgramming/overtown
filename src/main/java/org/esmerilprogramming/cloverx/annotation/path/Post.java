@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Post {
 
-  String template() default "";
+  String template() default Path.NO_TEMPLATE;
 
   String[] value() default Path.NO_PATH;
 }

@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Get {
 
-  String template()  default "";
+  String template()  default Path.NO_TEMPLATE;
 
   String[] value() default Path.NO_PATH;
 

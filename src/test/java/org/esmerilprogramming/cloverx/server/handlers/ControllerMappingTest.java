@@ -20,7 +20,7 @@ public class ControllerMappingTest {
 
   @Before
   public void setUp(){
-    controllerMapping = new ControllerMapping("does_not_matter_the_path");
+    controllerMapping = new ControllerMapping("does_not_matter_the_path" ,"does_not_matter_the_path");
   }
 
   @Test

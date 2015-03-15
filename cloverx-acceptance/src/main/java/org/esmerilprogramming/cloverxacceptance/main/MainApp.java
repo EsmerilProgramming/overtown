@@ -12,14 +12,19 @@ public class MainApp {
   private CloverX cloverx;
 
 
+  public void start( CloverXConfiguration configuration){
+    cloverx = new CloverX( configuration );
+  }
+
   public void start(){
-    cloverx = new CloverX( configure() );
+    start( configure()  );
   }
 
   public CloverXConfiguration configure(){
     ConfigurationBuilder cb = new ConfigurationBuilder();
     cb.withPackageToScan("org.esmerilprogramming.cloverxacceptance")
-            .shouldRunManagement(false);
+            .shouldRunManagement(false)
+            .withAppContext("acceptance");
     return cb.build();
   }
 

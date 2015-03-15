@@ -19,7 +19,7 @@ public class ControllerScanner {
   public ControllerMapping scanControllerForMapping(Class<?> controllerClass){
 
     Controller annotation = controllerClass.getAnnotation(Controller.class);
-    ControllerMapping mapping = new ControllerMapping(  getPath( annotation , controllerClass ) );
+    ControllerMapping mapping = new ControllerMapping( getControllerSimpleName(controllerClass) ,  getPath( annotation , controllerClass ) );
     mapping.setControllerClass(controllerClass);
     mapping.addPathMethods( ReflectionUtils.getAllMethods(controllerClass, ReflectionUtils.withAnnotation(Page.class) )  );
     mapping.addPathMethods( ReflectionUtils.getAllMethods(controllerClass, ReflectionUtils.withAnnotation(Get.class))  );
@@ -34,17 +34,27 @@ public class ControllerScanner {
     String path = annotation.path();
     StringBuilder pathBuilder = new StringBuilder(path);
     if(NO_PATH.equalsIgnoreCase( pathBuilder.toString() )){
-      pathBuilder = new StringBuilder( controllerClass.getSimpleName() );
+      path = getControllerSimpleName( controllerClass );
+      /*pathBuilder = new StringBuilder( controllerClass.getSimpleName() );
       path = controllerClass.getSimpleName();
       if( path.matches(".{1,}Controller") ){
         pathBuilder.reverse().replace( 0 , 10 , "" ).reverse().toString();
       }
-      path = pathBuilder.replace(0 , 1 , ((Character) pathBuilder.charAt(0) ).toString().toLowerCase() ).toString();
+      path = pathBuilder.replace(0 , 1 , ((Character) pathBuilder.charAt(0) ).toString().toLowerCase() ).toString();*/
     }
     if(!path.startsWith("/")){
       path = "/" + path;
     }
     return path;
+  }
+
+  public String getControllerSimpleName( Class<?> controllerClass ){
+    StringBuilder sb = new StringBuilder( controllerClass.getSimpleName() );
+    String simpleName = controllerClass.getSimpleName();
+    if( simpleName.matches(".{1,}Controller") ){
+      sb.reverse().replace( 0 , 10 , "" ).reverse().toString();
+    }
+    return sb.replace(0 , 1 , ((Character) sb.charAt(0) ).toString().toLowerCase() ).toString();
   }
 
 }

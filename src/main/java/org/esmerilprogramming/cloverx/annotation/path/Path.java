@@ -13,7 +13,7 @@ public @interface Path {
   public static final String NO_PATH = "$$NO_PATH$$";
   public static final String NO_TEMPLATE = "$$NO_TEMPLATE$$";
 
-  String template() default "";
+  String template() default Path.NO_TEMPLATE;
 
   String[] value() default NO_PATH;
 }
