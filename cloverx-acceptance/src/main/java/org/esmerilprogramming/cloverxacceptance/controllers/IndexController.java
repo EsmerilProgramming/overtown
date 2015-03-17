@@ -3,6 +3,7 @@ package org.esmerilprogramming.cloverxacceptance.controllers;
 import io.undertow.io.Sender;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.path.Get;
+import org.esmerilprogramming.cloverx.annotation.path.Post;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
 
 /**
@@ -25,6 +26,12 @@ public class IndexController {
   @Get(template = "/index.ftl")
   public void indexWithRootTemplate(CloverXRequest request){
 
+  }
+
+  @Post
+  public void index(String name , CloverXRequest request){
+    Sender sender = request.getExchange().getResponseSender();
+    sender.send("POST - index/index - nome:" + name);
   }
 
 

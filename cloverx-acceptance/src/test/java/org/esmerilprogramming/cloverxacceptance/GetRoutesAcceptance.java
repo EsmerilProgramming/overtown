@@ -1,5 +1,6 @@
 package org.esmerilprogramming.cloverxacceptance;
 
+import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import org.esmerilprogramming.cloverxacceptance.main.MainApp;
 import org.junit.*;
 import org.openqa.selenium.By;
@@ -57,6 +58,18 @@ public class GetRoutesAcceptance {
     webDriver.get("localhost:8080/acceptance/index/indexWithRootTemplate");
     WebElement title = webDriver.findElement(By.id("pageTitle"));
     assertTrue("Root Index Template".equalsIgnoreCase(title.getText()));
+  }
+
+  @Test
+  public void doesCallPostAndSendPostMethodResponseToUse(){
+    webDriver.get("localhost:8080/acceptance/index/indexWithTemplate");
+    WebElement name = webDriver.findElement(By.id("name"));
+    name.sendKeys("efraim");
+    webDriver.findElement(By.id("submit")).click();
+
+    String pageSource = webDriver.getPageSource();
+    System.out.println( pageSource );
+    assertTrue(  pageSource.contains("POST - index/index - nome:efraim"));
   }
 
 }
