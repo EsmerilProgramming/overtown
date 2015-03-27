@@ -66,7 +66,9 @@ public class StartupHandlerImpl implements StartupHandler {
 
   public HttpHandler createRootHandler(CloverXConfiguration configuration , ScannerResult scannerResult) {
     PathHandler pathHandler = Handlers.path();
-    pathHandler.addPrefixPath("/" + configuration.getAppContext(), createAppHandlers(scannerResult));
+
+    String appContext = "/" + configuration.getAppContext();
+    pathHandler.addPrefixPath( appContext , createAppHandlers(scannerResult));
     if(!scannerResult.getServerEndpoints().isEmpty()){
       DeploymentInfo builder = new DeploymentInfo().setClassLoader(this.getClass().getClassLoader()).setContextPath("/");
       WebSocketDeploymentInfo wsDeployInfo = new WebSocketDeploymentInfo();
@@ -82,14 +84,22 @@ public class StartupHandlerImpl implements StartupHandler {
       manager.deploy();
       try {
         CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
-        pathHandler.addPrefixPath("/" + configuration.getAppContext() + "/ws",
+        String wsContextPath = "ws";
+        if( !appContext.endsWith("/") ){
+          wsContextPath += appContext + "/" + wsContextPath;
+        }
+        pathHandler.addPrefixPath( wsContextPath ,
                 new SessionAttachmentHandler(  manager.start() , sessionManager.getSessionManager(),
                   sessionManager.getSessionConfig()) );
       } catch (ServletException e) {
         e.printStackTrace();
       }
     }
-    pathHandler.addPrefixPath("/" + configuration.getAppContext() + "/" + configuration.getStaticRootPath(), new ResourceHandlerMounter().mount());
+    String staticContextPath = configuration.getStaticRootPath();
+    if( !appContext.endsWith("/") ){
+      staticContextPath += appContext + "/" + staticContextPath;
+    }
+    pathHandler.addPrefixPath( staticContextPath , new ResourceHandlerMounter().mount());
     return pathHandler;
   }
 

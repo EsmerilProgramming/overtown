@@ -22,7 +22,9 @@ public class PathMapping {
   }
 
   public String getFinalPath(String controllerPath){
-    if( controllerPath.endsWith("/") ){
+    if( controllerPath.equalsIgnoreCase("/") )
+      controllerPath = "";
+    if( controllerPath.endsWith("/")  ){
       controllerPath = controllerPath.substring(0 , controllerPath.length() - 2 );
     }
     String finalPath = controllerPath;
