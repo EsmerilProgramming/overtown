@@ -34,5 +34,11 @@ public class IndexController {
     sender.send("POST - index/index - nome:" + name);
   }
 
+  @Get
+  public void put(String name , CloverXRequest request){
+    Sender sender = request.getExchange().getResponseSender();
+    sender.send("PUT - index/put - nome:" + name);
+  }
+
 
 }

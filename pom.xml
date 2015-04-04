@@ -4,14 +4,15 @@
   <groupId>com.github.esmerilprogramming</groupId>
   <artifactId>cloverx</artifactId>
   <version>0.3.0-SNAPSHOT</version>
-  <modules>
-    <module>cloverx-acceptance</module>
-  </modules>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
   <name>cloverx</name>
   <description></description>
   <url>https://github.com/EsmerilProgramming/cloverx</url>
+
+  <!--<modules>
+      <module>cloverx-acceptance</module>
+  </modules>-->
 
   <developers>
     <developer>

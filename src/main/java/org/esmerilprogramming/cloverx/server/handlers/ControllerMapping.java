@@ -5,8 +5,8 @@ import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.annotation.path.Get;
 import org.esmerilprogramming.cloverx.annotation.path.Path;
 import org.esmerilprogramming.cloverx.annotation.path.Post;
+import org.esmerilprogramming.cloverx.annotation.path.Put;
 import org.esmerilprogramming.cloverx.http.HttpMethod;
-import org.esmerilprogramming.cloverx.server.handlers.exception.NotAPathAnnotationException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -61,6 +61,10 @@ public class ControllerMapping {
         Post post = (Post) annotation;
         verbAndPaths.add(new VerbAndPaths(HttpMethod.POST, post.value(), post.template()));
       }
+      if (annotationClass.equals(Put.class)) {
+        Put post = (Put) annotation;
+        verbAndPaths.add(new VerbAndPaths(HttpMethod.PUT, post.value(), post.template()));
+      }
       if (annotationClass.equals(Path.class)) {
         Path path = (Path) annotation;
         verbAndPaths.add(new VerbAndPaths(HttpMethod.GET, path.value(), path.template()));
@@ -86,34 +90,6 @@ public class ControllerMapping {
       }
     }
     return verbAndPaths;
-  }
-
-  @Deprecated
-  protected VerbAndPaths[] getVerbAndPaths(Annotation annotation) throws NotAPathAnnotationException {
-    Class<? extends Annotation> annotationClass = annotation.annotationType();
-    if (annotationClass.equals(Get.class)) {
-      Get get = (Get) annotation;
-      return new VerbAndPaths[]{new VerbAndPaths(HttpMethod.GET, get.value(), get.template())};
-    }
-    if (annotationClass.equals(Post.class)) {
-      Post post = (Post) annotation;
-      return new VerbAndPaths[]{new VerbAndPaths(HttpMethod.POST, post.value(), post.template())};
-    }
-    if (annotationClass.equals(Path.class)) {
-      Path path = (Path) annotation;
-      return new VerbAndPaths[]{
-              new VerbAndPaths(HttpMethod.GET, path.value(), path.template())
-              , new VerbAndPaths(HttpMethod.POST, path.value(), path.template())
-      };
-    }
-    if (annotationClass.equals(Page.class)) {
-      Page page = (Page) annotation;
-      return new VerbAndPaths[]{
-              new VerbAndPaths(HttpMethod.GET, page.value(), page.responseTemplate())
-              , new VerbAndPaths(HttpMethod.POST, page.value(), page.responseTemplate())
-      };
-    }
-    throw new NotAPathAnnotationException();
   }
 
   private class VerbAndPaths {
