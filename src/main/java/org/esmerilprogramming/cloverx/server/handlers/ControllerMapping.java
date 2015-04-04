@@ -2,10 +2,7 @@ package org.esmerilprogramming.cloverx.server.handlers;
 
 import org.esmerilprogramming.cloverx.annotation.JSONResponse;
 import org.esmerilprogramming.cloverx.annotation.Page;
-import org.esmerilprogramming.cloverx.annotation.path.Get;
-import org.esmerilprogramming.cloverx.annotation.path.Path;
-import org.esmerilprogramming.cloverx.annotation.path.Post;
-import org.esmerilprogramming.cloverx.annotation.path.Put;
+import org.esmerilprogramming.cloverx.annotation.path.*;
 import org.esmerilprogramming.cloverx.http.HttpMethod;
 
 import java.lang.annotation.Annotation;
@@ -64,6 +61,10 @@ public class ControllerMapping {
       if (annotationClass.equals(Put.class)) {
         Put post = (Put) annotation;
         verbAndPaths.add(new VerbAndPaths(HttpMethod.PUT, post.value(), post.template()));
+      }
+      if (annotationClass.equals(Delete.class)) {
+        Delete post = (Delete) annotation;
+        verbAndPaths.add(new VerbAndPaths(HttpMethod.DELETE, post.value(), post.template()));
       }
       if (annotationClass.equals(Path.class)) {
         Path path = (Path) annotation;

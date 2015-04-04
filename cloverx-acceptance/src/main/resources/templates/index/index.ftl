@@ -14,7 +14,7 @@
 
 
 <form method="put" action="${request.exchange.resolvedPath}/index/put">
-
+  <input type="text" id="_method" name="_method" value="PUT" />
   <input type="text" id="putName" name="name" />
   <button type="submit" id="putSubmit">submit</button>
 </form>

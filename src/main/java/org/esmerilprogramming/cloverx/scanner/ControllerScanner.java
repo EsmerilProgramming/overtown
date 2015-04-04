@@ -3,9 +3,7 @@ package org.esmerilprogramming.cloverx.scanner;
 import org.esmerilprogramming.cloverx.annotation.BeforeTranslate;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.Page;
-import org.esmerilprogramming.cloverx.annotation.path.Get;
-import org.esmerilprogramming.cloverx.annotation.path.Path;
-import org.esmerilprogramming.cloverx.annotation.path.Post;
+import org.esmerilprogramming.cloverx.annotation.path.*;
 import org.esmerilprogramming.cloverx.server.handlers.ControllerMapping;
 import org.reflections.ReflectionUtils;
 
@@ -24,6 +22,8 @@ public class ControllerScanner {
     mapping.addPathMethods( ReflectionUtils.getAllMethods(controllerClass, ReflectionUtils.withAnnotation(Page.class) )  );
     mapping.addPathMethods( ReflectionUtils.getAllMethods(controllerClass, ReflectionUtils.withAnnotation(Get.class))  );
     mapping.addPathMethods( ReflectionUtils.getAllMethods(controllerClass, ReflectionUtils.withAnnotation(Post.class)) );
+    mapping.addPathMethods( ReflectionUtils.getAllMethods(controllerClass, ReflectionUtils.withAnnotation(Put.class)) );
+    mapping.addPathMethods( ReflectionUtils.getAllMethods(controllerClass, ReflectionUtils.withAnnotation(Delete.class)) );
     mapping.addPathMethods( ReflectionUtils.getAllMethods(controllerClass, ReflectionUtils.withAnnotation(Path.class)) );
     mapping.addBeforeTranslationMethods(  ReflectionUtils.getAllMethods(controllerClass, ReflectionUtils.withAnnotation(BeforeTranslate.class)) );
 

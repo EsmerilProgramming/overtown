@@ -6,6 +6,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.server.RoutingHandler;
 import io.undertow.server.handlers.ResponseCodeHandler;
 import io.undertow.util.*;
+import org.esmerilprogramming.cloverx.http.CloverXRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,14 @@ public class CustomRoutingHandler extends RoutingHandler {
   @Override
   public void handleRequest(HttpServerExchange exchange) throws Exception {
 
-    CustomPathTemplateMatcher<RoutingMatch> matcher = matches.get(exchange.getRequestMethod());
+    HttpString requestMethod = exchange.getRequestMethod();
+    CloverXRequest cloverXRequest = new CloverXRequest(exchange);
+    String method = (String) cloverXRequest.getParameter("_method");
+    if(method != null){
+      requestMethod = new HttpString(method);
+    }
+
+    CustomPathTemplateMatcher<RoutingMatch> matcher = matches.get( requestMethod );
     if (matcher == null) {
       handleNoMatch(exchange);
       return;

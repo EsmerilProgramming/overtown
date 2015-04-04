@@ -4,6 +4,7 @@ import io.undertow.io.Sender;
 import org.esmerilprogramming.cloverx.annotation.Controller;
 import org.esmerilprogramming.cloverx.annotation.path.Get;
 import org.esmerilprogramming.cloverx.annotation.path.Post;
+import org.esmerilprogramming.cloverx.annotation.path.Put;
 import org.esmerilprogramming.cloverx.http.CloverXRequest;
 
 /**
@@ -34,7 +35,7 @@ public class IndexController {
     sender.send("POST - index/index - nome:" + name);
   }
 
-  @Get
+  @Put
   public void put(String name , CloverXRequest request){
     Sender sender = request.getExchange().getResponseSender();
     sender.send("PUT - index/put - nome:" + name);
