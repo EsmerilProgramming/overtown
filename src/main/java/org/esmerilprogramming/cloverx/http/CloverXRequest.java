@@ -119,7 +119,9 @@ public class CloverXRequest {
   }
 
   protected boolean isPostRequest() {
-    return "POST".equalsIgnoreCase(exchange.getRequestMethod().toString());
+    return "POST".equalsIgnoreCase(exchange.getRequestMethod().toString())
+            || "PUT".equalsIgnoreCase(exchange.getRequestMethod().toString())
+            || "DELETE".equalsIgnoreCase(exchange.getRequestMethod().toString());
   }
 
   public HttpServerExchange getExchange() {
