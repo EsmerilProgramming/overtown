@@ -2,6 +2,7 @@ package org.esmerilprogramming.cloverxacceptance.controllers;
 
 import io.undertow.io.Sender;
 import org.esmerilprogramming.cloverx.annotation.Controller;
+import org.esmerilprogramming.cloverx.annotation.path.Delete;
 import org.esmerilprogramming.cloverx.annotation.path.Get;
 import org.esmerilprogramming.cloverx.annotation.path.Post;
 import org.esmerilprogramming.cloverx.annotation.path.Put;
@@ -13,27 +14,15 @@ import org.esmerilprogramming.cloverx.http.CloverXRequest;
 @Controller
 public class DeleteController {
 
-  @Get
-  public void index(CloverXRequest request){
-    Sender sender = request.getExchange().getResponseSender();
-    sender.send("GET - delete/index");
-  }
-
   @Get(template = "index.ftl")
-  public void indexWithTemplate(CloverXRequest request){
+  public void index(CloverXRequest request){
 
   }
 
-  @Post
-  public void index(String name , CloverXRequest request){
+  @Delete
+  public void delete(Integer id, CloverXRequest request){
     Sender sender = request.getExchange().getResponseSender();
-    sender.send("POST - delete/index - nome:" + name);
-  }
-
-  @Put
-  public void put(String name , CloverXRequest request){
-    Sender sender = request.getExchange().getResponseSender();
-    sender.send("PUT - delete/put - nome:" + name);
+    sender.send("DELETE - delete/delete - id:" + id);
   }
 
 

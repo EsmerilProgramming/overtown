@@ -1,11 +1,26 @@
 package org.esmerilprogramming.cloverxacceptance;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.esmerilprogramming.cloverxacceptance.main.MainApp;
 import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -39,36 +54,44 @@ public class DeleteRoutesAcceptance {
   }
 
   @Test
-  public void doesGetIndexWithoutTemplatePage() throws InterruptedException{
-    webDriver.get("localhost:8080/acceptance/index/index");
-    String pageSource = webDriver.getPageSource();
-    assertTrue(  pageSource.contains("GET - index/index"));
-  }
-
-  @Test
-  public void doesGetIndexWithTemplatePage() throws InterruptedException{
-    webDriver.get("localhost:8080/acceptance/index/indexWithTemplate");
-    WebElement title = webDriver.findElement(By.id("pageTitle"));
-    assertTrue("Index with template".equalsIgnoreCase(title.getText()));
-  }
-
-  @Test
-  public void doesGetIndexWithRootTemplatePage() throws InterruptedException{
-    webDriver.get("localhost:8080/acceptance/index/indexWithRootTemplate");
-    WebElement title = webDriver.findElement(By.id("pageTitle"));
-    assertTrue("Root Index Template".equalsIgnoreCase(title.getText()));
-  }
-
-  @Test
-  public void doesCallPostAndSendPostMethodResponseToUse(){
-    webDriver.get("localhost:8080/acceptance/index/indexWithTemplate");
-    WebElement name = webDriver.findElement(By.id("name"));
-    name.sendKeys("efraim");
-    webDriver.findElement(By.id("submit")).click();
+  public void doesCallDeleteThroughGetRequestWithHiddenMethodInformation(){
+    webDriver.get("localhost:8080/acceptance/delete/index");
+    WebElement name = webDriver.findElement(By.id("deleteGetId"));
+    name.sendKeys("1");
+    webDriver.findElement(By.id("deleteGetSubmit")).click();
 
     String pageSource = webDriver.getPageSource();
     System.out.println( pageSource );
-    assertTrue(  pageSource.contains("POST - index/index - nome:efraim"));
+    assertTrue(  pageSource.contains("DELETE - delete/delete - id:1") );
+  }
+
+  @Test
+  public void doesCallDeleteThroughPostRequestWithHiddenMethodInformation(){
+    webDriver.get("localhost:8080/acceptance/delete/index");
+    WebElement name = webDriver.findElement(By.id("deletePostId"));
+    name.sendKeys("1");
+    webDriver.findElement(By.id("deletePostSubmit")).click();
+
+    String pageSource = webDriver.getPageSource();
+    System.out.println( pageSource );
+    assertTrue(pageSource.contains("DELETE - delete/delete - id:1"));
+  }
+
+  @Test
+  public void doesCorrectRespondToARequestUsingPutMethod() throws IOException {
+    CloseableHttpClient client = HttpClients.createDefault();
+    HttpDelete method = new HttpDelete("http://localhost:8080/acceptance/delete/delete?id=1");
+
+    HttpResponse response = client.execute(method);
+    BufferedReader br = new BufferedReader(
+            new InputStreamReader((response.getEntity().getContent())));
+    String output;
+    StringBuilder sb = new StringBuilder();
+    while ((output = br.readLine()) != null) {
+      sb.append(output);
+    }
+    assertTrue( sb.toString().contains("DELETE - delete/delete - id:1") ) ;
+    client.close();
   }
 
 }

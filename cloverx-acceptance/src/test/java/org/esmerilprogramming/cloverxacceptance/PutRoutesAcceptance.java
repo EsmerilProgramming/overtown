@@ -81,7 +81,6 @@ public class PutRoutesAcceptance {
   public void doesCorrectRespondToARequestUsingPutMethod() throws IOException {
     CloseableHttpClient client = HttpClients.createDefault();
     HttpPut httpPut = new HttpPut("http://localhost:8080/acceptance/index/put");
-    httpPut.getParams().setParameter("name" , "efraim");
     List<NameValuePair> nvps = new ArrayList<NameValuePair>();
     nvps.add( new BasicNameValuePair("name", "efraim") );
     httpPut.setEntity( new UrlEncodedFormEntity(nvps , HTTP.UTF_8 ) );
@@ -90,11 +89,11 @@ public class PutRoutesAcceptance {
     BufferedReader br = new BufferedReader(
             new InputStreamReader((response.getEntity().getContent())));
     String output;
-    System.out.println("Output from Server .... \n");
+    StringBuilder sb = new StringBuilder();
     while ((output = br.readLine()) != null) {
-      System.out.println(output);
+      sb.append( output );
     }
-
+    assertTrue( sb.toString().contains("PUT - index/put - nome:efraim")  );
     client.close();
   }
 
