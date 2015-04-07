@@ -33,6 +33,10 @@ public class ManagementPage {
   public void index() {
 
   }
+  @Get(value = "error" , template = "home.ftl")
+  public void index(CloverXRequest request) {
+    int i = 20/0;
+  }
   
   @Page(value = "ws" , responseTemplate = "form.ftl")
   public void wsTeste() {

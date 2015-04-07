@@ -5,6 +5,8 @@ package org.esmerilprogramming.cloverx.http;
  */
 public interface ErrorHandler {
 
+  public static final String ERROR_500 = "CLOVERX_ERROR_500";
+
   public abstract void handleError(CloverXRequest request);
 
 }

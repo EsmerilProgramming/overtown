@@ -5,10 +5,7 @@ import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import org.esmerilprogramming.cloverx.annotation.JSONResponse;
 import org.esmerilprogramming.cloverx.annotation.Page;
-import org.esmerilprogramming.cloverx.http.CloverXRequest;
-import org.esmerilprogramming.cloverx.http.HttpResponse;
-import org.esmerilprogramming.cloverx.http.ParameterConverterMounter;
-import org.esmerilprogramming.cloverx.http.Response;
+import org.esmerilprogramming.cloverx.http.*;
 import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParametersConverter;
@@ -54,9 +51,10 @@ public class MainHttpHandler implements HttpHandler {
   @Override
   public void handleRequest(HttpServerExchange exchange) throws Exception {
     Object newInstance = controller.getConstructor().newInstance();
+    CloverXRequest request = null;
     try {
       Class<?>[] parameterTypes = method.getParameterTypes();
-      CloverXRequest request = new CloverXRequest(exchange);
+      request = new CloverXRequest(exchange);
 
       for (Method method : beforeTranslationMethods) {
         method.invoke(newInstance, request);
@@ -72,9 +70,13 @@ public class MainHttpHandler implements HttpHandler {
       method.invoke(newInstance, parameters);
 
       finishResponse( request );
-    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-      e.printStackTrace();
-      LOGGER.error(e.getMessage());
+    } catch (Exception e) {
+      if( request != null){
+        request.addAttribute( ErrorHandler.ERROR_500 , e );
+        new DefaultErrorPage().handleError(request);
+      }else{
+        e.printStackTrace();
+      }
     }
   }
 
