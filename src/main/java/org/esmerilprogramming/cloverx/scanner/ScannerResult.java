@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
-import org.esmerilprogramming.cloverx.http.MethodNotAllowed;
 import org.esmerilprogramming.cloverx.http.ErrorHandler;
 import org.esmerilprogramming.cloverx.server.handlers.ControllerMapping;
 

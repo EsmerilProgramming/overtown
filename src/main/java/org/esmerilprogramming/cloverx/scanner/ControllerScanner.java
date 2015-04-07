@@ -35,12 +35,6 @@ public class ControllerScanner {
     StringBuilder pathBuilder = new StringBuilder(path);
     if(NO_PATH.equalsIgnoreCase( pathBuilder.toString() )){
       path = getControllerSimpleName( controllerClass );
-      /*pathBuilder = new StringBuilder( controllerClass.getSimpleName() );
-      path = controllerClass.getSimpleName();
-      if( path.matches(".{1,}Controller") ){
-        pathBuilder.reverse().replace( 0 , 10 , "" ).reverse().toString();
-      }
-      path = pathBuilder.replace(0 , 1 , ((Character) pathBuilder.charAt(0) ).toString().toLowerCase() ).toString();*/
     }
     if(!path.startsWith("/")){
       path = "/" + path;
