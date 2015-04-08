@@ -78,7 +78,7 @@ public class DeleteRoutesAcceptance {
   }
 
   @Test
-  public void doesCorrectRespondToARequestUsingPutMethod() throws IOException {
+  public void doesCorrectRespondToARequestUsingDeleteMethod() throws IOException {
     CloseableHttpClient client = HttpClients.createDefault();
     HttpDelete method = new HttpDelete("http://localhost:8080/acceptance/delete/delete?id=1");
 
