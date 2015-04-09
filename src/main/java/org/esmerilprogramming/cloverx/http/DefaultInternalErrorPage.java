@@ -6,7 +6,7 @@ import io.undertow.server.HttpServerExchange;
 /**
  * Created by efraimgentil<efraimgentil@gmail.com> on 02/03/15.
  */
-public class DefaultErrorPage implements ErrorHandler {
+public class DefaultInternalErrorPage implements ErrorHandler {
 
   @Override
   public void handleError(CloverXRequest request) {

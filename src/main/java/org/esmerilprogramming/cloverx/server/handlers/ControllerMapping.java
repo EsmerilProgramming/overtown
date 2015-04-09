@@ -1,5 +1,6 @@
 package org.esmerilprogramming.cloverx.server.handlers;
 
+import io.undertow.server.HttpHandler;
 import org.esmerilprogramming.cloverx.annotation.JSONResponse;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.annotation.path.*;
@@ -20,6 +21,7 @@ public class ControllerMapping {
   private String path;
   private Set<PathMapping> pathMappings;
   private Set<Method> beforeTranslationMethods;
+  private HttpHandler internalErrorHandler;
 
   public ControllerMapping(String name , String path) {
     this.name = name;
@@ -91,6 +93,14 @@ public class ControllerMapping {
       }
     }
     return verbAndPaths;
+  }
+
+  public HttpHandler getInternalErrorHandler() {
+    return internalErrorHandler;
+  }
+
+  public void setInternalErrorHandler(HttpHandler internalErrorHandler) {
+    this.internalErrorHandler = internalErrorHandler;
   }
 
   private class VerbAndPaths {

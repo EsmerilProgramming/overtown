@@ -17,6 +17,7 @@ import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
+import org.esmerilprogramming.cloverx.annotation.JSONResponse;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.annotation.path.Get;
 import org.esmerilprogramming.cloverx.annotation.path.Path;
@@ -134,13 +135,15 @@ public class StartupHandlerImpl implements StartupHandler {
   
   public HttpHandler createAppHandlers(ScannerResult scannerResult){
     CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
+    HttpHandler error500 = mount500( scannerResult.getInternalErrorClass() );
     if( !scannerResult.getControllerMappings().isEmpty() ) {
       RoutingHandler rh = new CustomRoutingHandler();
-      rh.setFallbackHandler(  mount404( scannerResult.getNotFoundClass() ) );
+      rh.setFallbackHandler(mount404(scannerResult.getNotFoundClass()));
       rh.setInvalidMethodHandler( mount405( scannerResult.getMethodNotAllowedClass() ) );
       ControllerHandlerCreator chc = new ControllerHandlerCreator();
       for(ControllerMapping mapping : scannerResult.getControllerMappings() ){
-        chc.createHandler(mapping , rh);
+        mapping.setInternalErrorHandler(error500);
+        rh = chc.createHandler(mapping , rh);
       }
       return new SessionAttachmentHandler( rh , sessionManager.getSessionManager(),
               sessionManager.getSessionConfig());
@@ -156,13 +159,17 @@ public class StartupHandlerImpl implements StartupHandler {
     return createErrorController("405" , methodNotAllowed , DefaultMethodNotAllowedPage.class );
   }
 
+  protected HttpHandler mount500( Class methodNotAllowed ){
+    return createErrorController("500" , methodNotAllowed , DefaultInternalErrorPage.class );
+  }
+
   protected HttpHandler createErrorController(String error , Class<?> clazz , Class defaultClass){
     clazz = clazz == null ? defaultClass : clazz;
     ControllerMapping controllerMapping = new ControllerMapping( error , error);
     controllerMapping.setControllerClass( clazz );
     try {
       Method handlerError = clazz.getMethod("handleError", CloverXRequest.class);
-      PathMapping methodMapping = new PathMapping( error , null , handlerError , getTemplate(handlerError) , false );
+      PathMapping methodMapping = new PathMapping( error , null , handlerError , getTemplate(handlerError) , handlerError.getAnnotation(JSONResponse.class) != null );
       Paranamer paranamer = new CachingParanamer(new BytecodeReadingParanamer());
       return new MainHttpHandler( controllerMapping , methodMapping , paranamer.lookupParameterNames( handlerError ) );
     } catch (NoSuchMethodException e) {

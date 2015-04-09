@@ -1,9 +1,9 @@
 package org.esmerilprogramming.cloverx.server.handlers;
 
-import com.thoughtworks.paranamer.Paranamer;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
-import org.esmerilprogramming.cloverx.annotation.JSONResponse;
+import io.undertow.util.AttachmentKey;
+import io.undertow.util.AttachmentList;
 import org.esmerilprogramming.cloverx.annotation.Page;
 import org.esmerilprogramming.cloverx.http.*;
 import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
@@ -14,7 +14,6 @@ import org.esmerilprogramming.cloverx.server.injection.CoreClassInjectorImpl;
 import org.esmerilprogramming.cloverx.server.mounters.ConverterMounterImpl;
 import org.jboss.logging.Logger;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
@@ -34,9 +33,11 @@ public class MainHttpHandler implements HttpHandler {
   private Map<String, ParameterConverter> paramConverterMap;
   private String responseTemplate;
   private boolean isJsonResponse;
+  private HttpHandler internalErrorHandler;
 
   public MainHttpHandler(ControllerMapping controller , PathMapping pathMapping, String[] parameterNames){
     this.controller = controller.getControllerClass();
+    this.internalErrorHandler = controller.getInternalErrorHandler();
     this.beforeTranslationMethods = controller.getBeforeTranslationMethods();
     this.method = pathMapping.getMethod();
     this.responseTemplate = pathMapping.getTemplate();
@@ -56,6 +57,7 @@ public class MainHttpHandler implements HttpHandler {
       Class<?>[] parameterTypes = method.getParameterTypes();
       request = new CloverXRequest(exchange);
 
+
       for (Method method : beforeTranslationMethods) {
         method.invoke(newInstance, request);
       }
@@ -72,12 +74,27 @@ public class MainHttpHandler implements HttpHandler {
       finishResponse( request );
     } catch (Exception e) {
       if( request != null){
-        request.addAttribute( ErrorHandler.ERROR_500 , e );
-        new DefaultErrorPage().handleError(request);
+        try {
+          if (internalErrorHandler != null) {
+
+            exchange.putAttachment( request.EXCEPTION_ATTACHMENT_KEY , e);
+            internalErrorHandler.handleRequest(exchange);
+          }else{
+            defaultErrorHandler(e, request);
+          }
+        }catch(Exception ex) {
+          LOGGER.error("Your custom internal error handler throw a exception: " + ex.getMessage());
+          defaultErrorHandler(ex, request);
+        }
       }else{
         e.printStackTrace();
       }
     }
+  }
+
+  protected void defaultErrorHandler(Exception e , CloverXRequest request){
+    request.addAttribute( ErrorHandler.ERROR_500 , e );
+    new DefaultInternalErrorPage().handleError(request);
   }
 
   public void finishResponse(CloverXRequest request){

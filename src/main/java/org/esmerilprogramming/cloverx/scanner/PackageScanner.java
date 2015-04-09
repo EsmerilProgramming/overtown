@@ -1,8 +1,8 @@
 package org.esmerilprogramming.cloverx.scanner;
 
 import org.esmerilprogramming.cloverx.annotation.Controller;
-import org.esmerilprogramming.cloverx.annotation.path.MethodNotAllowed;
-import org.esmerilprogramming.cloverx.annotation.path.NotFound;
+import org.esmerilprogramming.cloverx.annotation.path.*;
+import org.esmerilprogramming.cloverx.annotation.path.InternalError;
 import org.esmerilprogramming.cloverx.annotation.session.SessionListener;
 import org.esmerilprogramming.cloverx.http.ErrorHandler;
 import org.esmerilprogramming.cloverx.scanner.exception.PackageNotFoundException;
@@ -55,8 +55,9 @@ public class PackageScanner {
     for(Class c : filtrateClasses( servlets )  ){
       scannerResult.addServletClass(c);
     }
-    scannerResult.setNotFoundClass( findErrorHandler( NotFound.class , reflections )  );
-    scannerResult.setMethodNotAllowedClass( findErrorHandler(MethodNotAllowed.class, reflections) );
+    scannerResult.setNotFoundClass(findErrorHandler(NotFound.class, reflections));
+    scannerResult.setMethodNotAllowedClass(findErrorHandler(MethodNotAllowed.class, reflections));
+    scannerResult.setInternalErrorClass( findErrorHandler( InternalError.class , reflections ));
 
     return scannerResult;
   }

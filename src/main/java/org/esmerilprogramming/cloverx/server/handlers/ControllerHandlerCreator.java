@@ -18,7 +18,7 @@ public class ControllerHandlerCreator {
     paranamer = new CachingParanamer(new BytecodeReadingParanamer());
   }
 
-  public HttpHandler createHandler(ControllerMapping mapping , RoutingHandler routing){
+  public RoutingHandler createHandler(ControllerMapping mapping , RoutingHandler routing){
     for( PathMapping pm: mapping.getPathMappings()){
       routing.add( pm.getHttpMethod() ,
                pm.getFinalPath( mapping.getPath() ) ,

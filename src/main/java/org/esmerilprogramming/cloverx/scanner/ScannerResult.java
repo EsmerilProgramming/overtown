@@ -20,6 +20,7 @@ public class ScannerResult {
   private List<ControllerMapping> controllerMappings;
   private Class<? extends ErrorHandler> notFoundClass;
   private Class<? extends ErrorHandler> methodNotAllowedClass;
+  private Class<? extends ErrorHandler> internalErrorClass;
 
   public ScannerResult() {
     servlets = new ArrayList<>();
@@ -62,5 +63,13 @@ public class ScannerResult {
   }
   public void setNotFoundClass(Class<? extends ErrorHandler> notFoundClass) {
     this.notFoundClass = notFoundClass;
+  }
+
+  public Class<? extends ErrorHandler> getInternalErrorClass() {
+    return internalErrorClass;
+  }
+
+  public void setInternalErrorClass(Class<? extends ErrorHandler> internalErrorClass) {
+    this.internalErrorClass = internalErrorClass;
   }
 }

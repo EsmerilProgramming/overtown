@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import io.undertow.util.AttachmentKey;
 import org.esmerilprogramming.cloverx.http.converter.GenericConverter;
 import org.esmerilprogramming.cloverx.http.converter.ParameterConverter;
 import org.esmerilprogramming.cloverx.view.ViewAttributes;
@@ -32,6 +33,7 @@ public class CloverXRequest {
   private FormData formData;
   private ViewAttributes viewAttributes;
   private Response response;
+  public static final AttachmentKey<Exception> EXCEPTION_ATTACHMENT_KEY = AttachmentKey.create(Exception.class);
 
   public CloverXRequest() {}
 
@@ -49,6 +51,12 @@ public class CloverXRequest {
         LOGGER.error(ioe.getMessage());
       }
     }
+
+    if( exchange.getAttachment( EXCEPTION_ATTACHMENT_KEY ) != null){
+      Exception e = exchange.getAttachment( EXCEPTION_ATTACHMENT_KEY );
+      addAttribute(ErrorHandler.ERROR_500, e);
+      exchange.removeAttachment( EXCEPTION_ATTACHMENT_KEY );
+    }
   }
 
   public CloverXSession getSession(){
@@ -61,6 +69,10 @@ public class CloverXRequest {
   
   public <T> void addAttribute(String name , T value ){
     viewAttributes.add(name, value);
+  }
+
+  public Object getAttribute(String name){
+    return viewAttributes.getAsMap().get( name );
   }
   
   public ViewAttributes getViewAttributes(){
