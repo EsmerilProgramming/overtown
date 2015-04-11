@@ -17,14 +17,14 @@ public class AppMain {
     new Overtown(new ConfigurationBuilder()
             .withPackageToScan("br.esmerilprogramming")
             .withHost("localhost")
-            .withAppContext("cloverx-samples")
+            .withAppContext("overtown-samples")
     .build());
 
     System.out.println("Sample form : http:localhost:8080/car/form");
     System.out.println("Sample JSON response : http:localhost:8080/car/json");
     System.out.println("Image: http:localhost:8080/static/img/dummy.png");
-    System.out.println("Static css: http:localhost:8080/static/css/cloverx.css");
-    System.out.println("Static js: http:localhost:8080/static/js/cloverx.js");
+    System.out.println("Static css: http:localhost:8080/static/css/overtown.css");
+    System.out.println("Static js: http:localhost:8080/static/js/overtown.js");
 
   }
 

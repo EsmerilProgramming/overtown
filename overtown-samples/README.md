@@ -1,4 +1,4 @@
-cloverx-samples
+overtown-samples
 ===============
 
 ### Running the samples
@@ -14,11 +14,12 @@ mvn exec:java
 If you want to create a maven archetype from this project:
 
 ```shell
-$ git clone https://github.com/EsmerilProgramming/cloverx-samples.git
+$ git clone https://github.com/EsmerilProgramming/overtown.git
 ```
 
 ```shell
-$ cd cloverx-samples
+$ cd overtown
+$ cd overtown-samples
 ```
 
 ```shell
@@ -54,4 +55,4 @@ $ mvn archetype:generate -DarchetypeCatalog=local
 ```
 
 
-Or, just use this cloverx-samples changing for your needs ; )
+Or, just use this overtown-samples changing for your needs ; )

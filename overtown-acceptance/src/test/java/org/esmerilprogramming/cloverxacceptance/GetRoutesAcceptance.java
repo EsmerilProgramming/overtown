@@ -1,7 +1,7 @@
-package org.esmerilprogramming.cloverxacceptance;
+package org.esmerilprogramming.overtownacceptance;
 
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
-import org.esmerilprogramming.cloverxacceptance.main.MainApp;
+import org.esmerilprogramming.overtownacceptance.main.MainApp;
 import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

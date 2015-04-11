@@ -67,7 +67,7 @@ public class PackageScanner {
     if(result.size() >= 1){
       Class c = result.iterator().next();
       if(!Arrays.asList( c.getInterfaces() ).contains(ErrorHandler.class)){
-        logger.warn("The class '" + c.getName() + "' is mapped as @" + annotationClass.getSimpleName()  +" but doesn't implements org.esmerilprogramming.cloverx.http.ErrorHandler it will be disconsidered");
+        logger.warn("The class '" + c.getName() + "' is mapped as @" + annotationClass.getSimpleName()  +" but doesn't implements org.esmerilprogramming.overtown.http.ErrorHandler it will be disconsidered");
       }else{
         if(result.size() > 2){
           logger.info("Was found more than one class with @NotFound annotation, only the first will be considered");

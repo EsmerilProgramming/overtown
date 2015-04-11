@@ -2,7 +2,7 @@ Overtown
 =======
 
 
-[![Build Status](https://travis-ci.org/EsmerilProgramming/cloverx.svg?branch=master)](https://travis-ci.org/EsmerilProgramming/cloverx)
+[![Build Status](https://travis-ci.org/EsmerilProgramming/overtown.svg?branch=master)](https://travis-ci.org/EsmerilProgramming/overtown)
 
 ## Getting started
 
@@ -10,7 +10,7 @@ Current version - 0.4.0-SNAPSHOT
 
 ### Getting the lib
 #### Maven
-  You need to configure the snapshot repository from Sonatype 
+  You need to configure the snapshot repository from Sonatype
 ```xml
 <repositories>
   <repository>
@@ -32,16 +32,16 @@ Current version - 0.4.0-SNAPSHOT
 
 #### Hardcore
  You can download from the repository https://oss.sonatype.org/content/groups/public/com/github/esmerilprogramming/overtown/
- 
+
  or do your own build
- 
+
  ```shell
  $ git clone https://github.com/EsmerilProgramming/overtown.git
- 
+
  $ cd overtown
- 
+
  $ mvn clean install
- ``` 
+ ```
 
 ### Creating a controller
 
@@ -57,7 +57,7 @@ public class MyController  {
   public void hello(){ /* ... */ }
 }
 ```
-By convention each controller add his prefix for each path defined. If you do not specify the "path" attribute in the @Controller annotation, the default path will be the name of the controller(without the sufix Controller if any) 
+By convention each controller add his prefix for each path defined. If you do not specify the "path" attribute in the @Controller annotation, the default path will be the name of the controller(without the sufix Controller if any)
 example:
 ```java
 @Controller //Will add "/my"

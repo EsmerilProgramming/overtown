@@ -17,26 +17,21 @@ import java.lang.reflect.Method;
 public class MethodLookupTest {
 
   public MethodLookupTest() {
-    // TODO Auto-generated constructor stub
   }
-  
-  
-  class StringLowerConverter extends GenericConverter<String>{
 
+  class StringLowerConverter extends GenericConverter<String>{
     @Override
     public String convert(String value) {
       return value.toLowerCase();
     }
-    
   }
 
   public static void main(String ... a){
     Undertow.Builder builder = Undertow.builder();
   }
 
-  
   public void teste( @Converter(StringLowerConverter.class) String name , String nah ){
-    
+
   }
 
   @Post
@@ -53,14 +48,14 @@ public class MethodLookupTest {
 
   @Test
   public void t(){
-    
+
     Class<MethodLookupTest> clazz = MethodLookupTest.class;
     for(final Method method: clazz.getMethods()) {
       if( "teste".equalsIgnoreCase( method.getName() )){
         Paranamer paranamer = new CachingParanamer(new BytecodeReadingParanamer());
         final String[] parameterNames = paranamer.lookupParameterNames(method);
         Class<?>[] parameterTypes = method.getParameterTypes();
-        
+
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         for( int i = 0 ; i < parameterNames.length ; i++){
           String parameterName = parameterNames[i];
@@ -69,27 +64,13 @@ public class MethodLookupTest {
             System.out.println(parameterName + ": "  + annotation.toString() );
           }
         }
-        
-        
-        for (Annotation[] ann : parameterAnnotations ) {
-          
-        }
-        
-      }
-      
-//      final String responseTemplate = methodPagePath.responseTemplate();
-      
-      
-//      CloverXRequest request = new CloverXRequest(exchange);
-//      for (Method method : beforeTranslationMethods) {
-//        method.invoke( newInstance , request );
-//      }
-      
-    }
-    
 
-    
+        for (Annotation[] ann : parameterAnnotations ) {
+
+        }
+
+      }
+
+    }
   }
-  
-  
 }
