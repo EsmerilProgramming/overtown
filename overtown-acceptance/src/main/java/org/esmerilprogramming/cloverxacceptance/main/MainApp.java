@@ -1,26 +1,26 @@
 package org.esmerilprogramming.cloverxacceptance.main;
 
-import org.esmerilprogramming.cloverx.server.CloverX;
-import org.esmerilprogramming.cloverx.server.CloverXConfiguration;
-import org.esmerilprogramming.cloverx.server.ConfigurationBuilder;
+import org.esmerilprogramming.overtown.server.Overtown;
+import org.esmerilprogramming.overtown.server.Configuration;
+import org.esmerilprogramming.overtown.server.ConfigurationBuilder;
 
 /**
  * Created by efraimgentil<efraimgentil@gmail.com> on 14/03/15.
  */
 public class MainApp {
 
-  private CloverX cloverx;
+  private Overtown cloverx;
 
 
-  public void start( CloverXConfiguration configuration){
-    cloverx = new CloverX( configuration );
+  public void start( Configuration configuration){
+    cloverx = new Overtown( configuration );
   }
 
   public void start(){
     start( configure()  );
   }
 
-  public CloverXConfiguration configure(){
+  public Configuration configure(){
     ConfigurationBuilder cb = new ConfigurationBuilder();
     cb.withPackageToScan("org.esmerilprogramming.cloverxacceptance")
             .shouldRunManagement(false)

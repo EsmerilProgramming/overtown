@@ -7,16 +7,14 @@ import org.apache.commons.beanutils.ConvertUtilsBean2;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.converters.AbstractConverter;
 import org.apache.commons.beanutils.converters.IntegerConverter;
-import org.esmerilprogramming.cloverx.server.CloverX;
-import org.esmerilprogramming.cloverx.server.ConfigurationBuilder;
-
-import java.lang.reflect.InvocationTargetException;
+import org.esmerilprogramming.overtown.server.Overtown;
+import org.esmerilprogramming.overtown.server.ConfigurationBuilder;
 
 public class AppMain {
 
   public static void main(String[] args) {
 
-    new CloverX(new ConfigurationBuilder()
+    new Overtown(new ConfigurationBuilder()
             .withPackageToScan("br.esmerilprogramming")
             .withHost("localhost")
             .withAppContext("cloverx-samples")

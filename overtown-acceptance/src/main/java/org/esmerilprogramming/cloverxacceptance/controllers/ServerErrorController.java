@@ -1,7 +1,7 @@
 package org.esmerilprogramming.cloverxacceptance.controllers;
 
-import org.esmerilprogramming.cloverx.annotation.Controller;
-import org.esmerilprogramming.cloverx.annotation.path.Get;
+import org.esmerilprogramming.overtown.annotation.Controller;
+import org.esmerilprogramming.overtown.annotation.path.Get;
 
 /**
  * Created by efraimgentil<efraimgentil@gmail.com> on 07/04/15.
