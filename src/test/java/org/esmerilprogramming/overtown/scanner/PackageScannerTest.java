@@ -41,20 +41,20 @@ public class PackageScannerTest {
       throws PackageNotFoundException, IOException {
 
     ScannerResult pageClasses =
-        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage");
+        scanner.scan("org.esmerilprogramming.overtown.scanner.testpackage");
 
     List<Class<?>> handlers = pageClasses.getServerEndpoints();
     assertSame(2, handlers.size());
     assertTrue("Should have found the Second.class", handlers.contains(Second.class));
     assertTrue("Should have found the AnotherSeverEndpoint.class", handlers.contains(AnotherSeverEndpoint.class));
   }
-  
+
   @Test
   public void givenAPackagedShouldFindAllControllerAnnotatedClassesInThisPackageAndSubPackages()
       throws PackageNotFoundException, IOException {
 
     ScannerResult pageClasses =
-        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage");
+        scanner.scan("org.esmerilprogramming.overtown.scanner.testpackage");
 
     List<ControllerMapping> handlers = pageClasses.getControllerMappings();
     assertSame(2, handlers.size());
@@ -73,7 +73,7 @@ public class PackageScannerTest {
       throws PackageNotFoundException, IOException {
 
     ScannerResult pageClasses =
-        scanner.scan("org.esmerilprogramming.cloverx.scanner.testpackage");
+        scanner.scan("org.esmerilprogramming.overtown.scanner.testpackage");
 
     List<Class<? extends HttpServlet>> servlets = pageClasses.getServlets();
     assertSame(2, servlets.size());

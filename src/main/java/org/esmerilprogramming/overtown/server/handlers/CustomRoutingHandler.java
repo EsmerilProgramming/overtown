@@ -6,7 +6,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.server.RoutingHandler;
 import io.undertow.server.handlers.ResponseCodeHandler;
 import io.undertow.util.*;
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -47,8 +47,8 @@ public class CustomRoutingHandler extends RoutingHandler {
   public void handleRequest(HttpServerExchange exchange) throws Exception {
 
     HttpString requestMethod = exchange.getRequestMethod();
-    CloverXRequest cloverXRequest = new CloverXRequest(exchange);
-    String method = (String) cloverXRequest.getParameter("_method");
+    OvertownRequest request = new OvertownRequest(exchange);
+    String method = (String) request.getParameter("_method");
     if(method != null){
       requestMethod = new HttpString(method);
     }

@@ -19,14 +19,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * 
+ *
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
 public class PackageScanner {
 
   private Configuration configuration;
 
-  private final String MANAGEMENT_PACKAGE = "org.esmerilprogramming.cloverx.management";
+  private final String MANAGEMENT_PACKAGE = "org.esmerilprogramming.overtown.management";
   private final Logger logger = Logger.getLogger(PackageScanner.class);
 
   public ScannerResult scan( String packageToSearch )

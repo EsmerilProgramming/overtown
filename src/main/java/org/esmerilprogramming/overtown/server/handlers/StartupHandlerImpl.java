@@ -45,15 +45,15 @@ import java.util.List;
 import java.util.Set;
 
 public class StartupHandlerImpl implements StartupHandler {
-  
+
   private static final Logger LOGGER = Logger.getLogger(StartupHandlerImpl.class);
-  
+
   @Override
   public Undertow prepareBuild(Configuration configuration) throws IOException {
     validateConfiguration(configuration);
     ConfigurationHolder.getInstance().prepareConfiguration(configuration);
     ScannerResult scannerResult = identifyEligibleClasses( configuration );
-    
+
     CloverXSessionManager instance = CloverXSessionManager.getInstance();
     InMemorySessionManager sessionManager = instance.getSessionManager();
     sessionManager.setDefaultSessionTimeout( configuration.getMaxSessionTime() );
@@ -114,7 +114,7 @@ public class StartupHandlerImpl implements StartupHandler {
     }
     return scan;
   }
-  
+
   protected void configureSessionManager(SessionManager sessionManager , List<Class<?>> annotatedSessionListeners ){
     SessionListenerMounter mounter = new SessionListenerMounterImpl();
     for (Class<?> annotatedClass : annotatedSessionListeners) {
@@ -129,10 +129,10 @@ public class StartupHandlerImpl implements StartupHandler {
     String packageToSkan = configuration.getPackageToSkan();
     packageToSkan = packageToSkan == null ? "" : packageToSkan.trim();
     if( "".equals( packageToSkan ) ){
-      throw new ConfigurationException("You should specify the package to be scanned. See https://github.com/EsmerilProgramming/cloverx for more info");
+      throw new ConfigurationException("You should specify the package to be scanned. See https://github.com/EsmerilProgramming/overtown for more info");
     }
   }
-  
+
   public HttpHandler createAppHandlers(ScannerResult scannerResult){
     CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
     HttpHandler error500 = mount500( scannerResult.getInternalErrorClass() );
@@ -148,7 +148,7 @@ public class StartupHandlerImpl implements StartupHandler {
       return new SessionAttachmentHandler( rh , sessionManager.getSessionManager(),
               sessionManager.getSessionConfig());
     }
-    throw new NoControllerException("You should specify at least one controller, verify if you informed the right package to be scanned or see https://github.com/EsmerilProgramming/cloverx for more info");
+    throw new NoControllerException("You should specify at least one controller, verify if you informed the right package to be scanned or see https://github.com/EsmerilProgramming/overtown for more info");
   }
 
   protected HttpHandler mount404( Class notFoundClass ){
