@@ -3,12 +3,11 @@ package org.esmerilprogramming.overtown.http.converter;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.junit.Before;
 import org.junit.Test;
 
 public class StringConverterTest {
-
 
   private StringConverter translator;
 
@@ -21,11 +20,10 @@ public class StringConverterTest {
   public void givenAParameterShouldTranslateToStringValue() {
     String parameterName = "name";
     String expectedVal = "SOME IMPORTANT VALUE";
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
-    when(cloverRequest.getParameter(parameterName)).thenReturn(expectedVal);
+    OvertownRequest request = mock(OvertownRequest.class);
+    when(request.getParameter(parameterName)).thenReturn(expectedVal);
 
-    String val = translator.translate(String.class, parameterName, cloverRequest);
-
+    String val = translator.translate(String.class, parameterName, request);
     assertEquals(expectedVal, val);
   }
 
@@ -33,7 +31,7 @@ public class StringConverterTest {
   public void givenAParameterButWIthoutValueInRequestShouldReturnNull() {
     String parameterName = "name";
     String expectedVal = null;
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
+    OvertownRequest = mock(OvertownRequest.class);
     when(cloverRequest.getParameter(parameterName)).thenReturn(expectedVal);
 
     String val = translator.translate(String.class, parameterName, cloverRequest);

@@ -1,6 +1,6 @@
 package org.esmerilprogramming.overtown.http.converter;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,10 +19,10 @@ public class LongConverterTest {
   @Test
   public void givenALongParameterIdShouldTranslateTheValueToLongObject() {
     String paramName = "id";
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
-    when(cloverRequest.getParameter(paramName)).thenReturn("10");
+    OvertownRequest request = mock(OvertownRequest.class);
+    when(request.getParameter(paramName)).thenReturn("10");
 
-    Long value = translator.translate(Long.class, paramName, cloverRequest);
+    Long value = translator.translate(Long.class, paramName, request);
 
     assertSame("Translated value should be a long 10", 10l, value);
   }
@@ -30,10 +30,10 @@ public class LongConverterTest {
   @Test
   public void givenALongParameterButWithANullValueInRequestShouldReturnNull() {
     String paramName = "id";
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
+    OvertownRequest request = mock(OvertownRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn(null);
 
-    Long value = translator.translate(Long.class, paramName, cloverRequest);
+    Long value = translator.translate(Long.class, paramName, request);
 
     assertSame("Translated value should have returned null ", null, value);
   }
@@ -41,10 +41,10 @@ public class LongConverterTest {
   @Test
   public void givenALongParameterAndARequestWithWrongParameterTypeShouldReturnNull() {
     String paramName = "id";
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
+    OvertownRequest request = mock(OvertownRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn("NOT A NUMBER");
 
-    Long value = translator.translate(Long.class, paramName, cloverRequest);
+    Long value = translator.translate(Long.class, paramName, request);
 
     assertSame("Translated value should have returned null ", null, value);
   }

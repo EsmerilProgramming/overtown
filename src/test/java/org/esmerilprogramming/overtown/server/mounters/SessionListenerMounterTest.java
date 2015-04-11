@@ -12,7 +12,7 @@ import io.undertow.server.session.SessionListener;
 import io.undertow.server.session.SessionListener.SessionDestroyedReason;
 
 import org.esmerilprogramming.overtown.annotation.session.IllegalSessionListenerException;
-import org.esmerilprogramming.overtown.http.CloverXSession;
+import org.esmerilprogramming.overtown.http.OvertownXSession;
 import org.esmerilprogramming.overtown.server.mounters.helpers.TestSessionListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,25 +68,25 @@ public class SessionListenerMounterTest {
   }
 
   @Test
-  public void doesPrepareInstanceCloverXSessionToInjectIntoTheMethodInvocation() throws NoSuchMethodException, SecurityException{
-    Method method = TestSessionListener.class.getMethod("onCreateMethodTest", CloverXSession.class);
+  public void doesPrepareInstanceOvertownSessionToInjectIntoTheMethodInvocation() throws NoSuchMethodException, SecurityException{
+    Method method = TestSessionListener.class.getMethod("onCreateMethodTest", OvertownSession.class);
 
     Object[] parameters = mounter.prepareParameterInjection(method, mock(Session.class), NULL_EXCHANGE , null );
 
     assertSame( 1 , parameters.length );
     assertNotNull( parameters[0] );
-    assertEquals( CloverXSession.class , parameters[0].getClass() );
+    assertEquals(OvertownSession.class , parameters[0].getClass() );
   }
 
   @Test
-  public void doesPrepareInstanceCloverXSessionAndSessionDestroyedReasonToInjectIntoTheMethodInvocation() throws NoSuchMethodException, SecurityException{
-    Method method = TestSessionListener.class.getMethod("onDestroyMethodTest", CloverXSession.class , SessionDestroyedReason.class);
+  public void doesPrepareInstanceOvertownSessionAndSessionDestroyedReasonToInjectIntoTheMethodInvocation() throws NoSuchMethodException, SecurityException{
+    Method method = TestSessionListener.class.getMethod("onDestroyMethodTest", OvertownSession.class , SessionDestroyedReason.class);
 
     Object[] parameters = mounter.prepareParameterInjection(method, mock(Session.class), NULL_EXCHANGE , SessionDestroyedReason.INVALIDATED );
 
     assertSame( 2 , parameters.length );
     assertNotNull( parameters[0] );
-    assertEquals( CloverXSession.class , parameters[0].getClass() );
+    assertEquals(OvertownSession.class , parameters[0].getClass() );
     assertNotNull( parameters[1] );
     assertEquals( SessionDestroyedReason.class , parameters[1].getClass() );
   }

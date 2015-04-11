@@ -1,6 +1,6 @@
 package org.esmerilprogramming.overtown.http.converter;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,12 +10,12 @@ import static org.junit.Assert.*;
 public class ModelConverterTest {
 
   private ModelConverter translator;
-  private CloverXRequest cloverRequest;
+  private OvertownRequest request;
 
   @Before
   public void setUp() {
     translator = new ModelConverter();
-    cloverRequest = mock(CloverXRequest.class);
+    request = mock(OvertownRequest.class);
   }
 
   @Test
@@ -27,7 +27,7 @@ public class ModelConverterTest {
 
     assertNotNull(testModel);
   }
-  
+
   @Test
   public void doesNotTranslateTheAttributeIfThereIsNoParameterStartingWithTheAttributeName(){
     String parameterName = "testModel";
