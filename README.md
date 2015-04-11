@@ -6,7 +6,7 @@ Overtown
 
 ## Getting started
 
-Current version - 0.3.0-SNAPSHOT
+Current version - 0.4.0-SNAPSHOT
 
 ### Getting the lib
 #### Maven
@@ -24,21 +24,21 @@ Current version - 0.3.0-SNAPSHOT
 <dependencies>
   <dependency>
     <groupId>com.github.esmerilprogramming</groupId>
-    <artifactId>cloverx</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <artifactId>overtown</artifactId>
+    <version>0.4.0-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
 
 #### Hardcore
- You can download from the repository https://oss.sonatype.org/content/groups/public/com/github/esmerilprogramming/cloverx/
+ You can download from the repository https://oss.sonatype.org/content/groups/public/com/github/esmerilprogramming/overtown/
  
  or do your own build
  
  ```shell
- $ git clone https://github.com/EsmerilProgramming/cloverx.git
+ $ git clone https://github.com/EsmerilProgramming/overtown.git
  
- $ cd cloverx
+ $ cd overtown
  
  $ mvn clean install
  ``` 
@@ -48,8 +48,8 @@ Current version - 0.3.0-SNAPSHOT
 To create a controller is pretty simple, just use the annotation @Controller and inform the path that this controller will listen, each controller can have many pages, each page is a method annotated with @Page in the controller, don't worry in which package, the CloverX will hunt it and prepare everything for you.
 
 ```java
-import org.esmerilprogramming.cloverx.annotoation.Controller;
-import org.esmerilprogramming.cloverx.annotation.Page;
+import org.esmerilprogramming.overtown.annotoation.Controller;
+import org.esmerilprogramming.overtown.annotation.Page;
 
 @Controller(path = "/home")
 public class MyController  {
