@@ -1,7 +1,7 @@
 package org.esmerilprogramming.overtown.management;
 
 import org.esmerilprogramming.overtown.annotation.path.Path;
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.esmerilprogramming.overtown.http.ErrorHandler;
 
 /**
@@ -12,7 +12,7 @@ public class CustomMethodNotAllowed implements ErrorHandler {
 
   @Path(template = "/methodNotAllowed.ftl")
   @Override
-  public void handleError(CloverXRequest request) {
+  public void handleError(OvertownRequest request) {
     System.out.println("LOL SERIOUS ??? ERRORS HAPPENS ");
     //request.getResponse().sendError(StatusError.NOT_FOUND);
   }

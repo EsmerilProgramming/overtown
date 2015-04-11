@@ -5,15 +5,15 @@ import io.undertow.server.session.Session;
 
 import java.util.Date;
 
-public class CloverXSession {
+public class OvertownSession {
   
   private HttpServerExchange exchange;
   private Session session;
   
-  public CloverXSession(Session session) {
+  public OvertownSession(Session session) {
     this.session = session;
   }
-  public CloverXSession(HttpServerExchange exchange , Session session ) { 
+  public OvertownSession(HttpServerExchange exchange , Session session ) { 
     this.session = session;
     this.exchange = exchange;
   }

@@ -8,7 +8,7 @@ import io.undertow.server.HttpServerExchange;
  */
 public class DefaultMethodNotAllowedPage implements ErrorHandler {
   @Override
-  public void handleError(CloverXRequest request) {
+  public void handleError(OvertownRequest request) {
     HttpServerExchange exchange = request.getExchange();
     exchange.setResponseCode(StatusError.METHOD_NOT_ALLOWED.getCode());
     StringBuilder sb = new StringBuilder();

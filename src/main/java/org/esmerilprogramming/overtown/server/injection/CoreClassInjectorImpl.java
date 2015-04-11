@@ -2,7 +2,7 @@ package org.esmerilprogramming.overtown.server.injection;
 
 import io.undertow.server.HttpServerExchange;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.esmerilprogramming.overtown.http.HttpResponse;
 import org.esmerilprogramming.overtown.http.JsonResponse;
 import org.esmerilprogramming.overtown.view.ViewAttributes;
@@ -12,7 +12,7 @@ public class CoreClassInjectorImpl implements CoreClassInjector {
   
   @Override
   public Object[] injectCoreInstances(String[] parameterNames , Object[] parameters, Class<?>[] parameterTypes,
-      CloverXRequest cloverRequest) {
+      OvertownRequest cloverRequest) {
     for (int i = 0 ; i < parameterTypes.length ; i++) {
         Class<?> clazz = parameterTypes[i];
         CoreInjector injector = getInjector( clazz );
@@ -28,8 +28,8 @@ public class CoreClassInjectorImpl implements CoreClassInjector {
   }
   
   protected CoreInjector getInjector(Class<?> clazz){
-    if(CloverXRequest.class.equals(clazz))
-      return new CloverXRequestInjector();
+    if(OvertownRequest.class.equals(clazz))
+      return new OvertownRequestInjector();
     if(ViewAttributes.class.equals(clazz))
       return new ViewAttributesInjector();
     if(HttpResponse.class.equals(clazz))

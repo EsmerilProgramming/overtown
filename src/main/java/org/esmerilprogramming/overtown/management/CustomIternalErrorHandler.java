@@ -3,7 +3,7 @@ package org.esmerilprogramming.overtown.management;
 import io.undertow.io.Sender;
 import io.undertow.server.HttpServerExchange;
 import org.esmerilprogramming.overtown.annotation.path.InternalError;
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.esmerilprogramming.overtown.http.ErrorHandler;
 import org.esmerilprogramming.overtown.http.StatusError;
 
@@ -14,7 +14,7 @@ import org.esmerilprogramming.overtown.http.StatusError;
 public class CustomIternalErrorHandler implements ErrorHandler {
 
   @Override
-  public void handleError(CloverXRequest request) {
+  public void handleError(OvertownRequest request) {
     HttpServerExchange exchange = request.getExchange();
     exchange.setResponseCode(StatusError.METHOD_NOT_ALLOWED.getCode());
     StringBuilder sb = new StringBuilder();

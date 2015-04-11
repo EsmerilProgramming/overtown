@@ -9,7 +9,7 @@ import java.util.List;
 import org.esmerilprogramming.overtown.annotation.session.IllegalSessionListenerException;
 import org.esmerilprogramming.overtown.annotation.session.OnSessionCreate;
 import org.esmerilprogramming.overtown.annotation.session.OnSessionDestroy;
-import org.esmerilprogramming.overtown.http.CloverXSession;
+import org.esmerilprogramming.overtown.http.OvertownSession;
 
 import io.undertow.server.HttpServerExchange;
 import io.undertow.server.session.Session;
@@ -71,8 +71,8 @@ public class SessionListenerMounterImpl implements SessionListenerMounter {
     List<Object> parameters = new ArrayList<>();
     Class<?>[] parameterTypes = method.getParameterTypes();
     for (Class<?> class1 : parameterTypes) {
-      if(class1.equals( CloverXSession.class ))
-        parameters.add( new CloverXSession(exchange, session) );
+      if(class1.equals( OvertownSession.class ))
+        parameters.add( new OvertownSession(exchange, session) );
       if(class1.equals( SessionDestroyedReason.class ))
         parameters.add( reason );
     }
@@ -103,11 +103,11 @@ public class SessionListenerMounterImpl implements SessionListenerMounter {
   protected boolean isValidOnCreateMethod(Method method){
     Class<?>[] parameterTypes = method.getParameterTypes();
     for (Class<?> class1 : parameterTypes) {
-      if( class1.equals( CloverXSession.class ) )
+      if( class1.equals( OvertownSession.class ) )
         continue;
       else
         throw new IllegalSessionListenerException("OnSessionCreate annotated method can have only"
-            + " parameter types CloverXSession or none parameter");
+            + " parameter types OvertownSession or none parameter");
     }
     return true;
   }
@@ -115,11 +115,11 @@ public class SessionListenerMounterImpl implements SessionListenerMounter {
   protected boolean isValidOnDestroyMethod(Method method){
     Class<?>[] parameterTypes = method.getParameterTypes();
     for (Class<?> class1 : parameterTypes) {
-      if( class1.equals( CloverXSession.class ) || class1.equals( SessionDestroyedReason.class ) )
+      if( class1.equals( OvertownSession.class ) || class1.equals( SessionDestroyedReason.class ) )
         continue;
       else
         throw new IllegalSessionListenerException("OnSessionDestroy annotated method can have only parameter types"
-            + " of CloverXSession, SessionDestroyedReason or none parameter");
+            + " of OvertownSession, SessionDestroyedReason or none parameter");
     }
     return true;
   }

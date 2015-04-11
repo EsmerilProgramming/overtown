@@ -1,6 +1,6 @@
 package org.esmerilprogramming.overtown.http.converter;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.jboss.logging.Logger;
 
 public class PrimitiveLongConverter implements ParameterConverter {
@@ -9,7 +9,7 @@ public class PrimitiveLongConverter implements ParameterConverter {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T translate(Class<T> clazz, String parameterName, CloverXRequest cloverRequest) {
+  public <T> T translate(Class<T> clazz, String parameterName, OvertownRequest cloverRequest) {
     Long defaultValue = 0l;
 
     Object attribute = cloverRequest.getParameter(parameterName);

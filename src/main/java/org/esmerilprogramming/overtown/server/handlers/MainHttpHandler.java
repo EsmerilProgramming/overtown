@@ -50,10 +50,10 @@ public class MainHttpHandler implements HttpHandler {
   @Override
   public void handleRequest(HttpServerExchange exchange) throws Exception {
     Object newInstance = controller.getConstructor().newInstance();
-    CloverXRequest request = null;
+    OvertownRequest request = null;
     try {
       Class<?>[] parameterTypes = method.getParameterTypes();
-      request = new CloverXRequest(exchange);
+      request = new OvertownRequest(exchange);
 
 
       for (Method method : beforeTranslationMethods) {
@@ -90,12 +90,12 @@ public class MainHttpHandler implements HttpHandler {
     }
   }
 
-  protected void defaultErrorHandler(Exception e , CloverXRequest request){
+  protected void defaultErrorHandler(Exception e , OvertownRequest request){
     request.addAttribute( ErrorHandler.ERROR_500 , e );
     new DefaultInternalErrorPage().handleError(request);
   }
 
-  public void finishResponse(CloverXRequest request){
+  public void finishResponse(OvertownRequest request){
     if(isJsonResponse){
       request.respondAsJson();
     }

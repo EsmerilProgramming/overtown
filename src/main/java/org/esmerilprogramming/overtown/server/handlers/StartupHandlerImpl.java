@@ -54,7 +54,7 @@ public class StartupHandlerImpl implements StartupHandler {
     ConfigurationHolder.getInstance().prepareConfiguration(configuration);
     ScannerResult scannerResult = identifyEligibleClasses( configuration );
 
-    CloverXSessionManager instance = CloverXSessionManager.getInstance();
+    OvertownSessionManager instance = OvertownSessionManager.getInstance();
     InMemorySessionManager sessionManager = instance.getSessionManager();
     sessionManager.setDefaultSessionTimeout( configuration.getMaxSessionTime() );
     configureSessionManager(sessionManager, scannerResult.getSessionListeners());
@@ -84,7 +84,7 @@ public class StartupHandlerImpl implements StartupHandler {
       DeploymentManager manager = container.addDeployment(builder);
       manager.deploy();
       try {
-        CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
+        OvertownSessionManager sessionManager = OvertownSessionManager.getInstance();
         String wsContextPath = "ws";
         if( !appContext.endsWith("/") ){
           wsContextPath += appContext + "/" + wsContextPath;
@@ -134,7 +134,7 @@ public class StartupHandlerImpl implements StartupHandler {
   }
 
   public HttpHandler createAppHandlers(ScannerResult scannerResult){
-    CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
+    OvertownSessionManager sessionManager = OvertownSessionManager.getInstance();
     HttpHandler error500 = mount500( scannerResult.getInternalErrorClass() );
     if( !scannerResult.getControllerMappings().isEmpty() ) {
       RoutingHandler rh = new CustomRoutingHandler();
@@ -168,7 +168,7 @@ public class StartupHandlerImpl implements StartupHandler {
     ControllerMapping controllerMapping = new ControllerMapping( error , error);
     controllerMapping.setControllerClass( clazz );
     try {
-      Method handlerError = clazz.getMethod("handleError", CloverXRequest.class);
+      Method handlerError = clazz.getMethod("handleError", OvertownRequest.class);
       PathMapping methodMapping = new PathMapping( error , null , handlerError , getTemplate(handlerError) , handlerError.getAnnotation(JSONResponse.class) != null );
       Paranamer paranamer = new CachingParanamer(new BytecodeReadingParanamer());
       return new MainHttpHandler( controllerMapping , methodMapping , paranamer.lookupParameterNames( handlerError ) );

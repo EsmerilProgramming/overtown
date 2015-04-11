@@ -5,7 +5,7 @@ import org.esmerilprogramming.overtown.annotation.Controller;
 import org.esmerilprogramming.overtown.annotation.path.Get;
 import org.esmerilprogramming.overtown.annotation.path.Post;
 import org.esmerilprogramming.overtown.annotation.path.Put;
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 
 /**
  * Created by efraimgentil<efraimgentil@gmail.com> on 14/03/15.
@@ -14,29 +14,29 @@ import org.esmerilprogramming.overtown.http.CloverXRequest;
 public class IndexController {
 
   @Get
-  public void index(CloverXRequest request){
+  public void index(OvertownRequest request){
     Sender sender = request.getExchange().getResponseSender();
     sender.send("GET - index/index");
   }
 
   @Get(template = "index.ftl")
-  public void indexWithTemplate(CloverXRequest request){
+  public void indexWithTemplate(OvertownRequest request){
 
   }
 
   @Get(template = "/index.ftl")
-  public void indexWithRootTemplate(CloverXRequest request){
+  public void indexWithRootTemplate(OvertownRequest request){
 
   }
 
   @Post
-  public void index(String name , CloverXRequest request){
+  public void index(String name , OvertownRequest request){
     Sender sender = request.getExchange().getResponseSender();
     sender.send("POST - index/index - nome:" + name);
   }
 
   @Put
-  public void put(String name , CloverXRequest request){
+  public void put(String name , OvertownRequest request){
     Sender sender = request.getExchange().getResponseSender();
     sender.send("PUT - index/put - nome:" + name);
   }

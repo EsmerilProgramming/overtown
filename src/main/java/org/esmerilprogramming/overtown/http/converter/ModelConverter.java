@@ -1,6 +1,6 @@
 package org.esmerilprogramming.overtown.http.converter;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
 
@@ -16,7 +16,7 @@ public class ModelConverter implements ParameterConverter {
 
   @Override
   public <T> T translate(Class<T> clazz, String parameterName,
-                         CloverXRequest cloverRequest) {
+                         OvertownRequest cloverRequest) {
 
     boolean shouldTranslate = cloverRequest.containsAttributeStartingWith(parameterName);
 

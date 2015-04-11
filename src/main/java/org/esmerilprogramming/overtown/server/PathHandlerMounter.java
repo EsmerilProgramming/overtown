@@ -19,7 +19,7 @@ import javax.servlet.ServletException;
 import org.esmerilprogramming.overtown.annotation.BeforeTranslate;
 import org.esmerilprogramming.overtown.annotation.Controller;
 import org.esmerilprogramming.overtown.annotation.Page;
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.esmerilprogramming.overtown.scanner.ScannerResult;
 import org.jboss.logging.Logger;
 import org.xnio.ByteBufferSlicePool;
@@ -104,7 +104,7 @@ public class PathHandlerMounter {
   }
 
   @SuppressWarnings("unchecked")
-  protected <T> T setParamater(Class<T> clazz, String parameterName, CloverXRequest request) {
+  protected <T> T setParamater(Class<T> clazz, String parameterName, OvertownRequest request) {
     if (String.class.equals(clazz)) {
       return (T) request.getParameter(parameterName);
     }

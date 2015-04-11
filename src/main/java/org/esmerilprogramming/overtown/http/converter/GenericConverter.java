@@ -1,6 +1,6 @@
 package org.esmerilprogramming.overtown.http.converter;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 
 public abstract class GenericConverter<ToType> implements ParameterConverter {
 
@@ -11,7 +11,7 @@ public abstract class GenericConverter<ToType> implements ParameterConverter {
 
   @SuppressWarnings({"unchecked", "hiding"})
   @Override
-  public final <ToType> ToType translate(Class<ToType> clazz, String parameterName, CloverXRequest cloverRequest) {
+  public final <ToType> ToType translate(Class<ToType> clazz, String parameterName, OvertownRequest cloverRequest) {
     return (ToType) convert( String.valueOf( cloverRequest.getParameter(parameterName) ) );
   }
 

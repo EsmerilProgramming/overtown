@@ -8,7 +8,7 @@ import io.undertow.server.HttpServerExchange;
  */
 public class DefaultNotFoundPage implements ErrorHandler {
   @Override
-  public void handleError(CloverXRequest request) {
+  public void handleError(OvertownRequest request) {
     HttpServerExchange exchange = request.getExchange();Sender rs = exchange.getResponseSender();
     StringBuilder sb = new StringBuilder();
     sb.append("<html>");

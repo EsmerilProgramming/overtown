@@ -2,7 +2,7 @@ package org.esmerilprogramming.overtown.http.converter;
 
 import static org.mockito.Mockito.mock;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class DoubleConverterTest {
     String parameterName = "double";
     String stringValue = "10.00";
     Double expectedValue = 10.0;
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
+    OvertownRequest cloverRequest = mock(OvertownRequest.class);
     when(cloverRequest.getParameter(parameterName)).thenReturn(stringValue);
 
     Double val = translator.translate(Double.class, parameterName, cloverRequest);
@@ -36,7 +36,7 @@ public class DoubleConverterTest {
     String parameterName = "double";
     String stringValue = "10,00";
     Double expectedValue = null;
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
+    OvertownRequest cloverRequest = mock(OvertownRequest.class);
     when(cloverRequest.getParameter(parameterName)).thenReturn(stringValue);
 
     Double val = translator.translate(Double.class, parameterName, cloverRequest);
@@ -50,7 +50,7 @@ public class DoubleConverterTest {
     String parameterName = "double";
     String stringValue = null;
     Double expectedValue = null;
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
+    OvertownRequest cloverRequest = mock(OvertownRequest.class);
     when(cloverRequest.getParameter(parameterName)).thenReturn(stringValue);
 
     Double val = translator.translate(Double.class, parameterName, cloverRequest);

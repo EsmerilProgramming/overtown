@@ -1,6 +1,6 @@
 package org.esmerilprogramming.overtown.http.converter;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.jboss.logging.Logger;
 
 /**
@@ -13,7 +13,7 @@ public class DoubleConverter implements ParameterConverter {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T translate(Class<T> clazz, String parameterName, CloverXRequest cloverRequest) {
+  public <T> T translate(Class<T> clazz, String parameterName, OvertownRequest cloverRequest) {
     Object attribute = cloverRequest.getParameter(parameterName);
     if (attribute == null)
       return null;

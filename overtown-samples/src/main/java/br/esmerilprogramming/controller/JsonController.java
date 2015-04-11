@@ -5,7 +5,7 @@ import br.esmerilprogramming.model.Contact;
 import org.esmerilprogramming.overtown.annotation.Controller;
 import org.esmerilprogramming.overtown.annotation.JSONResponse;
 import org.esmerilprogramming.overtown.annotation.Page;
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.esmerilprogramming.overtown.http.JsonResponse;
 
 /**
@@ -21,7 +21,7 @@ public class JsonController {
 
   @JSONResponse(rootAttribute = "")
   @Page(value="toJson")
-  public void toJson(Contact contact , CloverXRequest request){
+  public void toJson(Contact contact , OvertownRequest request){
     System.out.println(contact);
     request.addAttribute("contact" , contact );
   }

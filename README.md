@@ -45,7 +45,7 @@ Current version - 0.4.0-SNAPSHOT
 
 ### Creating a controller
 
-To create a controller is pretty simple, just use the annotation @Controller and inform the path that this controller will listen, each controller can have many pages, each page is a method annotated with @Page in the controller, don't worry in which package, the CloverX will hunt it and prepare everything for you.
+To create a controller is pretty simple, just use the annotation @Controller and inform the path that this controller will listen, each controller can have many pages, each page is a method annotated with @Page in the controller, don't worry in which package, the Overtown will hunt it and prepare everything for you.
 
 ```java
 import org.esmerilprogramming.overtown.annotoation.Controller;
@@ -90,11 +90,11 @@ public void read(Car car){
 }
 ```
 
-You can also access the request from the CloverXRequest class, you add it as a parameter in the method and it will be inject for you and will contains all the request information you need.
+You can also access the request from the OvertownRequest class, you add it as a parameter in the method and it will be inject for you and will contains all the request information you need.
 
 ```java
 @Get("accessing-request")
-public void read( CloverXRequest request ){
+public void read(OvertownRequest request) {
   String test = request.getAttribute("test");
 }
 ```
@@ -103,18 +103,18 @@ To send back a JSON response you can use the JsonResponse class, just add as a p
 
 ```java
 @JSONResponse
-public void respondJson(CloverXRequest request){
+public void respondJson(OvertownRequest request){
   request.addAttribute("name" , "Efraim Gentil");
   request.addAttribute("age" , "26");
 }
 ```
 ### Running your app
 
-Declare a CloverX instance in your main method:
+Declare a Overtown instance in your main method:
 
 ```java
 public static void main(String... args) {
-  new CloverX(new ConfigurationBuilder()
+  new Overtown(new ConfigurationBuilder()
   .withPackageToScan("org.esmerilprogramming.app")
   .withHost("127.0.0.1")
   .withPort(8080)

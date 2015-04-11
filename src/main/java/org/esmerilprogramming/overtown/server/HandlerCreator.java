@@ -75,7 +75,7 @@ public class HandlerCreator {
         Object newInstance = pageClass.getConstructor().newInstance();
         try {
           Class<?>[] parameterTypes = method.getParameterTypes();
-          CloverXRequest request = new CloverXRequest(exchange);
+          OvertownRequest request = new OvertownRequest(exchange);
 
           for (Method method : beforeExecutemethods) {
             method.invoke(newInstance, request);
@@ -98,7 +98,7 @@ public class HandlerCreator {
         }
       }
 
-      public void finishResponse(CloverXRequest request){
+      public void finishResponse(OvertownRequest request){
         if(isJsonResponse){
           request.respondAsJson();
         }
@@ -115,7 +115,7 @@ public class HandlerCreator {
       }
     };
 
-    CloverXSessionManager sessionManager = CloverXSessionManager.getInstance();
+    OvertownSessionManager sessionManager = OvertownSessionManager.getInstance();
     return new SessionAttachmentHandler(handler, sessionManager.getSessionManager(),
         sessionManager.getSessionConfig());
   }

@@ -2,7 +2,7 @@ package org.esmerilprogramming.overtown.http.converter;
 
 import java.util.Map;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 
 public class ParametersConverter {
 
@@ -17,7 +17,7 @@ public class ParametersConverter {
 
   @Deprecated
   public Object[] translateAllParameters(String[] parameterNames, Class<?>[] parameterTypes,
-      CloverXRequest cloverRequest) {
+      OvertownRequest cloverRequest) {
     Object[] parameters = new Object[parameterTypes.length];
     for (int i = 0; i < parameterTypes.length; i++) {
       Class<?> clazz = parameterTypes[i];
@@ -27,7 +27,7 @@ public class ParametersConverter {
   }
 
   @Deprecated
-  public <T> T translateParameter(Class<T> clazz, String parameterName, CloverXRequest cloverRequest) {
+  public <T> T translateParameter(Class<T> clazz, String parameterName, OvertownRequest cloverRequest) {
     boolean shouldTranslateParameter = cloverRequest.shouldConvertParameter(parameterName);
     ParameterConverter translator;
     if (shouldTranslateParameter) {
@@ -40,7 +40,7 @@ public class ParametersConverter {
   }
 
   public Object[] translateParameters(String[] parameterNames, Class<?>[] parameterTypes,
-      CloverXRequest cloverRequest) {
+      OvertownRequest cloverRequest) {
     Object[] parameters = new Object[parameterTypes.length];
     for (int i = 0; i < parameterTypes.length; i++) {
       Class<?> clazz = parameterTypes[i];
@@ -49,7 +49,7 @@ public class ParametersConverter {
     return parameters;
   }
 
-  protected <T> T translateParam(Class<T> clazz, String parameterName, CloverXRequest cloverRequest) {
+  protected <T> T translateParam(Class<T> clazz, String parameterName, OvertownRequest cloverRequest) {
     boolean shouldTranslateParameter = cloverRequest.shouldConvertParameter(parameterName);
     ParameterConverter translator;
     if (shouldTranslateParameter) {

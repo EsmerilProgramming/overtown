@@ -6,21 +6,21 @@ import io.undertow.server.session.Session;
 import io.undertow.server.session.SessionConfig;
 import io.undertow.server.session.SessionCookieConfig;
 
-public class CloverXSessionManager {
+public class OvertownSessionManager {
   
   private final InMemorySessionManager sessionManager;
   private final SessionConfig sessionConfig;
   
-  private static CloverXSessionManager manager;
+  private static OvertownSessionManager manager;
   
-  public static CloverXSessionManager getInstance(){
+  public static OvertownSessionManager getInstance(){
     if( manager == null){
-      manager = new CloverXSessionManager();
+      manager = new OvertownSessionManager();
     }
     return manager;
   }
   
-  private CloverXSessionManager() {
+  private OvertownSessionManager() {
     sessionManager = new InMemorySessionManager("CLOVERX");
     sessionConfig = new SessionCookieConfig();
   }
@@ -29,7 +29,7 @@ public class CloverXSessionManager {
     return getSessionManager().getSession(exchange, getSessionConfig() );
   }
   
-  public CloverXSession createNewSession(HttpServerExchange exchange ){
+  public OvertownSession createNewSession(HttpServerExchange exchange ){
     Session undertowSession = getUndertowSession(exchange);
     if(undertowSession != null ){
       undertowSession.invalidate(exchange);
@@ -37,20 +37,20 @@ public class CloverXSessionManager {
     return getSession(exchange);
   }
   
-  public CloverXSession getSession(HttpServerExchange exchange){
+  public OvertownSession getSession(HttpServerExchange exchange){
     Session session = getUndertowSession(exchange);
     if(session == null){
       session = getSessionManager().createSession(exchange, getSessionConfig() ); 
     }
-    return new CloverXSession(exchange, session);
+    return new OvertownSession(exchange, session);
   }
   
   //TODO
   //Needs exchange to operate in the session
-  public CloverXSession getSessionById(String id , HttpServerExchange exchange ){
+  public OvertownSession getSessionById(String id , HttpServerExchange exchange ){
     Session session = getSessionManager().getSession(id);
     if(session != null){
-      return new CloverXSession( exchange , session );
+      return new OvertownSession( exchange , session );
     }else{
       return null;
     }

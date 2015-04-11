@@ -5,7 +5,7 @@ import io.undertow.server.session.SessionListener.SessionDestroyedReason;
 import org.esmerilprogramming.overtown.annotation.session.OnSessionCreate;
 import org.esmerilprogramming.overtown.annotation.session.OnSessionDestroy;
 import org.esmerilprogramming.overtown.annotation.session.SessionListener;
-import org.esmerilprogramming.overtown.http.CloverXSession;
+import org.esmerilprogramming.overtown.http.OvertownSession;
 
 @SessionListener
 public class SessionListenerManagement {
@@ -21,7 +21,7 @@ public class SessionListenerManagement {
   }
   
   @OnSessionDestroy
-  public void destroyThis(CloverXSession session){
+  public void destroyThis(OvertownSession session){
     System.out.println( "Bye bye: " + session.getAttribute("nome") );
   }
   

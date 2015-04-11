@@ -8,8 +8,8 @@ import org.esmerilprogramming.overtown.annotation.Converter;
 import org.esmerilprogramming.overtown.annotation.Page;
 import org.esmerilprogramming.overtown.annotation.path.Get;
 import org.esmerilprogramming.overtown.annotation.path.Post;
-import org.esmerilprogramming.overtown.http.CloverXRequest;
-import org.esmerilprogramming.overtown.http.CloverXSession;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
+import org.esmerilprogramming.overtown.http.OvertownSession;
 import org.esmerilprogramming.overtown.http.JsonResponse;
 import org.esmerilprogramming.overtown.management.converters.DateConverter;
 import org.esmerilprogramming.overtown.management.converters.ServerStatusConverter;
@@ -24,7 +24,7 @@ public class ManagementPage {
   public ManagementPage() {}
 
   @BeforeTranslate
-  public void doSomething( CloverXRequest request ) {
+  public void doSomething( OvertownRequest request ) {
     System.out.println("SOMETHING BEFORE TRANSLATE");
     request.addAttribute("name", "Efraim Gentil");
   }
@@ -34,7 +34,7 @@ public class ManagementPage {
 
   }
   @Get(value = "error" , template = "home.ftl")
-  public void index(CloverXRequest request) {
+  public void index(OvertownRequest request) {
     int i = 20/0;
   }
   
@@ -44,12 +44,12 @@ public class ManagementPage {
   }
   
   @Page("teste")
-  public void teste(String nomeDaString, CloverXRequest request) {
+  public void teste(String nomeDaString, OvertownRequest request) {
     System.out.println(nomeDaString);
   }
 
   @Page("testeInteger")
-  public void teste(Integer id, CloverXRequest request) {
+  public void teste(Integer id, OvertownRequest request) {
     System.out.println("Teste integer");
     System.out.println(id);
   }
@@ -102,16 +102,16 @@ public class ManagementPage {
 
   @Post(value = "testeTemplate", template = "methodNotAllowed.ftl")
   //@Page(value = "testeTemplate", responseTemplate = "teste.ftl")
-  public void testeTemplate(CloverXRequest request) {
+  public void testeTemplate(OvertownRequest request) {
 //    request.addAttribute("name", "Efraim Gentil");
-    CloverXSession session = request.getSession();
+    OvertownSession session = request.getSession();
     System.out.println( session.getAttribute("nome") );
     
   }
   
   @Page(value = "nameInSession")
-  public void testeTemplate(CloverXRequest request , String nome) {
-    CloverXSession session = request.getSession();
+  public void testeTemplate(OvertownRequest request , String nome) {
+    OvertownSession session = request.getSession();
     if(session.getAttribute("nome") == null ){  
       session.setAttribute("nome", nome );
       session.setAttribute("int", 10 );
@@ -121,15 +121,15 @@ public class ManagementPage {
   }
   
   @Page(value = "logout")
-  public void logout(CloverXRequest request , String nome) {
-    CloverXSession session = request.getSession();
+  public void logout(OvertownRequest request , String nome) {
+    OvertownSession session = request.getSession();
     session.destroy();
   }
   
   
   @Page(value = "newSession")
-  public void testeTemplateT(CloverXRequest request , String nome) {
-    CloverXSession session = request.createSession();
+  public void testeTemplateT(OvertownRequest request , String nome) {
+    OvertownSession session = request.createSession();
     session.setAttribute("nome", "TESTE HIHE HE" );
     session.setAttribute("int", 9999 );
   }
@@ -185,7 +185,7 @@ public class ManagementPage {
   }
   
   @Page("json")
-  public void respondJson(CloverXRequest request){
+  public void respondJson(OvertownRequest request){
     JsonResponse jsonResponse = request.getJsonResponse();
     jsonResponse.setCharset("UTF-8");
     jsonResponse.sendAsResponse("{ \"name\" : \"Efraim Gentil\" , \"blah\" : \"çãoéàè\" }");

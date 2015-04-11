@@ -3,7 +3,7 @@ package org.esmerilprogramming.overtown.http.converter;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class IntegerConverterTest {
   @Test
   public void givenAIntegerParameterIdShouldTranslateTheValueToLongObject() {
     String paramName = "id";
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
+    OvertownRequest cloverRequest = mock(OvertownRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn("10");
 
     Integer value = translator.translate(Integer.class, paramName, cloverRequest);
@@ -30,7 +30,7 @@ public class IntegerConverterTest {
   @Test
   public void givenAIntegerParameterButWithANullValueInRequestShouldReturnNull() {
     String paramName = "id";
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
+    OvertownRequest cloverRequest = mock(OvertownRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn(null);
 
     Integer value = translator.translate(Integer.class, paramName, cloverRequest);
@@ -41,7 +41,7 @@ public class IntegerConverterTest {
   @Test
   public void givenAIntegerParameterAndARequestWithWrongParameterTypeShouldReturnNull() {
     String paramName = "id";
-    CloverXRequest cloverRequest = mock(CloverXRequest.class);
+    OvertownRequest cloverRequest = mock(OvertownRequest.class);
     when(cloverRequest.getParameter(paramName)).thenReturn("NOT A NUMBER");
 
     Integer value = translator.translate(Integer.class, paramName, cloverRequest);

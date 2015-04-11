@@ -4,7 +4,7 @@ import org.esmerilprogramming.overtown.annotation.Controller;
 import org.esmerilprogramming.overtown.annotation.path.Get;
 import org.esmerilprogramming.overtown.annotation.path.Path;
 import org.esmerilprogramming.overtown.annotation.path.Post;
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 
 @Controller
 public class RestController {
@@ -22,12 +22,12 @@ public class RestController {
   }
 
   @Post(template = "rest/result.ftl")
-  public void form(String message , CloverXRequest request){
+  public void form(String message , OvertownRequest request){
     request.addAttribute("message" , message);
   }
 
   @Path(template = "rest/form.ftl")
-  public void getandpost(String message , CloverXRequest request){
+  public void getandpost(String message , OvertownRequest request){
     request.addAttribute("message" , message);
     System.out.println("message = " + message);
   }

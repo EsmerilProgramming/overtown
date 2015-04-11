@@ -22,12 +22,12 @@ import org.jboss.logging.Logger;
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
-public class CloverXRequest {
+public class OvertownRequest {
   
-  private static final Logger LOGGER = Logger.getLogger(CloverXRequest.class);
+  private static final Logger LOGGER = Logger.getLogger(OvertownRequest.class);
 
   private HttpServerExchange exchange;
-  private CloverXSessionManager sessionManager;
+  private OvertownSessionManager sessionManager;
   private Map<String, Deque<String>> queryParameters;
   private Map<String, GenericConverter<?>> parameterConverters;
   private FormData formData;
@@ -35,14 +35,14 @@ public class CloverXRequest {
   private Response response;
   public static final AttachmentKey<Exception> EXCEPTION_ATTACHMENT_KEY = AttachmentKey.create(Exception.class);
 
-  public CloverXRequest() {}
+  public OvertownRequest() {}
 
-  public CloverXRequest(HttpServerExchange exchange) {
+  public OvertownRequest(HttpServerExchange exchange) {
     this.exchange = exchange;
     this.queryParameters = exchange.getQueryParameters();
     this.parameterConverters = new HashMap<>();
     this.viewAttributes = new ViewAttributes();
-    this.sessionManager = CloverXSessionManager.getInstance(); 
+    this.sessionManager = OvertownSessionManager.getInstance(); 
     if (isPostRequest()) {
       FormDataParser create = new FormEncodedDataDefinition().create(exchange);
       try {
@@ -59,11 +59,11 @@ public class CloverXRequest {
     }
   }
 
-  public CloverXSession getSession(){
+  public OvertownSession getSession(){
     return sessionManager.getSession( exchange ); 
   }
   
-  public CloverXSession createSession(){
+  public OvertownSession createSession(){
     return sessionManager.createNewSession(exchange);
   }
   

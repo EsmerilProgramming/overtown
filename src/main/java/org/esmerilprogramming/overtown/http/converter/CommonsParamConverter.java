@@ -1,6 +1,6 @@
 package org.esmerilprogramming.overtown.http.converter;
 
-import org.esmerilprogramming.overtown.http.CloverXRequest;
+import org.esmerilprogramming.overtown.http.OvertownRequest;
 
 /**
  * @author efraimgentil (efraim.gentil@gmail.com)
@@ -8,7 +8,7 @@ import org.esmerilprogramming.overtown.http.CloverXRequest;
 public class CommonsParamConverter implements ParameterConverter {
 
   @Override
-  public <T> T translate(Class<T> clazz, String parameterName, CloverXRequest cloverRequest) {
+  public <T> T translate(Class<T> clazz, String parameterName, OvertownRequest cloverRequest) {
 
     Object attribute = cloverRequest.getParameter(parameterName);
     if (attribute == null)
