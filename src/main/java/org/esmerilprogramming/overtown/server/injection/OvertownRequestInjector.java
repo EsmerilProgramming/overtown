@@ -9,8 +9,8 @@ public class OvertownRequestInjector implements CoreInjector {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T inject(Class<T> clazz, String parameterName, OvertownRequest cloverRequest) {
-    return (T) cloverRequest;
+  public <T> T inject(Class<T> clazz, String parameterName, OvertownRequest overtownRequest) {
+    return (T) overtownRequest;
   }
 
 }
