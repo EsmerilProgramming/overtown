@@ -12,7 +12,7 @@ import io.undertow.server.session.SessionListener;
 import io.undertow.server.session.SessionListener.SessionDestroyedReason;
 
 import org.esmerilprogramming.overtown.annotation.session.IllegalSessionListenerException;
-import org.esmerilprogramming.overtown.http.OvertownXSession;
+import org.esmerilprogramming.overtown.http.OvertownSession;
 import org.esmerilprogramming.overtown.server.mounters.helpers.TestSessionListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -134,7 +134,7 @@ public class SessionListenerMounterTest {
 
   @Test
   public void doesReturnTrueWhenIsAValidOnSessionDestroyMethodWithOvertownSessionAsParameter() throws NoSuchMethodException, SecurityException{
-    Method method = TestSessionListener.class.getMethod("onDestroyMethodTest", OvertownXSession.class);
+    Method method = TestSessionListener.class.getMethod("onDestroyMethodTest", OvertownSession.class);
 
     boolean validOnDestroyMethod = mounter.isValidOnDestroyMethod( method );
 

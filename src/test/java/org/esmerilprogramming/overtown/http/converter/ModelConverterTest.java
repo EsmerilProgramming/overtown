@@ -21,9 +21,9 @@ public class ModelConverterTest {
   @Test
   public void doesTranslateTheModelWithTheRequestAttributes() {
     String parameterName = "testModel";
-    when(cloverRequest.containsAttributeStartingWith(parameterName)).thenReturn(true);
-    when(cloverRequest.getParameter( parameterName + ".name") ).thenReturn("TESTE NAME");
-    TestModel testModel = translator.translate(TestModel.class, parameterName, cloverRequest);
+    when(request.containsAttributeStartingWith(parameterName)).thenReturn(true);
+    when(request.getParameter( parameterName + ".name") ).thenReturn("TESTE NAME");
+    TestModel testModel = translator.translate(TestModel.class, parameterName, request);
 
     assertNotNull(testModel);
   }
@@ -31,9 +31,9 @@ public class ModelConverterTest {
   @Test
   public void doesNotTranslateTheAttributeIfThereIsNoParameterStartingWithTheAttributeName(){
     String parameterName = "testModel";
-    when(cloverRequest.containsAttributeStartingWith(parameterName)).thenReturn(false);
+    when(request.containsAttributeStartingWith(parameterName)).thenReturn(false);
 
-    TestModel testModel = translator.translate(TestModel.class, parameterName, cloverRequest);
+    TestModel testModel = translator.translate(TestModel.class, parameterName, request);
 
     assertNull(testModel);
   }

@@ -31,10 +31,10 @@ public class StringConverterTest {
   public void givenAParameterButWIthoutValueInRequestShouldReturnNull() {
     String parameterName = "name";
     String expectedVal = null;
-    OvertownRequest = mock(OvertownRequest.class);
-    when(cloverRequest.getParameter(parameterName)).thenReturn(expectedVal);
+    OvertownRequest request = mock(OvertownRequest.class);
+    when(request.getParameter(parameterName)).thenReturn(expectedVal);
 
-    String val = translator.translate(String.class, parameterName, cloverRequest);
+    String val = translator.translate(String.class, parameterName, request);
 
     assertEquals(expectedVal, val);
   }

@@ -31,7 +31,7 @@ public class LongConverterTest {
   public void givenALongParameterButWithANullValueInRequestShouldReturnNull() {
     String paramName = "id";
     OvertownRequest request = mock(OvertownRequest.class);
-    when(cloverRequest.getParameter(paramName)).thenReturn(null);
+    when(request.getParameter(paramName)).thenReturn(null);
 
     Long value = translator.translate(Long.class, paramName, request);
 
@@ -42,7 +42,7 @@ public class LongConverterTest {
   public void givenALongParameterAndARequestWithWrongParameterTypeShouldReturnNull() {
     String paramName = "id";
     OvertownRequest request = mock(OvertownRequest.class);
-    when(cloverRequest.getParameter(paramName)).thenReturn("NOT A NUMBER");
+    when(request.getParameter(paramName)).thenReturn("NOT A NUMBER");
 
     Long value = translator.translate(Long.class, paramName, request);
 
