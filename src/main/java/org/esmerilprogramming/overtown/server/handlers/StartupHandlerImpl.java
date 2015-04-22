@@ -98,7 +98,7 @@ public class StartupHandlerImpl implements StartupHandler {
     }
     String staticContextPath = configuration.getStaticRootPath();
     if( !appContext.endsWith("/") ){
-      staticContextPath += appContext + "/" + staticContextPath;
+      staticContextPath = appContext + "/" + staticContextPath;
     }
     pathHandler.addPrefixPath( staticContextPath , new ResourceHandlerMounter().mount());
     return pathHandler;
