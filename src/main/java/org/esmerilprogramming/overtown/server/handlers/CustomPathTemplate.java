@@ -30,7 +30,7 @@ public class CustomPathTemplate {
     }
 
     // prepend a "/" if none is present
-    if (!inputPath.startsWith("/")) {
+    if (!inputPath.startsWith("/") && inputPath.length() > 1) {
       return CustomPathTemplate.create("/" + inputPath);
     }
 

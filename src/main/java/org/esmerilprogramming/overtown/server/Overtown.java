@@ -61,6 +61,7 @@ public final class Overtown {
     new Overtown(new ConfigurationBuilder()
       .withPackageToScan("org.esmerilprogramming.overtown.management").shouldRunManagement(true)
       .withHost("0.0.0.0")
+      .withAppContext("app")
       .withPort(8080)
             .withMaxSessionTime(1)
       .build());
