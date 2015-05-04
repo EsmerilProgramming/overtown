@@ -5,7 +5,7 @@ import org.jboss.logging.Logger;
 
 
 /**
- * 
+ *
  * @author efraimgentil (efraim.gentil@gmail.com)
  */
 public class IntegerConverter implements ParameterConverter {
@@ -14,8 +14,8 @@ public class IntegerConverter implements ParameterConverter {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T translate(Class<T> clazz, String parameterName, OvertownRequest cloverRequest) {
-    Object attribute = cloverRequest.getParameter(parameterName);
+  public <T> T translate(Class<T> clazz, String parameterName, OvertownRequest overtownRequest) {
+    Object attribute = overtownRequest.getParameter(parameterName);
     if (attribute != null) {
       String strVal = String.valueOf(attribute);
 

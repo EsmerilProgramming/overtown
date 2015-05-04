@@ -8,14 +8,14 @@ import org.esmerilprogramming.overtown.http.OvertownRequest;
 public class CommonsParamConverter implements ParameterConverter {
 
   @Override
-  public <T> T translate(Class<T> clazz, String parameterName, OvertownRequest cloverRequest) {
+  public <T> T translate(Class<T> clazz, String parameterName, OvertownRequest overtownRequest) {
 
-    Object attribute = cloverRequest.getParameter(parameterName);
+    Object attribute = overtownRequest.getParameter(parameterName);
     if (attribute == null)
       return null;
 
     ParameterConverter translator = getTranslator(clazz);
-    return translator.translate(clazz, parameterName, cloverRequest);
+    return translator.translate(clazz, parameterName, overtownRequest);
   }
 
   public ParameterConverter getTranslator(Class<?> clazz) {
@@ -34,7 +34,7 @@ public class CommonsParamConverter implements ParameterConverter {
 
     return translator;
   }
-  
+
   public ParameterConverter getConveter(Class<?> clazz){
     ParameterConverter translator = new EmptyParamConverter();
     if (isString(clazz))
@@ -49,7 +49,6 @@ public class CommonsParamConverter implements ParameterConverter {
       translator = new BooleanConverter();
     return translator;
   }
-  
 
   public static boolean isCommonParam(Class<?> clazz) {
     return (isString(clazz) || isInteger(clazz) || isLong(clazz) || isDouble(clazz));

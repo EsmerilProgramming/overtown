@@ -7,6 +7,6 @@ import org.esmerilprogramming.overtown.http.OvertownRequest;
  */
 public interface ParameterConverter {
 	
-	public abstract <T> T translate( Class<T> clazz , String parameterName , OvertownRequest cloverRequest);
+	public abstract <T> T translate( Class<T> clazz , String parameterName , OvertownRequest overtownRequest);
 
 }

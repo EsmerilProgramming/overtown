@@ -6,13 +6,13 @@ public abstract class GenericConverter<ToType> implements ParameterConverter {
 
   public GenericConverter() {
   }
-  
+
   public abstract ToType convert(String value);
 
   @SuppressWarnings({"unchecked", "hiding"})
   @Override
-  public final <ToType> ToType translate(Class<ToType> clazz, String parameterName, OvertownRequest cloverRequest) {
-    return (ToType) convert( String.valueOf( cloverRequest.getParameter(parameterName) ) );
+  public final <ToType> ToType translate(Class<ToType> clazz, String parameterName, OvertownRequest overtownRequest) {
+    return (ToType) convert( String.valueOf(overtownRequest.getParameter(parameterName) ) );
   }
 
 }
