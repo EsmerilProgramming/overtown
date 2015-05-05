@@ -11,17 +11,22 @@ public class RestController {
 
   public RestController() {}
 
-  @Get( value ="form/" ,template = "rest/form.ftl")
+  @Get( value ="form/" ,template = "form.ftl")
   public void form(){
     System.out.println("With slash");
   }
 
-  @Get( value ="form" ,template = "rest/form.ftl")
-  public void formM(){
-    System.out.println("SAME BUT WHITOUT SLASH");
+  @Post( value ="form/" ,template = "form.ftl")
+  public void postForm(){
+    System.out.println("Post With slash");
   }
 
-  @Post(template = "rest/result.ftl")
+  /*@Get( value ="form" ,template = "rest/form.ftl")
+  public void formM(){
+    System.out.println("SAME BUT WHITOUT SLASH");
+  }*/
+
+  @Post(template = "result.ftl")
   public void form(String message , OvertownRequest request){
     request.addAttribute("message" , message);
   }

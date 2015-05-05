@@ -22,6 +22,9 @@ public class PathMapping {
   }
 
   public String getFinalPath(String controllerPath){
+    if(controllerPath.length() > 1 && !controllerPath.startsWith("/")){
+      controllerPath = "/" + controllerPath;
+    }
     if( controllerPath.equalsIgnoreCase("/") )
       controllerPath = "";
     if( controllerPath.endsWith("/")  ){
@@ -33,6 +36,7 @@ public class PathMapping {
     }else if( path.length() > 0 ) {
       finalPath += "/" + path;
     }
+
     return finalPath;
   }
 

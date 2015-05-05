@@ -38,7 +38,7 @@ public class ControllerMapping {
         for (String path : vap.paths) {
           path = Path.NO_PATH.equals(path) ? m.getName() : path.trim();
           if(!Path.NO_TEMPLATE.equalsIgnoreCase( vap.template)) {
-            if (!vap.template.startsWith("/")) { //Mount template with the controllerName/templateName
+            if (!vap.template.startsWith("/") && !vap.template.startsWith(name +"/") ) { //Mount template with the controllerName/templateName
               vap.template = name + "/" + vap.template;
             }
           }

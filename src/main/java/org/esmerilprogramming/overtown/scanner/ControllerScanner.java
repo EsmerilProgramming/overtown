@@ -36,9 +36,6 @@ public class ControllerScanner {
     if(NO_PATH.equalsIgnoreCase( pathBuilder.toString() )){
       path = getControllerSimpleName( controllerClass );
     }
-    if(!path.startsWith("/")){
-      path = "/" + path;
-    }
     return path;
   }
 
