@@ -1,4 +1,4 @@
-package org.esmerilprogramming.overtownacceptance.controllers;
+package org.esmerilprogramming.overtownacceptance.withappcontext.controllers;
 
 import org.esmerilprogramming.overtown.annotation.Controller;
 import org.esmerilprogramming.overtown.annotation.path.Get;

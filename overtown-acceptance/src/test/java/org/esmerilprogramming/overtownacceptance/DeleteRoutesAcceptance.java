@@ -1,15 +1,10 @@
 package org.esmerilprogramming.overtownacceptance;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.esmerilprogramming.overtownacceptance.main.MainApp;
+import org.esmerilprogramming.overtownacceptance.main.MainWithContext;
 import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -19,8 +14,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -30,11 +23,11 @@ import static org.junit.Assert.assertTrue;
 public class DeleteRoutesAcceptance {
 
   WebDriver webDriver;
-  static MainApp mainApp;
+  static MainWithContext mainApp;
 
   @BeforeClass
   public static void initClass(){
-    mainApp = new MainApp();
+    mainApp = new MainWithContext();
     mainApp.start();
   }
 

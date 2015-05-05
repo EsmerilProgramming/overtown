@@ -7,9 +7,8 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
 import org.apache.http.protocol.HTTP;
-import org.esmerilprogramming.overtownacceptance.main.MainApp;
+import org.esmerilprogramming.overtownacceptance.main.MainWithContext;
 import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -30,11 +29,11 @@ import static org.junit.Assert.assertTrue;
 public class PutRoutesAcceptance {
 
   WebDriver webDriver;
-  static MainApp mainApp;
+  static MainWithContext mainApp;
 
   @BeforeClass
   public static void initClass(){
-    mainApp = new MainApp();
+    mainApp = new MainWithContext();
     mainApp.start();
   }
 

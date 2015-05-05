@@ -7,10 +7,9 @@ import org.esmerilprogramming.overtown.server.ConfigurationBuilder;
 /**
  * Created by efraimgentil<efraimgentil@gmail.com> on 14/03/15.
  */
-public class MainApp {
+public class MainWithContext {
 
   private Overtown overtown;
-
 
   public void start(Configuration configuration){
     overtown = new Overtown( configuration );
@@ -33,7 +32,7 @@ public class MainApp {
   }
 
   public static void main(String ... args){
-    new MainApp().start();
+    new MainWithContext().start();
   }
 
 }

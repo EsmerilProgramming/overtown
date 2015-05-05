@@ -2,15 +2,17 @@ package org.esmerilprogramming.overtownacceptance;
 
 import org.esmerilprogramming.overtownacceptance.main.MainWithContext;
 import org.junit.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by efraimgentil<efraimgentil@gmail.com> on 15/03/15.
+ * Created by efraimgentil<efraimgentil@gmail.com> on 04/05/15.
  */
-public class ServerErrorAcceptance {
+public class RootRoutesAcceptance {
 
   WebDriver webDriver;
   static MainWithContext mainApp;
@@ -37,12 +39,17 @@ public class ServerErrorAcceptance {
   }
 
   @Test
-  public void doesCallSendBackErroPageWhenThereAnyNotCaughtException(){
-    webDriver.get("localhost:8080/acceptance/serverError/throwError");
-
-    String pageSource = webDriver.getPageSource().toUpperCase();
-    assertTrue(  pageSource.contains("500 INTERNAL SERVER ERROR") );
+  public void doesRespondsToGetWithEndSlash() throws InterruptedException{
+    webDriver.get("localhost:8080/acceptance/");
+    String pageSource = webDriver.getPageSource();
+    assertTrue(  pageSource.contains("GET - index/index"));
   }
 
+  @Test
+  public void doesRespondsToGetWithouEndSlash() throws InterruptedException{
+    webDriver.get("localhost:8080/acceptance");
+    String pageSource = webDriver.getPageSource();
+    assertTrue(  pageSource.contains("GET - index/index"));
+  }
 
 }
