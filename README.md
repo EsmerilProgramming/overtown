@@ -1,8 +1,9 @@
 Overtown
 =======
 
-
 [![Build Status](https://travis-ci.org/EsmerilProgramming/overtown.svg?branch=master)](https://travis-ci.org/EsmerilProgramming/overtown)
+
+Overtown is a framework for creating standalone web applications that are fast and RESTfull, with supoort for  websockets and static file serving.
 
 ## Getting started
 
