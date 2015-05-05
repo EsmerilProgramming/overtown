@@ -25,7 +25,7 @@ public class ControllerScannerTest {
   public void shouldReturnAControllerMappingToThePathWithTheClassName(){
     ControllerMapping mapping = scanner.scanControllerForMapping(RestTestController.class);
 
-    assertEquals( "/restTest" , mapping.getPath() );
+    assertEquals( "restTest" , mapping.getPath() );
   }
 
   @Test
